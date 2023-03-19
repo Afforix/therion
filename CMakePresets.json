@@ -1,0 +1,120 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 22,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "werror",
+            "hidden": true,
+            "cacheVariables": {
+                "ENABLE_WERROR": true
+            }
+        },
+        {
+            "name": "sanitizers",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+                "ECM_ENABLE_SANITIZERS": "address;undefined"
+            }
+        },
+        {
+            "name": "ninja",
+            "hidden": true,
+            "generator": "Ninja"
+        },
+        {
+            "name": "external-shapelib",
+            "hidden": true,
+            "cacheVariables": {
+                "USE_BUNDLED_SHAPELIB": false
+            }
+        },
+        {
+            "name": "build-dir-path",
+            "binaryDir": "build/${presetName}"
+        },
+        {
+            "name": "ci-unix-common",
+            "hidden": true,
+            "inherits": [
+                "werror",
+                "ninja",
+                "external-shapelib",
+                "build-dir-path"
+            ]
+        },
+        {
+            "name": "ci-linux-sanitizers",
+            "inherits": [
+                "ci-unix-common",
+                "sanitizers"
+            ],
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang++"
+            }
+        },
+        {
+            "name": "ci-linux-static-analysis",
+            "inherits": [
+                "ci-unix-common"
+            ],
+            "cacheVariables": {
+                "ENABLE_CLANG_TIDY": true,
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "ci-macos",
+            "inherits": [
+                "ci-unix-common",
+                "sanitizers"
+            ],
+            "cacheVariables": {
+                "BUILD_THBOOK": false,
+                "OPENGL_gl_LIBRARY": {
+                    "type": "FILEPATH",
+                    "value": "/opt/X11/lib/libGL.dylib"
+                },
+                "OPENGL_glu_LIBRARY": {
+                    "type": "FILEPATH",
+                    "value": "/opt/X11/lib/libGLU.dylib"
+                }
+            }
+        },
+        {
+            "name": "default-windows",
+            "inherits":["build-dir-path"],
+            "hidden": true,
+            "generator": "MSYS Makefiles",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "ci-windows-mingw32",
+            "inherits":["default-windows","werror"]
+        },
+        {
+            "name": "ci-windows-clang32",
+            "inherits":["default-windows","sanitizers"]
+        },
+        {
+            "name": "devel",
+            "inherits":["ninja", "build-dir-path"],
+            "cacheVariables": {
+                "ENABLE_CCACHE": true
+            }
+        },
+        {
+            "name": "debug",
+            "inherits": ["sanitizers", "build-dir-path"]
+        }
+    ]
+}

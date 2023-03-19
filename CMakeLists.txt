@@ -23,6 +23,12 @@ set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -s")
 
 set(ECM_ENABLE_SANITIZERS "" CACHE STRING 
     "Enable runtime sanitizers, available options: address,memory,thread,leak,undefined." )
+if (ECM_ENABLE_SANITIZERS)
+    # fail on errors
+    list(APPEND CMAKE_C_FLAGS -fno-sanitize-recover=all)
+    list(APPEND CMAKE_CXX_FLAGS -fno-sanitize-recover=all)
+endif()
+
 set(ENABLE_THDEBUG OFF CACHE BOOL "Print debug information.")
 
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy." OFF)

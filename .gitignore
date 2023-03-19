@@ -68,6 +68,7 @@ xtherion/msgxth.tcl
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles/
+CMakeUserPresets.json
 extern/fmt/Makefile
 extern/fmt/cmake_install.cmake
 build/
