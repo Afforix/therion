@@ -91,17 +91,22 @@ endmacro()
 # copy files needed by some build steps
 therion_copy_files(thcsdata.tcl thsymbolsetfont.txt .clang-tidy)
 
-# generate thcsdata sources
-add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/thcsdata.h
-                          ${CMAKE_BINARY_DIR}/thcsdata.cxx
-                   COMMAND tclsh thcsdata.tcl ${PROJ_PREFIX}/share/proj
-                   DEPENDS ${CMAKE_BINARY_DIR}/thcsdata.tcl
-                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-add_custom_target(generate_thcsdata DEPENDS
-    ${CMAKE_BINARY_DIR}/thcsdata.h
-    ${CMAKE_BINARY_DIR}/thcsdata.cxx
-)
+if (MSVC)
+    configure_file(thcsdata.h.in thcsdata.h COPYONLY)
+    configure_file(thcsdata.cxx.in thcsdata.cxx COPYONLY)
+else()
+    # generate thcsdata sources
+    add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/thcsdata.h
+                            ${CMAKE_BINARY_DIR}/thcsdata.cxx
+                    COMMAND tclsh thcsdata.tcl ${PROJ_PREFIX}/share/proj
+                    DEPENDS ${CMAKE_BINARY_DIR}/thcsdata.tcl
+                    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+    add_custom_target(generate_thcsdata DEPENDS
+        ${CMAKE_BINARY_DIR}/thcsdata.h
+        ${CMAKE_BINARY_DIR}/thcsdata.cxx
+    )
+endif()
 
 # generate thsymbolsetlist sources
 add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/thsymbolsetlist.h
@@ -156,8 +161,11 @@ if (BUILD_THERION)
         generate_tex
         generate_mpost
         generate_thchencdata
-        generate_thcsdata
     )
+
+    if (NOT MSVC)
+        add_dependencies(therion-common generate_thcsdata)
+    endif()
 
     # therion executable
     add_executable(therion therion-main.cxx)
