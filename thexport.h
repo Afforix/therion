@@ -61,8 +61,8 @@ static const thstok thtt_exp_opt[] = {
 class thexport_output_crc {
   public:
 	std::string fnm;
-	std::string res;
-	thexport_output_crc(std::string fn) : fnm(fn), res("not checked") {}
+	std::string res = "not checked";
+	explicit thexport_output_crc(std::string fn) : fnm(std::move(fn)) {}
 };
 
 

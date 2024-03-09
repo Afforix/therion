@@ -83,7 +83,7 @@ thinput::thinput()
   this->cmd_sensitivity = true;
   this->input_sensitivity = true;
   this->scan_search_path = false;
-  this->first_ptr = std::unique_ptr<ifile>(new ifile(nullptr));
+  this->first_ptr = std::make_unique<ifile>(nullptr);
   this->last_ptr = this->first_ptr.get();
   this->lnbuffer = std::unique_ptr<char[]>(new char [thinput::max_line_size]);
   this->pifo = false;
@@ -187,7 +187,7 @@ void thinput::open_file(char * fname)
   while (ifptr->sh.is_open() && (ifptr->next_ptr != NULL))
     ifptr = ifptr->next_ptr.get();
   if (ifptr->sh.is_open() && (ifptr->next_ptr == NULL)) {
-    ifptr->next_ptr = std::unique_ptr<ifile>(new ifile(ifptr));
+    ifptr->next_ptr = std::make_unique<ifile>(ifptr);
     ifptr = ifptr->next_ptr.get();
   }
   

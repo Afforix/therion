@@ -87,7 +87,7 @@ void thcmdline::process(int argc, char * argv[])
     {NULL, 0, NULL, 0}
   };
 
-  while(1) {
+  while(true) {
 
     oc = getopt_long (argc, argv, "dxs:l:qLvbhp:",
       thlong_options, &oindex);
