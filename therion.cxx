@@ -152,3 +152,7 @@ void thexit(int exit_code)
   if (exit_code == EXIT_FAILURE) thcfg.xth_save();
   exit(exit_code);
 }
+
+template int fmt::vfprintf<char>(
+    std::FILE* f, basic_string_view<char> fmt,
+    basic_format_args<basic_printf_context<type_identity_t<char>>> args);

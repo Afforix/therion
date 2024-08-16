@@ -70,7 +70,7 @@
 #include "img.h"
 #include <filesystem>
 
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 namespace fs = std::filesystem;
 

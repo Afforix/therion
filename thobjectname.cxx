@@ -31,7 +31,7 @@
 #include "thdataobject.h"
 #include "thsurvey.h"
 
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 thobjectname::thobjectname()
 {

@@ -31,7 +31,7 @@
 
 #include "thbuffer.h"
 #include <stdio.h>
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 /**
  * Log file module.

@@ -36,7 +36,7 @@
 #include "thlogfile.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 #ifdef THDEBUG
 #define thprint_error_src() thprintf2err("%s%s (" __FILE__ ":%d): error -- ", (thtext_inline ? "\n" : ""), thexecute_cmd, __LINE__)

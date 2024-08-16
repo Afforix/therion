@@ -33,7 +33,7 @@
 #include "thconfig.h"
 #include "thdatabase.h"
 
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 thwarpp::~thwarpp() {}
 

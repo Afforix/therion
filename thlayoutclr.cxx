@@ -29,7 +29,7 @@
 #include "thdatabase.h"
 #include "thexception.h"
 #include <cmath>
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 
 bool thlayout_color::is_defined() {

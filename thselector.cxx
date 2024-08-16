@@ -39,7 +39,7 @@
 #include "thmap.h"
 #include "therion.h"
 
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 thselector::thselector() {
   this->number = 0;

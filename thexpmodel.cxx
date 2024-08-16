@@ -47,7 +47,7 @@
 #include "therion.h"
 #include <filesystem>
 
-#include <fmt/printf.h>
+#include "fmt_printf.h"
 
 thexpmodel::thexpmodel() {
   this->format = TT_EXPMODEL_FMT_UNKNOWN;
