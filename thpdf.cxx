@@ -40,7 +40,7 @@
 #include <cstdio>
 #include <cfloat>
 #include <cmath>
-#include <regex>
+#include "std_regex.h"
 #include <fmt/core.h>
 
 #include "thpdfdbg.h"
@@ -1771,3 +1771,4 @@ int thpdf(int m) {
   return(0);
 }
 
+template class std::basic_regex<char>;

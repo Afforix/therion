@@ -33,7 +33,7 @@
 #include <cmath>
 #include <map>
 #include <set>
-#include <regex>
+#include "std_regex.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
