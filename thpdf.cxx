@@ -52,10 +52,7 @@
 #include "thdouble.h"
 #include "therion.h"
 
-#include "thchenc.h"
-#include "thbuffer.h"
-
-#define IOerr(F) ((std::string)"Can't open file "+F+"!\n").c_str()
+#define IOerr(F) fmt::format("Can't open file {}!\n", (F)).c_str()
 
 
 
@@ -996,7 +993,7 @@ void print_map(int layer, std::ofstream& PAGEDEF,
       if (used_scraps.count(K->name) > 0) {
         for (std::list<surfpictrecord>::iterator I_sk = K->SKETCHLIST.begin();
                                             I_sk != K->SKETCHLIST.end(); I_sk++) {
-          PAGEDEF << "\\pdfximage{" << (std::string) I_sk->filename << "}%" << std::endl;
+          PAGEDEF << "\\pdfximage{" << I_sk->filename << "}%" << std::endl;
           PAGEDEF << "\\bitmap{" <<
               fmt::format("{}",thdouble(I_sk->xx,prec_matrix)) << "}{" << fmt::format("{}",thdouble(I_sk->yx,prec_matrix)) << "}{" <<
               fmt::format("{}",thdouble(I_sk->xy,prec_matrix)) << "}{" << fmt::format("{}",thdouble(I_sk->yy,prec_matrix)) << "}{" <<
@@ -1480,7 +1477,7 @@ R"(\pdfcompresslevel=9%
   int i = 1;
   for (std::list<surfpictrecord>::iterator I = SURFPICTLIST.begin();
                                       I != SURFPICTLIST.end(); I++) {
-    PAGEDEF << "\\pdfximage{" << (std::string) I->filename << "}%" << std::endl;
+    PAGEDEF << "\\pdfximage{" << I->filename << "}%" << std::endl;
     PAGEDEF << "\\newcount\\" << tex_BMPname(u2str(i)) << "\\" <<
                tex_BMPname(u2str(i)) << "=\\pdflastximage%" << std::endl;
     i++;

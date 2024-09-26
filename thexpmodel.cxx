@@ -32,14 +32,11 @@
 #include "thdata.h"
 #include "thsurvey.h"
 #include <stdio.h>
-#include "extern/img.h"
-#include "thchenc.h"
+#include "img.h"
 #include "thscrap.h"
-#include <map>
 #include "thsurface.h"
 #include "loch/lxFile.h"
 #include "thsurface.h"
-#include "thchenc.h"
 #include "thconfig.h"
 #include "thcsdata.h"
 #include "thproj.h"
@@ -47,8 +44,8 @@
 #include "thtexfonts.h"
 #include "thlang.h"
 #include "thfilehandle.h"
+#include "therion.h"
 #include <filesystem>
-#include <thread>
 
 #include <fmt/printf.h>
 
@@ -752,7 +749,7 @@ void thexpmodel::export_vrml_file(class thdatabase * dbp) {
     while (obi != dbp->object_list.end()) {
       switch ((*obi)->get_class_id()) {
         case TT_SURFACE_CMD:
-          srfc = ((thsurface*)(*obi).get());
+          srfc = dynamic_cast<thsurface*>(obi->get());
           tmp3d = srfc->get_3d();
           srfc->calibrate();
           tinv = srfc->calib_yy*srfc->calib_xx - srfc->calib_xy*srfc->calib_yx;
@@ -772,8 +769,8 @@ void thexpmodel::export_vrml_file(class thdatabase * dbp) {
                   fseek(xf.get(), 0, SEEK_SET);
                   if (fsz > 0) {
                     char * cdata = new char [fsz];
-                    thassert(fread((void *) cdata, 1, fsz, xf.get()) == fsz);
-                    fwrite((void *) cdata, 1, fsz, texf.get());
+                    thassert(fread(cdata, 1, fsz, xf.get()) == fsz);
+                    fwrite(cdata, 1, fsz, texf.get());
                     delete [] cdata;
                   }
                 }
@@ -1009,7 +1006,7 @@ void thexpmodel::export_3dmf_file(class thdatabase * dbp) {
     while (obi != dbp->object_list.end()) {
       switch ((*obi)->get_class_id()) {
         case TT_SURFACE_CMD:
-          tmp3d = ((thsurface*)(*obi).get())->get_3d();
+          tmp3d = dynamic_cast<thsurface*>(obi->get())->get_3d();
           if (tmp3d != NULL) {
             tmp3d->exp_shift_x = avx;
             tmp3d->exp_shift_y = avy;
@@ -1350,7 +1347,7 @@ void thexpmodel::export_dxf_file(class thdatabase * dbp) {
     while (obi != dbp->object_list.end()) {
       switch ((*obi)->get_class_id()) {
         case TT_SURFACE_CMD:
-          tmp3d = ((thsurface*)(*obi).get())->get_3d();
+          tmp3d = dynamic_cast<thsurface*>(obi->get())->get_3d();
           if (tmp3d != NULL) {
             tmp3d->exp_shift_x = avx;
             tmp3d->exp_shift_y = avy;
@@ -1487,7 +1484,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
   obi = dbp->object_list.begin();
   while (obi != dbp->object_list.end()) {
     if ((*obi)->get_class_id() == TT_SURVEY_CMD) {
-      sptr = (thsurvey*)(*obi).get();
+      sptr = dynamic_cast<thsurvey*>(obi->get());
       if (sptr->is_selected()) {
         sptr->num1 = 1;
       } else {
@@ -1531,7 +1528,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
   obi = dbp->object_list.begin();
   while (obi != dbp->object_list.end()) {
     if ((*obi)->get_class_id() == TT_SURVEY_CMD) {
-      sptr = (thsurvey*)(*obi).get();
+      sptr = dynamic_cast<thsurvey*>(obi->get());
       if ((sptr->num1 > 0) && (sptr->fsptr != NULL)) {
         tsptr = sptr->fsptr;
         if (tsptr->num1 > 0)
@@ -1558,7 +1555,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
   obi = dbp->object_list.begin();
   while (obi != dbp->object_list.end()) {
     if ((*obi)->get_class_id() == TT_SURVEY_CMD) {
-      sptr = (thsurvey*)(*obi).get();
+      sptr = dynamic_cast<thsurvey*>(obi->get());
       if (sptr->num1 > 0) {
         sptr->num1 = survnum++;
         expf_survey.m_id = sptr->num1;
@@ -1654,7 +1651,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
     while (obi != dbp->object_list.end()) {
       switch ((*obi)->get_class_id()) {
         case TT_SURFACE_CMD:
-          csrf = ((thsurface*)(*obi).get());
+          csrf = dynamic_cast<thsurface*>(obi->get());
           tmp3d = csrf->get_3d();
           if ((tmp3d != NULL) && (tmp3d->nfaces > 0)) {
             expf_sfc.m_id = survnum;
@@ -1671,7 +1668,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
             for(i = 0; i < (unsigned long) csrf->grid_size; i++) {
               cdata[i] = csrf->grid[i];
             }
-            expf_sfc.m_dataPtr = expf.m_surfacesData.AppendData((void *) cdata, csrf->grid_size * sizeof(lxFileDbl));
+            expf_sfc.m_dataPtr = expf.m_surfacesData.AppendData(reinterpret_cast<const uint8_t*>(cdata), csrf->grid_size * sizeof(lxFileDbl));
             expf.m_surfaces.push_back(expf_sfc);
             delete [] cdata;
             
@@ -1733,7 +1730,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
               pdata[i].m_c[2] = lxFilePrepDbl(vxp->z);
             }
             expf_scrap.m_numPoints = d3d->nvertices;
-            expf_scrap.m_pointsPtr = expf.m_scrapsData.AppendData(pdata, i * sizeof(lxFile3Point));
+            expf_scrap.m_pointsPtr = expf.m_scrapsData.AppendData(reinterpret_cast<const uint8_t*>(pdata), i * sizeof(lxFile3Point));
             thdb3dfc * fcp;
             thdb3dfx * fxp;
             for(i = 0, fcp = d3d->firstfc; fcp != NULL; fcp = fcp->next, i++) {
@@ -1769,7 +1766,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
               tdata[i] = *tli;
             }
             expf_scrap.m_num3Angles = tlist.size();
-            expf_scrap.m_3AnglesPtr = expf.m_scrapsData.AppendData(tdata, i * sizeof(lxFile3Angle));
+            expf_scrap.m_3AnglesPtr = expf.m_scrapsData.AppendData(reinterpret_cast<const uint8_t*>(tdata), i * sizeof(lxFile3Angle));
             delete [] pdata;
             delete [] tdata;
             expf.m_scraps.push_back(expf_scrap);
@@ -1805,7 +1802,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
             pdata[i].m_c[2] = lxFilePrepDbl(vxp->z);
           }
           expf_scrap.m_numPoints = d3d->nvertices;
-          expf_scrap.m_pointsPtr = expf.m_scrapsData.AppendData(pdata, i * sizeof(lxFile3Point));
+          expf_scrap.m_pointsPtr = expf.m_scrapsData.AppendData(reinterpret_cast<const uint8_t*>(pdata), i * sizeof(lxFile3Point));
           thdb3dfc * fcp;
           thdb3dfx * fxp;
           for(i = 0, fcp = d3d->firstfc; fcp != NULL; fcp = fcp->next, i++) {
@@ -1841,7 +1838,7 @@ void thexpmodel::export_lox_file(class thdatabase * dbp) {
             tdata[i] = *tli;
           }
           expf_scrap.m_num3Angles = tlist.size();
-          expf_scrap.m_3AnglesPtr = expf.m_scrapsData.AppendData(tdata, i * sizeof(lxFile3Angle));
+          expf_scrap.m_3AnglesPtr = expf.m_scrapsData.AppendData(reinterpret_cast<const uint8_t*>(tdata), i * sizeof(lxFile3Angle));
           delete [] pdata;
           delete [] tdata;
           expf.m_scraps.push_back(expf_scrap);
@@ -1908,7 +1905,7 @@ void thexpmodel::export_kml_file(class thdatabase * dbp)
   thdataobject * obj;
   for(obj = mainsrv->foptr; obj != NULL; obj = obj->nsptr) 
     if (obj->get_class_id() == TT_SURVEY_CMD) {
-      mainsrv = (thsurvey *) obj;
+      mainsrv = dynamic_cast<thsurvey*>(obj);
       break;
     }
 
@@ -1940,7 +1937,7 @@ void thexpmodel::export_kml_file(class thdatabase * dbp)
           station->x, station->y, station->z, x, y, z);
         fprintf(out, "<Placemark>\n");
         fprintf(out, "<styleUrl>#ThEntranceIcon</styleUrl>");
-        fprintf(out, "<name><![CDATA[%s]]></name>\n", ths2txt(station->comment, layout->lang).c_str());
+        fprintf(out, "<name><![CDATA[%s]]></name>\n", ths2txt(station->get_label(), layout->lang).c_str());
         fprintf(out, "<Point> <coordinates>%.14f,%.14f,%.14f</coordinates> </Point>\n", x / THPI * 180.0, y / THPI * 180.0, z);
         fprintf(out, "</Placemark>\n");
       }
@@ -2011,7 +2008,7 @@ void thexpmodel::export_kml_survey_file(FILE * out, thsurvey * surv)
   for(obj = surv->foptr; obj != NULL; obj = obj->nsptr) {
     switch (obj->get_class_id()) {
       case TT_SURVEY_CMD: {
-        thsurvey * subsurv = (thsurvey *) obj;
+        thsurvey * subsurv = dynamic_cast<thsurvey*>(obj);
 
         if ((strlen(subsurv->name) == 0) || !(subsurv->is_selected()))
           break;
@@ -2028,7 +2025,7 @@ void thexpmodel::export_kml_survey_file(FILE * out, thsurvey * surv)
         double x, y, z;
         bool first_station = true;
         thdataleg_list::iterator legs;
-        thdata * survdata = (thdata *) obj;
+        thdata * survdata = dynamic_cast<thdata*>(obj);
 
         if (survdata->leg_list.empty())  // skip empty data blocks
           break;

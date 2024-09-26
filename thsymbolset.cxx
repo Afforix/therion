@@ -26,7 +26,6 @@
  */
 
 #include "thsymbolset.h"
-#include "thparse.h"
 #include "thpoint.h"
 #include "thline.h"
 #include "tharea.h"
@@ -44,6 +43,7 @@
 #include "thlogfile.h"
 #include "thepsparse.h"
 #include "thdatabase.h"
+#include "therion.h"
 #include <fmt/printf.h>
 
 thsymbolset::thsymbolset()
@@ -533,7 +533,6 @@ void thsymbolset::export_symbol_defaults(FILE * mpf, const char * symset)
   fprintf(mpf,"\n\n\n%% %s symbol set.\n",symset);
   for(int id = 0; id < SYMX_; id++) {
     if (thsymbolset_assign[id]) {
-      this->assigned[id] = true;
       fprintf(mpf,"mapsymbol(\"%s\",\"%s\",false);\n",thsymbolset_mp[id],symset);
     }
   }

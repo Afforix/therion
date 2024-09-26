@@ -27,16 +27,15 @@
  
 #include "thsurface.h"
 #include "thexception.h"
-#include "thchenc.h"
 #include "thmbuffer.h"
 #include "thtflength.h"
 #include "thdatabase.h"
 #include "thcsdata.h"
 #include <cmath>
 #include "thdatareader.h"
-#include "thparse.h"
 #include "thdb1d.h"
 #include "thinfnan.h"
+#include "therion.h"
 #include <algorithm>
 #include <filesystem>
 

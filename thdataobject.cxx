@@ -30,7 +30,6 @@
 #include "thchenc.h"
 #include "thsurvey.h"
 #include "thconfig.h"
-#include "thparse.h"
 #include "thcsdata.h"
 #include "thdata.h"
 #include "thproj.h"
@@ -182,7 +181,7 @@ void thdataobject::set(thcmd_option_desc cod, char ** args, int argenc, unsigned
           this->cs_source = this->db->csrc;
         } else {
           thdata * cobj;
-          cobj = (thdata *) this;
+          cobj = dynamic_cast<thdata*>(this);
           if (cobj->cgroup->dl_declination_north_grid && (id == TTCS_LOCAL))
             ththrow("grid-angle has been defined -- local CS not allowed");
           cobj->cgroup->cs = id;
@@ -385,7 +384,7 @@ bool thdataobject::is_in_survey(thsurvey * psearch)
     
   thsurvey * tmp;
   if (this->get_class_id() == TT_SURVEY_CMD) {
-    tmp = (thsurvey *) this;
+    tmp = dynamic_cast<thsurvey*>(this);
   } else {
     tmp = this->fsptr;
   }

@@ -27,12 +27,10 @@
 
 #include "thline.h"
 #include "thexception.h"
-#include "thparse.h"
 #include "thchenc.h"
 #include "thdb2dlp.h"
 #include "thexpmap.h"
 #include "thtflength.h"
-#include "thtexfonts.h"
 #include "thscrap.h"
 #include "thdatabase.h"
 

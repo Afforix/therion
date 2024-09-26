@@ -28,12 +28,11 @@
 #include "loch/icase.h"
 #include "thimport.h"
 #include "thexception.h"
-#include "thchenc.h"
 #include "thdata.h"
 #include "thsurvey.h"
-#include "thendsurvey.h"
 #include "thdatabase.h"
-#include "extern/img.h"
+#include "therion.h"
+#include "img.h"
 #include <string.h>
 #include <string>
 #include <map>
@@ -44,7 +43,7 @@
 
 struct thsst {
   std::string name, fullname;
-  thsurvey * survey;  
+  thsurvey * survey = {};  
 };
 
 
@@ -367,12 +366,12 @@ const char * thimport::station_name(const char * sn, const char separator, struc
 }
 
 struct thimg_shot {
-  double fx, fy, fz, tx, ty, tz;
-  long flags;
+  double fx = {}, fy = {}, fz = {}, tx = {}, ty = {}, tz = {};
+  long flags = {};
 };
 
 struct thimg_stpos {
-  double x, y, z;
+  double x = {}, y = {}, z = {};
 };
 
 bool operator < (const thimg_stpos & p1, 
@@ -469,7 +468,10 @@ void thimport::import_file_img()
       case img_LABEL:      
         // vlozime fix station
         stnm = pimg->label;
-        if ((filterl > 0) && (strncmp(stnm, this->filter, filterl) == 0)) {
+        if (filterl > 0) {
+          if (strncmp(stnm, this->filter, filterl) != 0) {
+            break;
+          }
           stnm = &stnm[filterl];
           while ((*stnm != 0) && (*stnm == pimg->separator)) {
             stnm++;
