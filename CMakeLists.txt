@@ -12,6 +12,7 @@ option(BUILD_THERION "Build therion executable." ON)
 option(BUILD_LOCH "Build loch executable." ON)
 option(BUILD_THBOOK "Build thbook.pdf." ON)
 option(BUILD_XTHERION "Build xtherion." ON)
+option(EXPERIMENTAL_MSVC "Build with MSVC." ON)
 
 include(GNUInstallDirs)
 include(BuildType)
@@ -172,7 +173,9 @@ if (BUILD_THERION)
     target_link_libraries(therion therion-common)
 
     # therion resource file
-    if (WIN32)
+    if (EXPERIMENTAL_MSVC)
+        add_custom_target(generate_resource_therion)
+    elseif (WIN32)
         add_custom_command(COMMAND ${CMAKE_RC_COMPILER} -i ${CMAKE_CURRENT_SOURCE_DIR}/therion.rc -J rc -o ${CMAKE_CURRENT_BINARY_DIR}/therion.res -O coff
                             OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/therion.res
                             DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/therion.rc ${CMAKE_CURRENT_SOURCE_DIR}/therion.ico
