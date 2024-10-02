@@ -14,17 +14,7 @@ if (USE_BUNDLED_CATCH2)
     return()
 endif()
 
-if (EXPERIMENTAL_MSVC)
-    include(FetchContent)
-    FetchContent_Declare(
-        Catch2
-        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-        GIT_TAG v3.4.0
-    )
-    FetchContent_MakeAvailable(Catch2)
-else()
-    find_package(Catch2 REQUIRED)
-endif()
+find_package(Catch2 REQUIRED)
 
 if (Catch2_VERSION_MAJOR LESS 3)
     target_link_libraries(catch2-interface INTERFACE Catch2::Catch2)

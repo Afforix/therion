@@ -68,3 +68,4 @@ extern/fmt/cmake_install.cmake
 build/
 rel_notes.md
 .vs/
+CMakeSettings.json

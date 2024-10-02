@@ -12,7 +12,6 @@ option(BUILD_THERION "Build therion executable." ON)
 option(BUILD_LOCH "Build loch executable." ON)
 option(BUILD_THBOOK "Build thbook.pdf." ON)
 option(BUILD_XTHERION "Build xtherion." ON)
-option(EXPERIMENTAL_MSVC "Build with MSVC." ON)
 
 include(GNUInstallDirs)
 include(BuildType)
@@ -93,8 +92,8 @@ endmacro()
 therion_copy_files(thcsdata.tcl thsymbolsetfont.txt .clang-tidy)
 
 if (MSVC)
-    configure_file(thcsdata.h.in thcsdata.h COPYONLY)
-    configure_file(thcsdata.cxx.in thcsdata.cxx COPYONLY)
+    file(GENERATE OUTPUT thcsdata.h INPUT thcsdata.h.in)
+    file(GENERATE OUTPUT thcsdata.cxx INPUT thcsdata.cxx.in)
 else()
     # generate thcsdata sources
     add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/thcsdata.h
@@ -153,7 +152,7 @@ if (BUILD_THERION)
     # therion lib
     add_library(therion-common STATIC ${THERION_HEADERS} ${THERION_SOURCES})
     target_include_directories(therion-common BEFORE PUBLIC "${CMAKE_BINARY_DIR}" "${CMAKE_SOURCE_DIR}")
-    target_link_libraries(therion-common PUBLIC proj-interface shp-interface poly2tri common-utils QuickHull)
+    target_link_libraries(therion-common PUBLIC proj-interface shp-interface poly2tri common-utils QuickHull getopt-interface)
     target_compile_definitions(therion-common PUBLIC "TH${THPLATFORM}" $<$<BOOL:${ENABLE_THDEBUG}>:THDEBUG>)
     add_dependencies(therion-common 
         version
@@ -173,7 +172,7 @@ if (BUILD_THERION)
     target_link_libraries(therion therion-common)
 
     # therion resource file
-    if (EXPERIMENTAL_MSVC)
+    if (MSVC)
         add_custom_target(generate_resource_therion)
     elseif (WIN32)
         add_custom_command(COMMAND ${CMAKE_RC_COMPILER} -i ${CMAKE_CURRENT_SOURCE_DIR}/therion.rc -J rc -o ${CMAKE_CURRENT_BINARY_DIR}/therion.res -O coff
