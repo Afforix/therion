@@ -114,10 +114,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: lukka/run-vcpkg@v11
+      #- uses: lukka/run-vcpkg@v11
       - name: Configure CMake
+        shell: bash
         run: mkdir build && cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake
       - name: Build
+        shell: bash
         run: cmake --build build
 
   # MXE:
