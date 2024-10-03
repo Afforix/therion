@@ -74,7 +74,7 @@ jobs:
       - name: Install
         run: sudo cmake --build build -t install
 
-  Windows:
+  Windows-MSYS2:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -109,6 +109,16 @@ jobs:
           name: samples-windows-${{ matrix.config.msystem }}
           path: build/samples/
       - run: cmake --build build -t deploy -- -j 4
+
+  Windows-MSVC:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lukka/run-vcpkg@v11
+      - name: Configure CMake
+        run: mkdir build && cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=${VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake
+      - name: Build
+        run: cmake --build build
 
   # MXE:
   #   runs-on: ${{ matrix.os }}

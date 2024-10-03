@@ -97,7 +97,7 @@ if (MSVC)
 else()
     # generate thcsdata sources
     add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/thcsdata.h
-                            ${CMAKE_BINARY_DIR}/thcsdata.cxx
+                              ${CMAKE_BINARY_DIR}/thcsdata.cxx
                     COMMAND tclsh thcsdata.tcl ${PROJ_PREFIX}/share/proj
                     DEPENDS ${CMAKE_BINARY_DIR}/thcsdata.tcl
                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

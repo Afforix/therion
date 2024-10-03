@@ -15,7 +15,6 @@ if (USE_BUNDLED_CATCH2)
 endif()
 
 find_package(Catch2 REQUIRED)
-
 if (Catch2_VERSION_MAJOR LESS 3)
     target_link_libraries(catch2-interface INTERFACE Catch2::Catch2)
     target_sources(catch2-interface INTERFACE ${CMAKE_SOURCE_DIR}/utest-main.cxx)
