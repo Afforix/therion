@@ -31,16 +31,15 @@
 #include "thtmpdir.h"
 #include "thdata.h"
 #include "thexception.h"
-#include "thdatabase.h"
 #include "thinfnan.h"
 #include "thinit.h"
 #include "thconfig.h"
-#include <iostream>
 #include <fstream>
 #include "thsurvey.h"
-#include "thcs.h"
+#include "thcsdata.h"
 #include "thlogfile.h"
-#include "extern/img.h"
+#include "therion.h"
+#include "img.h"
 #include <math.h>
 #include <string>
 #include <fstream>
@@ -346,7 +345,7 @@ void thsvxctrl::process_survey_data(class thdatabase * dbp)
   
     if ((*obi)->get_class_id() == TT_DATA_CMD) {
       
-      dp = (thdata *)(*obi).get();
+      dp = dynamic_cast<thdata*>(obi->get());
       
       // scan data shots
       lei = dp->leg_list.begin();

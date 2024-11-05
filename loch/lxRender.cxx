@@ -17,6 +17,9 @@
 #include <wx/intl.h>
 #include <wx/progdlg.h>
 #include <wx/valgen.h>
+#include <wx/stattext.h>
+#include <wx/statbox.h>
+#include <wx/button.h>
 
 #ifdef __cplusplus
  extern "C" {  // stupid JPEG library
@@ -717,7 +720,7 @@ void lxRenderFile::RenderBMPHeader() {
     wxUint32  h_res, v_res;   // image resolution in dpi
     wxUint32  num_clrs;       // number of colors used
     wxUint32  num_signif_clrs;// number of significant colors
-  } hdr;
+  } hdr = {};
 
 
   double imgRes;

@@ -31,7 +31,6 @@
 
 #include "thbuffer.h"
 #include "thmbuffer.h"
-#include "thparse.h"
 #include <fstream>
 #include <memory>
 
@@ -285,7 +284,7 @@ class thinput {
    * Return current absolute input file path.
    */  
    
-  std::string get_cif_abspath(const char * fname = "");
+  std::string get_cif_abspath(const char * fname_ptr = "");
   
   /**
    * Return current input line number.

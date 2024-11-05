@@ -3,6 +3,10 @@
 #include <wx/statline.h>
 #include <wx/xml/xml.h>
 #include <wx/filedlg.h>
+#include <wx/msgdlg.h>
+#include <wx/listbox.h>
+#include <wx/button.h>
+#include <cstdint>
 #endif
 //LXDEPCHECK - standard libraries
 
@@ -302,7 +306,7 @@ lxPresentDlg::lxPresentDlg(wxWindow *parent)
 		this->SetIcon(wxIcon(loch_xpm));
 #endif
 
-  this->m_mainFrame = (lxFrame *) parent;
+  this->m_mainFrame = dynamic_cast<lxFrame*>(parent);
   this->m_fileName = wxEmptyString;
 
    

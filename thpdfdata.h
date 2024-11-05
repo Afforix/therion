@@ -34,8 +34,8 @@
 enum class shading_mode {off, quick};  // add precise
 
 struct surfpictrecord {
-  const char * filename, * type;
-  double dx, dy, xx, xy, yx, yy, width, height;
+  const char * filename = {}, * type = {};
+  double dx = {}, dy = {}, xx = {}, xy = {}, yx = {}, yy = {}, width = {}, height = {};
 };
 
 struct scraprecord {
@@ -85,7 +85,7 @@ struct layerrecord {
 struct legendrecord {
   std::string name, fname, descr;
   converted_data ldata;
-  unsigned idsym, idfig, idnum;
+  unsigned idsym = {}, idfig = {}, idnum = {};
 };
 
 struct colorlegendrecord {
@@ -107,7 +107,7 @@ struct layout {
          northarrow, scalebar, altitudebar, langstr,
          icc_profile_cmyk, icc_profile_rgb, icc_profile_gray;
   bool  excl_pages,title_pages,page_numbering,
-        transparency,map_grid,OCG,map_header_bg,colored_text,transparent_map_bg; 
+        transparency,map_grid,OCG,map_header_bg,colored_text,transparent_map_bg,geospatial;
   double hsize,vsize,overlap,
         hgridsize = 0.0, vgridsize = 0.0,
         hgridorigin, vgridorigin, gridrot = 0.0,

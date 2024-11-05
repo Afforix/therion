@@ -7,16 +7,16 @@ CMNOBJECTS = thdate.o extern/shapelib/shpopen.o extern/shapelib/dbfopen.o extern
   thdataleg.o thobjectname.o thinfnan.o thlayout.o thlookup.o thcomment.o \
   thinit.o thdb1d.o thsvxctrl.o thdatastation.o thobjectid.o \
   thobjectsrc.o thgrade.o thlibrary.o thgeomag.o thbezier.o \
-  thexport.o thexporter.o thselector.o extern/img.o \
+  thexport.o thexporter.o thselector.o extern/img/img.o \
   thexpmodel.o thdb2d00.o thscrapis.o thcs.o thcsdata.o thexptable.o \
   thdb2d.o thscrap.o thendscrap.o th2ddataobject.o thdb2dprj.o \
   thdb2dpt.o thdb2dlp.o thdb2dab.o thdb2dji.o thdb2dmi.o thdb2dcp.o \
   thdb2dxm.o thdb2dxs.o thscraplo.o thscraplp.o thscrapen.o \
   thpoint.o thline.o tharea.o thlegenddata.o thmpost.o thsymbolsets.o \
   thjoin.o thmap.o thexpmap.o thlayoutln.o thlayoutclr.o thexpsys.o thexpuni.o \
-  thconvert.o thpdf.o thpdfdbg.o thpdfdata.o thtexfonts.o \
+  thpdf.o thpdfdbg.o thpdfdata.o thtexfonts.o \
   thsymbolset.o thlang.o thmapstat.o thexpdb.o thpic.o thsketch.o thproj.o \
-  extern/lxMath.o extern/lxFile.o thdb3d.o thsurface.o thimport.o thsvg.o thepsparse.o \
+  extern/lxMath.o extern/lxFile.o extern/icase.o thdb3d.o thsurface.o thimport.o thsvg.o thepsparse.o \
   thtrans.o thwarpp.o thwarppt.o thwarppme.o thwarp.o thexpshp.o thattr.o thtex.o \
   extern/poly2tri/common/shapes.o extern/poly2tri/sweep/advancing_front.o extern/poly2tri/sweep/sweep.o extern/poly2tri/sweep/cdt.o extern/poly2tri/sweep/sweep_context.o \
   extern/quickhull/QuickHull.o therion.o
@@ -136,14 +136,14 @@ CXXJFLAGS ?= -DPROJ_VER=$(PROJ_MVER) -I$(shell $(CROSS)pkg-config proj --variabl
 
 
 # compiler settings
-CXXFLAGS = -DIMG_API_VERSION=1 -Wall $(CXXPFLAGS) $(CXXBFLAGS) $(CXXJFLAGS) -Iextern -Iextern/shapelib -Iextern/quickhull -std=c++17
+CXXFLAGS = -DIMG_API_VERSION=1 -DP2T_STATIC_EXPORTS -Wall $(CXXPFLAGS) $(CXXBFLAGS) $(CXXJFLAGS) -Iextern -Iextern/shapelib -Iextern/quickhull -Iextern/img -I$(shell $(CROSS)pkg-config fmt --variable=includedir) -std=c++17
 CCFLAGS = -DIMG_API_VERSION=1 -Wall $(CCPFLAGS) $(CCBFLAGS)
 OBJECTS = $(addprefix $(OUTDIR)/,$(POBJECTS)) $(addprefix $(OUTDIR)/,$(CMNOBJECTS))
 TESTOBJECTS_P = $(addprefix $(OUTDIR)/,$(TESTOBJECTS))
 
 
 # linker settings
-LIBS = $(PROJ_LIBS) -lfmt
+LIBS = $(PROJ_LIBS) $(shell $(CROSS)pkg-config fmt --libs --static)
 LDFLAGS = $(LDBFLAGS)
 
 
@@ -166,6 +166,7 @@ outdirs:
 	mkdir -p $(OUTDIR)/extern/poly2tri/common/
 	mkdir -p $(OUTDIR)/extern/quickhull
 	mkdir -p $(OUTDIR)/extern/shapelib
+	mkdir -p $(OUTDIR)/extern/img
 	mkdir -p $(OUTDIR)/loch
 	mkdir -p $(OUTDIR)/loch/help
 	mkdir -p $(OUTDIR)/loch/help/en
@@ -227,7 +228,7 @@ xtherion/therion.tcl: $(THERION_TCL_DEPS)
 xtherion/xtherion: version xtherion/therion.tcl xtherion/*.tcl
 	$(MAKE) -C ./xtherion
 
-loch/loch: version loch/*.h loch/*.cxx loch/*.c
+loch/loch: version loch/*.h loch/*.cxx
 	$(MAKE) -C ./loch
 
 doc: $(OUTDIR)/thbook/thbook.pdf
@@ -357,7 +358,10 @@ $(OUTDIR)/extern/lxMath.o: loch/lxMath.h loch/lxMath.cxx
 $(OUTDIR)/extern/lxFile.o: loch/lxFile.h loch/lxFile.cxx
 	$(CXX) -c $(CXXFLAGS) -o $(OUTDIR)/extern/lxFile.o loch/lxFile.cxx
 
-extern/img.o: extern/img.c extern/img.h
+$(OUTDIR)/extern/icase.o: loch/icase.h loch/icase.cxx
+	$(CXX) -c $(CXXFLAGS) -o $(OUTDIR)/extern/icase.o loch/icase.cxx
+
+extern/img/img.o: extern/img/img.c extern/img/img.h
 extern/poly2tri/common/shapes.o: extern/poly2tri/common/shapes.cc extern/poly2tri/common/shapes.h
 extern/poly2tri/sweep/advancing_front.o: extern/poly2tri/sweep/advancing_front.cc
 extern/poly2tri/sweep/sweep.o: extern/poly2tri/sweep/sweep.cc
@@ -423,8 +427,6 @@ $(OUTDIR)/thconfig.o: thconfig.cxx thconfig.h thbuffer.h thmbuffer.h thinput.h \
  thlogfile.h thinit.h thgeomag.h thgeomagdata.h thcomment.h thdata.h \
  thtfangle.h thtf.h thtflength.h thtfpwf.h thsketch.h thpic.h thwarp.h \
  thcs.h
-$(OUTDIR)/thconvert.o: thconvert.cxx therion.h thpdfdbg.h thexception.h thpdfdata.h \
- thepsparse.h thtexfonts.h
 $(OUTDIR)/thcs.o: thcs.cxx thcs.h thcsdata.h thparse.h thbuffer.h thmbuffer.h \
  thexception.h thproj.h thdatabase.h thdataobject.h thperson.h thdate.h \
  thdataleg.h thobjectname.h therion.h thobjectsrc.h thinfnan.h \
@@ -639,10 +641,10 @@ $(OUTDIR)/thexpmap.o: thexpmap.cxx thexpmap.h thexport.h thparse.h thbuffer.h \
  thlocale.h loch/icase.h thlang.h thlangdata.h thexporter.h thexception.h \
  thtmpdir.h thscrap.h thsketch.h thpic.h thwarp.h thtrans.h thpoint.h \
  th2ddataobject.h thline.h tharea.h thmap.h thconfig.h thinput.h \
- thselector.h thlookup.h thinit.h thlogfile.h thconvert.h thpdf.h \
+ thselector.h thlookup.h thinit.h thlogfile.h thpdf.h \
  thmpost.h thtex.h thcmdline.h thtexfonts.h thsurvey.h thtfpwf.h thdata.h \
  thtfangle.h thtf.h thtflength.h thcsdata.h thproj.h thsurface.h thsvg.h \
- extern/img.h thcs.h
+ extern/img/img.h thcs.h
 $(OUTDIR)/thexpmodel.o: thexpmodel.cxx thexpmodel.h thexport.h thparse.h thbuffer.h \
  thmbuffer.h thobjectsrc.h thlayout.h thdataobject.h thdatabase.h \
  thdb1d.h thobjectid.h thinfnan.h thdataleg.h thobjectname.h therion.h \
@@ -652,7 +654,7 @@ $(OUTDIR)/thexpmodel.o: thexpmodel.cxx thexpmodel.h thexport.h thparse.h thbuffe
  thdb2dxm.h thlayoutclr.h thpdfdata.h thepsparse.h thscraplo.h \
  thlayoutln.h thscrapen.h thscraplp.h thsymbolset.h thsymbolsetlist.h \
  thlocale.h loch/icase.h thsurvey.h thtfpwf.h thdata.h thtfangle.h thtf.h \
- thtflength.h thexception.h extern/img.h thscrap.h thsketch.h thpic.h \
+ thtflength.h thexception.h extern/img/img.h thscrap.h thsketch.h thpic.h \
  thwarp.h thtrans.h thsurface.h loch/lxFile.h thconfig.h thinput.h \
  thexporter.h thselector.h thcsdata.h thproj.h thcs.h thtexfonts.h \
  thlang.h thlangdata.h thfilehandle.h
@@ -746,7 +748,7 @@ $(OUTDIR)/thimport.o: thimport.cxx loch/icase.h thimport.h thdataobject.h \
  thdb2dab.h thdb2dji.h thdb2dmi.h thdb2dcp.h thdb2dxs.h thdb2dxm.h \
  thlayoutclr.h thpdfdata.h thepsparse.h thscraplo.h thlayoutln.h \
  thscrapen.h thscraplp.h thexception.h thdata.h thtfangle.h thtf.h \
- thtflength.h thtfpwf.h thsurvey.h thendsurvey.h extern/img.h
+ thtflength.h thtfpwf.h thsurvey.h thendsurvey.h extern/img/img.h
 $(OUTDIR)/thinfnan.o: thinfnan.cxx thinfnan.h
 $(OUTDIR)/thinit.o: thinit.cxx thinit.h thbuffer.h thmbuffer.h thinput.h thparse.h \
  thchenc.h thchencdata.h therion.h thconfig.h thexporter.h thexport.h \
@@ -1039,7 +1041,7 @@ $(OUTDIR)/thsvxctrl.o: thsvxctrl.cxx thsvxctrl.h thdataleg.h thparse.h thbuffer.
  thtfpwf.h thexception.h thinit.h thinput.h thconfig.h thexporter.h \
  thexport.h thlayout.h thsymbolset.h thsymbolsetlist.h thlocale.h \
  loch/icase.h thselector.h thsurvey.h thcs.h thcsdata.h thlogfile.h \
- extern/img.h
+ extern/img/img.h
 $(OUTDIR)/thsymbolset.o: thsymbolset.cxx thsymbolset.h thsymbolsetlist.h \
  thlayoutclr.h thparse.h thbuffer.h thmbuffer.h thpdfdata.h thepsparse.h \
  thpoint.h th2ddataobject.h thdataobject.h thdatabase.h thdb1d.h \

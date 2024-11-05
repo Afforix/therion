@@ -29,7 +29,6 @@
 #include "thcmdline.h"
 #include "thconfig.h"
 #include "thdatareader.h"
-#include "thexception.h"
 #include "thlibrary.h"
 #include "thinit.h"
 #include "thversion.h"
@@ -37,6 +36,7 @@
 #include "thbezier.h"
 #include "thlogfile.h"
 #include "thproj.h"
+#include "thdatabase.h"
 
 extern const thstok thtt_texts [];
 

@@ -27,18 +27,10 @@
 
 package require BWidget
 
-if {[catch {set imgver [package require Img]}]} {
-  set xth(gui,imgfiletypes) {
-	   { {Pictures} {.gif .pnm .ppm .xvi .GIF .PNM .PPM .XVI} }
-	   { {PocketTopo therion export} {.txt .TXT} }
-	   { {All Files}               * }
-	 } 
-} else {
-  set xth(gui,imgfiletypes) {
-	   { {Pictures} {.png .jpeg .jpg .gif .pnm .ppm .xvi .PNG .JPEG .JPG .GIF .PNM .PPM .XVI} }
-	   { {PocketTopo therion export} {.txt .TXT} }
-	   { {All Files}                                               * }
-	 } 
+set xth(gui,imgfiletypes) {
+  { {Pictures} {.png .jpeg .jpg .gif .pnm .ppm .xvi .PNG .JPEG .JPG .GIF .PNM .PPM .XVI} }
+  { {PocketTopo Therion Export} {.txt .TXT} }
+  { {All Files} * }
 }
 
 # read xtherion.ini file from THERION directory
@@ -54,7 +46,7 @@ if {[catch {set idir $env(THERION)}]} {
   }
   if {[string equal $xth(gui,platform) windows]} {
     if {[catch {
-	append idir [registry get $xth(win32registry) InstallDir]
+	append idir [registry -64bit get $xth(win32registry) InstallDir]
 	}]} {
       append idir "C:/WINDOWS;C:/WINNT;C:/Program files/Therion"
     }
@@ -81,8 +73,10 @@ toplevel $xth(gui,main)
 wm withdraw $xth(gui,main)
 wm protocol $xth(gui,main) WM_DELETE_WINDOW "xth_exit"
 wm title $xth(gui,main) $xth(prj,name)
-wm geometry $xth(gui,main) [format "%dx%d+0+0" [lindex $xth(gui,minsize) 0] \
-  [lindex $xth(gui,minsize) 1]]
+if {$xth(gui,init_app_normalized)} {
+  wm geometry $xth(gui,main) [format "%dx%d+0+0" [lindex $xth(gui,minsize) 0] \
+    [lindex $xth(gui,minsize) 1]]
+}
 wm minsize $xth(gui,main) [lindex $xth(gui,minsize) 0] \
   [lindex $xth(gui,minsize) 1]
 update idletasks
@@ -137,7 +131,7 @@ bind Text <Return> "#"
 
 if {[string length $xth(gui,initdir)] == 0} {
   if {[catch {
-    set xth(gui,initdir) [registry get $xth(win32registry) XTherionDir]
+    set xth(gui,initdir) [registry -64bit get $xth(win32registry) XTherionDir]
   }]} {
     set xth(gui,initdir) [pwd]
   }

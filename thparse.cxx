@@ -26,7 +26,6 @@
  * --------------------------------------------------------------------
  */
 
-#include "thparse.h"
 #include "therion.h"
 #include "thlang.h"
 #include "thtexfonts.h"
@@ -39,6 +38,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <cmath>
+#include <algorithm>
 #include "loch/icase.h"
 
 thmbuffer thparse_mbuff;
@@ -193,7 +193,7 @@ void thsplit_strings(thmbuffer * dest, const char * src, const char separator)
       case 1:
         if (*s2 == separator) {
           state = 0;
-          dest->appendn((char *)s1, idx - idx0);
+          dest->appendn(s1, idx - idx0);
         }
     }
     idx++;
@@ -201,7 +201,7 @@ void thsplit_strings(thmbuffer * dest, const char * src, const char separator)
   }
   
   if (state == 1)
-    dest->append((char *)s1);
+    dest->append(s1);
 }
 
 
@@ -232,7 +232,7 @@ void thsplit_paths(thmbuffer * dest, const char * src, char separator)
             break;
 #endif
           state = 0;
-          dest->appendn((char *)s1, idx - idx0);
+          dest->appendn(s1, idx - idx0);
         }
     }
     idx++;
@@ -240,7 +240,7 @@ void thsplit_paths(thmbuffer * dest, const char * src, char separator)
   }
   
   if (state == 1)
-    dest->append((char *)s1);
+    dest->append(s1);
 }
 
 

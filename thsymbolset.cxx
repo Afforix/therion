@@ -26,7 +26,6 @@
  */
 
 #include "thsymbolset.h"
-#include "thparse.h"
 #include "thpoint.h"
 #include "thline.h"
 #include "tharea.h"
@@ -43,6 +42,8 @@
 #include "thsymbolsets.h"
 #include "thlogfile.h"
 #include "thepsparse.h"
+#include "thdatabase.h"
+#include "therion.h"
 #include <fmt/printf.h>
 
 thsymbolset::thsymbolset()
@@ -239,6 +240,7 @@ int thsymbolset_get_id(const char * symclass, const char * symbol)
       if (strlen(subtypes) > 0)
         break;
       switch (type) {
+        c2(TT_AREA_TYPE_BEDROCK, SYMA_BEDROCK);
         c2(TT_AREA_TYPE_DEBRIS, SYMA_DEBRIS);
         c2(TT_AREA_TYPE_SAND, SYMA_SAND);
         c2(TT_AREA_TYPE_SUMP, SYMA_SUMP);
@@ -531,7 +533,6 @@ void thsymbolset::export_symbol_defaults(FILE * mpf, const char * symset)
   fprintf(mpf,"\n\n\n%% %s symbol set.\n",symset);
   for(int id = 0; id < SYMX_; id++) {
     if (thsymbolset_assign[id]) {
-      this->assigned[id] = true;
       fprintf(mpf,"mapsymbol(\"%s\",\"%s\",false);\n",thsymbolset_mp[id],symset);
     }
   }
@@ -1826,7 +1827,7 @@ void export_all_symbols()
     }
   }
   hf << "</table>\n";
-  hf << "</body></html>" << std::endl;
+  hf << "</body></html>\n";
   hf.close();
 }
 

@@ -1,7 +1,10 @@
 // Standard libraries
 #ifndef LXDEPCHECK
 #include <wx/choice.h>
-#include <math.h>
+#include <wx/listbox.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
+#include <cmath>
 #endif  
 //LXDEPCHECK - standard libraries
 
@@ -244,7 +247,7 @@ lxViewpointSetupDlg::lxViewpointSetupDlg(wxWindow *parent)
 		this->SetIcon(wxIcon(loch_xpm));
 #endif
 
-  this->m_mainFrame = (lxFrame *) parent;
+  this->m_mainFrame = dynamic_cast<lxFrame*>(parent);
 
   this->m_uicFacing = false;
   this->m_uicTilt = false;

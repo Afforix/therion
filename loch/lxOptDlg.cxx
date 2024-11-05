@@ -5,6 +5,11 @@
 #ifndef LXDEPCHECK
 #include <wx/dirdlg.h>
 #include <wx/valgen.h>
+#include <wx/statbox.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
+#include <wx/choice.h>
+#include <wx/valtext.h>
 #endif  
 //LXDEPCHECK - standard libraries
 
@@ -43,7 +48,7 @@ lxOptionsDlg::lxOptionsDlg(wxWindow * parent)
 : wxDialog(parent, wxID_ANY, wxString(_("Options")))
 {
 
-  this->m_lxframe = (lxFrame *) parent;
+  this->m_lxframe = dynamic_cast<lxFrame*>(parent);
 
   wxBoxSizer * sizerAll = new wxBoxSizer(wxVERTICAL);
   lxStaticBoxSizer = new wxStaticBoxSizer(

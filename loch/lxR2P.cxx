@@ -16,32 +16,32 @@
 #include "lxR2P.h"
 
 struct R2PCTX {
-  GLXContext ctx;
-  Pixmap pm;
-  XVisualInfo *visinfo;
-  GLXPixmap glxpm;
-  Display *dpy;
+  GLXContext ctx = {};
+  Pixmap pm = {};
+  XVisualInfo *visinfo = {};
+  GLXPixmap glxpm = {};
+  Display *dpy = {};
 };
  
 void R2Pmake_context(R2PContext * r2pc)
 {
-   const int sbAttrib[] = { GLX_RGBA,
-                            GLX_RED_SIZE, 1,
-                            GLX_GREEN_SIZE, 1,
-                            GLX_BLUE_SIZE, 1,
-                            None };
-   const int dbAttrib[] = { GLX_RGBA,
-                            GLX_RED_SIZE, 1,
-                            GLX_GREEN_SIZE, 1,
-                            GLX_BLUE_SIZE, 1,
-                            GLX_DOUBLEBUFFER,
-                            None };
+   int sbAttrib[] = { GLX_RGBA,
+                      GLX_RED_SIZE, 1,
+                      GLX_GREEN_SIZE, 1,
+                      GLX_BLUE_SIZE, 1,
+                      None };
+   int dbAttrib[] = { GLX_RGBA,
+                      GLX_RED_SIZE, 1,
+                      GLX_GREEN_SIZE, 1,
+                      GLX_BLUE_SIZE, 1,
+                      GLX_DOUBLEBUFFER,
+                      None };
    int scrnum;
    scrnum = DefaultScreen( r2pc->dpy );
 
-   r2pc->visinfo = glXChooseVisual( r2pc->dpy, scrnum, (int *) sbAttrib );
+   r2pc->visinfo = glXChooseVisual( r2pc->dpy, scrnum, sbAttrib );
    if (!r2pc->visinfo) {
-      r2pc->visinfo = glXChooseVisual( r2pc->dpy, scrnum, (int *) dbAttrib );
+      r2pc->visinfo = glXChooseVisual( r2pc->dpy, scrnum, dbAttrib );
       if (!r2pc->visinfo) {
          printf("Error: couldn't get an RGB visual\n");
          exit(1);
@@ -74,7 +74,7 @@ void R2Pmake_pixmap(R2PContext * r2pc, unsigned int width, unsigned int height)
 
 R2PContext *R2PCreate(int width, int height)
 {
-  R2PContext * c = (R2PContext *) calloc(1, sizeof(R2PContext));
+  R2PContext * c = new R2PContext;
   if (c) {
     c->dpy = XOpenDisplay(NULL);
     R2Pmake_context(c);
@@ -99,7 +99,7 @@ void R2PDestroy(R2PContext * c)
     XFreePixmap(c->dpy, c->pm);
     glXDestroyContext(c->dpy, c->ctx);
     XCloseDisplay(c->dpy);
-    free(c);
+    delete c;
   }
 }
 

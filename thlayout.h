@@ -37,6 +37,8 @@
 #include "thlayoutclr.h"
 #include <list>
 
+class thdb2dprj;
+
 /**
  * layout command options tokens.
  */
@@ -101,6 +103,7 @@ enum {
   TT_LAYOUT_COLOR_MODEL = 2056,
   TT_LAYOUT_COLOR_PROFILE = 2057,
   TT_LAYOUT_SMOOTH_SHADING = 2058,
+  TT_LAYOUT_GEOSPATIAL = 2059,
 };
 
 
@@ -349,6 +352,7 @@ enum {
   TT_LAYOUT_CODE_SYMBOL_SHOW,
   TT_LAYOUT_CODE_SYMBOL_COLOR,
   TT_LAYOUT_CODE_MAP_ITEM,
+  TT_LAYOUT_CODE_COPY,
 };
 
 
@@ -467,19 +471,6 @@ static const thstok thtt_layout_ccrit[] = {
 };
 
 
-
-class thlayout_copy_src {
-
-  public:
-  
-  const char * srcn;
-  thlayout * srcptr;
-  class thlayout_copy_src * next_src;
-  thlayout_copy_src () : srcn(NULL), srcptr(NULL), next_src(NULL) {};
-  
-};
-
-
 /**
  * layout command options parsing table.
  */
@@ -504,6 +495,7 @@ static const thstok thtt_layout_opt[] = {
   {"endcode",TT_LAYOUT_ENDCODE},
   {"exclude-pages",TT_LAYOUT_EXCLUDE_PAGES},
   {"fonts-setup", TT_LAYOUT_FONT_SETUP},
+  {"geospatial",TT_LAYOUT_GEOSPATIAL},
   {"grid",TT_LAYOUT_GRID},
   {"grid-coords",TT_LAYOUT_GRID_COORDS},
   {"grid-origin",TT_LAYOUT_GRID_ORIGIN},
@@ -598,12 +590,13 @@ class thlayout : public thdataobject {
   int color_crit; // none, altitude, ...
   const char * color_crit_fname;
 
-  double min_symbol_scale, font_setup[5];
+  double min_symbol_scale, font_setup[5] = {};
 
   
-  thlayoutln * first_line, * last_line;
+  thlayoutln_list lines;
+  thlayoutln *get_last_line() { return &lines.back(); }
   
-  bool titlep, transparency, layers, pgsnum, lock, excl_pages, page_grid, 
+  bool titlep, transparency, layers, geospatial, pgsnum, lock, excl_pages, page_grid,
     map_header_bg, sketches, color_labels;
 
   int explo_lens, topo_lens, carto_lens, copy_lens;
@@ -613,7 +606,7 @@ class thlayout : public thdataobject {
   thlayout_map_image_list map_image_list;
   
   int def_grid_size, def_grid_origin, def_nav_factor, def_nav_size, 
-    def_opacity, def_transparency, def_layers, def_base_scale,
+    def_opacity, def_transparency, def_layers, def_geospatial, def_base_scale,
     def_rotate, def_sketches, def_north,
     def_origin, def_origin_label, def_overlap, def_own_pages,
     def_page_numbers, def_page_setup, def_scale, def_size, def_title_pages,
@@ -627,8 +620,6 @@ class thlayout : public thdataobject {
     def_font_setup, def_min_symbol_scale, def_color_model, def_carto_lens, def_copy_lens,
 	def_color_profile_rgb, def_color_profile_cmyk, def_color_profile_gray, def_smooth_shading;
     
-  
-  thlayout_copy_src * first_copy_src, * last_copy_src;
   
   /**
    * Standard constructor.
@@ -779,12 +770,6 @@ class thlayout : public thdataobject {
    
 
 };
-
-/**
- * Copy src list.
- */
- 
-extern std::list <thlayout_copy_src> thlayout_copy_src_list;
 
 #endif
 

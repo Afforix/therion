@@ -30,10 +30,11 @@
 #include "thchenc.h"
 #include "thinfnan.h"
 #include "thsurvey.h"
-#include "thlayout.h"
 #include "thgrade.h"
 #include "thcsdata.h"
 #include "thdatareader.h"
+#include "thdatabase.h"
+#include "therion.h"
 #include "loch/icase.h"
 
 thdata::thdata()
@@ -2373,7 +2374,15 @@ void thdata::set_data_equate(int nargs, char ** args)
     it->psurvey = this->db->get_current_survey();
   } 
 }
-  
+
+void thdata::clear_last_equate_warning()
+{
+	for(auto & eq : this->equate_list) {
+		if (eq.eqid == this->d_last_equate) eq.srcf.line = 0;
+	}
+}
+
+
 
 #define setstflag(casev, flagv) case casev: \
             if (notflag) \

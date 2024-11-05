@@ -29,12 +29,9 @@
 #include <map>
 #include <set>
 #include <string>
-#include <sstream>
 
-
-#include "thexception.h"
 #include "thpdfdata.h"
-#include "thlang.h"
+#include "thlangdata.h"
 
 std::list<scraprecord> SCRAPLIST;
 std::list<legendrecord> LEGENDLIST;
@@ -86,6 +83,7 @@ layout::layout() {
   col_preview_above.set(0,0,0);
   own_pages = 0;
   OCG = true;
+  geospatial = true;
   lang = THLANG_UNKNOWN;
   legend_width = 200;
   legend_columns = 2;

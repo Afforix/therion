@@ -28,7 +28,7 @@
 #include "th2ddataobject.h"
 #include "thexception.h"
 #include "thsymbolset.h"
-#include "thchenc.h"
+#include "thdatabase.h"
 
 th2ddataobject::th2ddataobject()
 {

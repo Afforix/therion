@@ -13,7 +13,6 @@
 // Standard libraries
 #ifndef LXDEPCHECK
 
-#include <wx/wx.h>
 #include <wx/utils.h>
 #include <wx/filedlg.h>
 #include <wx/toolbar.h>
@@ -24,6 +23,8 @@
 #include <wx/fs_zip.h>
 #include <wx/dnd.h>
 #include <wx/display.h>
+#include <wx/menu.h>
+#include <wx/msgdlg.h>
 
 #include <vtkObject.h>
 
@@ -1001,7 +1002,7 @@ void lxFrame::ToggleRotation() {
     this->canvas->m_sCameraAutoRotateSWatch.Start();
     this->setup->StartCameraMovement();
   } else {
-    ((wxStaticText *)(this->m_viewpointSetupDlg->FindWindow(LXVSTP_RENSPEED)))->SetLabel(_T(""));
+    dynamic_cast<wxStaticText*>(this->m_viewpointSetupDlg->FindWindow(LXVSTP_RENSPEED))->SetLabel(_T(""));
   }
 	this->UpdateM2TB();
 }
@@ -1191,6 +1192,7 @@ bool lxApp::OnInit()
     wxFileSystem::AddHandler(new wxZipFSHandler);
     // Use a double-buffered visual if available, as it will give much smoother
     // animation.
+    // NOLINTNEXTLINE(clang-analyzer-cplusplus.NewDeleteLeaks)
     int wx_gl_attribs[] = { 
 			WX_GL_RGBA,
 			WX_GL_DOUBLEBUFFER,

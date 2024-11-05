@@ -1,9 +1,13 @@
 // Standard libraries
 #ifndef LXDEPCHECK
 #include <wx/statline.h>
+#include <wx/listbox.h>
+#include <wx/stattext.h>
+#include <wx/button.h>
 #endif  
 //LXDEPCHECK - standard libraries
 
+#include "lxData.h"
 #include "lxSScene.h"
 #include "lxSetup.h"
 #include "lxGUI.h"
@@ -264,7 +268,7 @@ lxModelSetupDlg::lxModelSetupDlg(wxWindow *parent)
 		this->SetIcon(wxIcon(loch_xpm));
 #endif
 
-  this->m_mainFrame = (lxFrame *) parent;
+  this->m_mainFrame = dynamic_cast<lxFrame*>(parent);
    
   wxBoxSizer * sizerTop = new wxBoxSizer(wxHORIZONTAL),
 		* sizerFrame = new wxBoxSizer(wxVERTICAL);

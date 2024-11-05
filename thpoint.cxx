@@ -35,7 +35,10 @@
 #include "thtexfonts.h"
 #include "thdate.h"
 #include "thscrap.h"
+#include "thobjectname.h"
+#include "therion.h"
 #include <string>
+#include <cstdio>
 
 
 thpoint::thpoint()
@@ -1382,6 +1385,13 @@ void thpoint::check_extra()
   }
 }
 
+thdate * thpoint::get_date()
+{
+  if (this->type == TT_POINT_TYPE_DATE) {
+    return (thdate *) this->text;
+  }
+  return nullptr;
+}
 
 
 

@@ -31,8 +31,9 @@
 
 
 #include "th2ddataobject.h"
-#include "thparse.h"
+#include "thstok.h"
 #include "thdb2dpt.h"
+#include "thobjectname.h"
 
 /**
  * point command options tokens.
@@ -508,6 +509,8 @@ class thpoint : public th2ddataobject {
   void parse_value(char * ss, bool is_dist=false);  ///< Parse point value.
 
   void check_extra();
+
+  thdate * get_date();
 
   /**
    * Standard constructor.

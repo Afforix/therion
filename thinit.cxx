@@ -26,7 +26,6 @@
  */
  
 #include "thinit.h"
-#include "thparse.h"
 #include "thchenc.h"
 #include "therion.h"
 #include "thconfig.h"
@@ -79,10 +78,8 @@ const char * THCCC_INIT_FILE = "### Output character encodings ###\n"
 "# cs-def <id> <proj4id> [other options]\n\n"
 "### User defined coordinate systems transformations ###\n"
 "# cs-trans <from-cs-id> <to-cs-id> <proj-cs-transformation-string>\n\n"
-"### Let PROJ v6+ find the optimal transformation ###\n"
-"# proj-auto off\n\n"
-"### PROJ v6+ handling of missing transformation grids if proj-auto is on ###\n"
-"# proj-missing-grid warn\n\n"
+"### PROJ handling of missing transformation grids ###\n"
+"# proj-missing-grid download\n\n"
 "### Use count registers in TeX to store references to scraps; otherwise define control sequences ###\n"
 "# tex-refs-registers on\n\n"
 "### Command to remove temporary directory ###\n"
@@ -124,7 +121,6 @@ enum {
   TTIC_LOOPC,
   TTIC_TEXT,	
   TTIC_PDF_FONTS,
-  TTIC_PROJ_AUTO,
   TTIC_PROJ_MISSING_GRID,
   TTIC_OTF2PFB,
   TTIC_TEX_REFS_REGISTERS,
@@ -155,7 +151,6 @@ static const thstok thtt_initcmd[] = {
   {"otf2pfb", TTIC_OTF2PFB},
   {"pdf-fonts", TTIC_PDF_FONTS},
   {"pdftex-path", TTIC_PATH_PDFTEX},
-  {"proj-auto", TTIC_PROJ_AUTO},
   {"proj-missing-grid", TTIC_PROJ_MISSING_GRID},
   {"source-path", TTIC_PATH_SOURCE},
   {"tex-env",TTIC_TEX_ENV},
@@ -224,10 +219,10 @@ void thinit::copy_fonts() {
 
 #ifdef THWIN32
   FILE * f = fopen(thtmp.get_file_name("pltotf.bat"),"w");
-  fprintf(f,"@\"%s\\bin\\win32\\pltotf.exe\" %%1 %%2\n",thcfg.install_path.get_buffer());
+  fprintf(f,"@\"%s\\bin\\windows\\pltotf.exe\" %%1 %%2\n",thcfg.install_path.get_buffer());
   fclose(f);
   f = fopen(thtmp.get_file_name("cfftot1.bat"),"w");
-  fprintf(f,"@\"%s\\bin\\win32\\cfftot1.exe\" %%1 %%2 %%3 %%4 %%5 %%6 %%7 %%8 %%9\n",thcfg.install_path.get_buffer());
+  fprintf(f,"@\"%s\\bin\\windows\\cfftot1.exe\" %%1 %%2 %%3 %%4 %%5 %%6 %%7 %%8 %%9\n",thcfg.install_path.get_buffer());
   fclose(f);
 #endif
   thprintf("done.\n");
@@ -367,9 +362,9 @@ void thinit::load()
     this->path_mpost = thcfg.install_path.get_buffer();
     this->path_pdftex = thcfg.install_path.get_buffer();
     this->path_otftotfm = thcfg.install_path.get_buffer();
-    this->path_mpost += "\\bin\\win32\\mpost.exe";
-    this->path_pdftex += "\\bin\\win32\\pdftex.exe";
-    this->path_otftotfm += "\\bin\\win32\\otftotfm.exe";
+    this->path_mpost += "\\bin\\windows\\mpost.exe";
+    this->path_pdftex += "\\bin\\windows\\pdftex.exe";
+    this->path_otftotfm += "\\bin\\windows\\otftotfm.exe";
   } else {
 #endif  
     this->path_mpost = "mpost";
@@ -436,7 +431,6 @@ void thinit::load()
         case TTIC_OTF2PFB:
         case TTIC_TEX_REFS_REGISTERS:
         case TTIC_TEX_ENV:
-        case TTIC_PROJ_AUTO:
         case TTIC_PROJ_MISSING_GRID:
           if (nargs != 2)
             ththrow("invalid number of command arguments");
@@ -528,13 +522,6 @@ void thinit::load()
           if (sv == TT_UNKNOWN_BOOL)
             ththrow("invalid tex-refs-registers switch -- {}", args[1]);
           tex_refs_registers = (sv == TT_TRUE);
-          break;
-
-        case TTIC_PROJ_AUTO:
-          sv = thmatch_token(args[1], thtt_bool);
-          if (sv == TT_UNKNOWN_BOOL)
-            ththrow("invalid proj-auto switch -- {}", args[1]);
-          thcs_cfg.proj_auto = (sv == TT_TRUE);
           break;
 
         case TTIC_PROJ_MISSING_GRID:

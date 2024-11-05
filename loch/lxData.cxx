@@ -29,17 +29,14 @@
 // Standard libraries
 #ifndef LXDEPCHECK
 #include <stdlib.h>
-#include <wx/wx.h>
 #include <wx/txtstrm.h>
 #include <wx/strconv.h>
 #include <wx/wfstream.h>
 #include <wx/msgdlg.h>
-#include <vtkVersionMacros.h>
 #include <vtkCellArray.h>
 #include <vtkFloatArray.h>
 #include <vtkPoints.h>
 #include <vtkDataArray.h>
-#include <vtkVoidArray.h>
 #include <vtkCellData.h>
 #include <vtkPointData.h>
 #include <vtkPolyDataWriter.h>
@@ -247,8 +244,8 @@ void lxDataTexture::CreateTexImages(int sizeS, int sizeO)
 
 
 struct lxDataRebuildStationStruct {
-  lxFileStation * m_pst;
-  size_t m_pos;
+  lxFileStation * m_pst = {};
+  size_t m_pos = {};
 };
 
 
@@ -389,7 +386,7 @@ void lxData::Rebuild()
 		  tmpDbl = sh_it->m_tLRUD;
 		  td[0] = tmpDbl[0]; td[1] = tmpDbl[1]; td[2] = tmpDbl[2]; td[3] = tmpDbl[3];
 		  lrud.SetVThreshold(sh_it->m_threshold);
-		  lrud.InsertShot(fc, tc, fd, td, NULL);
+		  lrud.InsertShot(fc, tc, fd, td);
 		}
     }
   }

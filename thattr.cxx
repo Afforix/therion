@@ -32,6 +32,7 @@
 #include "thchenc.h"
 #include <cctype>
 #include <cmath>
+#include <cstring>
 #include <set>
 
 thattr::thattr()
@@ -114,7 +115,7 @@ thattr_obj * thattr::get_object(long user_id)
 }
 
 
-thattr_obj * thattr::insert_object(void * data, long user_id)
+thattr_obj * thattr::insert_object(thdataobject * data, long user_id)
 {
   thattr_obj tmp, * r;
   r = NULL;
@@ -522,7 +523,6 @@ void thattr::export_txt(const char * fname, int /*encoding*/) // TODO unused par
   FILE * f;
   unsigned i;
   thattr_attr * ca;
-  thattr_field * cf;
   thattr_obj_list::iterator oi;
   thattr_id2attr_map::iterator ai;
   thattr_field_list::iterator fli;
@@ -530,7 +530,7 @@ void thattr::export_txt(const char * fname, int /*encoding*/) // TODO unused par
 
   this->analyze_fields();
 
-  f = fopen(fname, "w");
+  f = fopen(fname, "wb");
   if (f == NULL) {
     thwarning(("unable to open file for output -- %s", fname));
     return;
@@ -539,7 +539,6 @@ void thattr::export_txt(const char * fname, int /*encoding*/) // TODO unused par
   // Create fields.
   bool hasone = false;
   for(fli = this->m_field_list.begin(); fli != this->m_field_list.end(); ++fli) {
-    cf = &(*fli);
     fprintf(f,"%s%s",hasone ? "\t" : "",fli->m_name.c_str());
     hasone = true;
   }
@@ -550,8 +549,7 @@ void thattr::export_txt(const char * fname, int /*encoding*/) // TODO unused par
   for(oi = this->m_obj_list.begin(); oi != this->m_obj_list.end(); ++oi) {
     hasone = false;    
     for(fli = this->m_field_list.begin(); fli != this->m_field_list.end(); ++fli) {
-      cf = &(*fli);
-      ai = oi->m_attributes.find(cf->m_id);
+      ai = oi->m_attributes.find(fli->m_id);
       if (ai == oi->m_attributes.end()) {
         value = "";
       } else {
@@ -594,7 +592,7 @@ void thattr::export_kml(const char * fname, const char * name_field, const char 
     return;
   }
   
-  f = fopen(fname, "w");
+  f = fopen(fname, "wb");
   if (f == NULL) {
     thwarning(("unable to open file for output -- %s", fname));
     return;
@@ -669,7 +667,7 @@ void thattr::export_html(const char * fname, const char * title, int /*encoding*
 
   this->analyze_fields();
 
-  f = fopen(fname, "w");
+  f = fopen(fname, "wb");
   if (f == NULL) {
     thwarning(("unable to open file for output -- %s", fname));
     return;

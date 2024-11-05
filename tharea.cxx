@@ -28,9 +28,9 @@
 #include "tharea.h"
 #include "thexception.h"
 #include "thobjectname.h"
-#include "thchenc.h"
 #include "thexpmap.h"
 #include "thline.h"
+#include "thdatabase.h"
 
 tharea::tharea()
 {

@@ -27,6 +27,7 @@
 
 #include <string>
 #include <vector>
+#include <proj.h>
 
 enum {GRID_INVALID, GRID_IGNORE, GRID_WARN, GRID_FAIL, GRID_CACHE, GRID_DOWNLOAD};
 
@@ -39,12 +40,12 @@ void thcs_log_transf_used();
 int thcs_parse_gridhandling(const char *);
 std::string thcs_get_proj_version();
 std::string thcs_get_proj_version_headers();
-std::string thcs_get_label(std::string s);
+std::string thcs_get_label(int);
+std::string thcs_get_wkt(int, bool=false, PJ_WKT_TYPE=PJ_WKT2_2019);
 
 struct thcs_config {
   thcs_config();
   std::vector<double> bbox;
-  bool proj_auto;
   int proj_auto_grid;
 };
 
