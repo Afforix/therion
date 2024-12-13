@@ -964,20 +964,17 @@ void thexpmap::export_th2(class thdb2dprj * prj)
                 case TT_2DOBJ_PLACE_TOP: fprintf(pltf, " -place top"); break;
               }
               fprint_scale_option(pltf, pt);
-              if (pt->text) {
-                // attention: pt->text is reinterpret_cast<>'ed for some point types!
-                switch (pt->type) {
-                  case TT_POINT_TYPE_SECTION:
-                    fprintf(pltf, " -scrap %s", pt->station_name.print_name().c_str());
-                    break;
-                  case TT_POINT_TYPE_LABEL:
-                  case TT_POINT_TYPE_REMARK:
-                  case TT_POINT_TYPE_STATION_NAME:
-                  case TT_POINT_TYPE_CONTINUATION:
-                    fprintf(pltf, " -text ");
-                    fprint_quoted_string(pltf, pt->text);
-                    break;
-                }
+              switch (pt->type) {
+                case TT_POINT_TYPE_SECTION:
+                  fprintf(pltf, " -scrap %s", pt->station_name.print_name().c_str());
+                  break;
+                case TT_POINT_TYPE_LABEL:
+                case TT_POINT_TYPE_REMARK:
+                case TT_POINT_TYPE_STATION_NAME:
+                case TT_POINT_TYPE_CONTINUATION:
+                  fprintf(pltf, " -text ");
+                  fprint_quoted_string(pltf, pt->txt.c_str());
+                  break;
               }
               if (auto date = pt->get_date()) {
                 fprintf(pltf, " -value %s", date->get_str(TT_DATE_FMT_THERION));
@@ -1534,8 +1531,8 @@ if (ENC_NEW.NFSS==0) {
                 if ((op2->get_class_id() == TT_POINT_CMD) &&
                   (dynamic_cast<thpoint*>(op2)->type == TT_POINT_TYPE_SECTION) &&
                   (((dynamic_cast<thpoint*>(op2)->context < 0) && this->symset.is_assigned(SYMP_SECTION)) || ((dynamic_cast<thpoint*>(op2)->context > -1) && this->symset.assigned[dynamic_cast<thpoint*>(op2)->context])) &&
-                  (dynamic_cast<thpoint*>(op2)->text != NULL)) {
-                    cs = (thscrap *) dynamic_cast<thpoint*>(op2)->text;
+                  (dynamic_cast<thpoint*>(op2)->scrap != nullptr)) {
+                    cs = dynamic_cast<thpoint*>(op2)->scrap;
                     thdb.db2d.process_projection(cs->proj);
                 }
                 else

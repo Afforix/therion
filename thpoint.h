@@ -474,7 +474,10 @@ static const thstok thtt_point_subtypes[] = {
 
 class thpoint : public th2ddataobject {
 
-  public:
+private:
+  thdate date;
+
+public:
 
   friend class thdb2d;
 
@@ -483,7 +486,8 @@ class thpoint : public th2ddataobject {
     align;  ///< Point align.
   double orient, xsize, ysize;  ///<...
 
-  const char * text;  ///< Point text.
+  std::string txt;
+  thscrap* scrap = nullptr;
 
   thdb2dpt * point;  ///< Point coordinates.
 
@@ -517,13 +521,6 @@ class thpoint : public th2ddataobject {
    */
 
   thpoint();
-
-
-  /**
-   * Standard destructor.
-   */
-
-  ~thpoint();
 
 
   /**
