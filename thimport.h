@@ -209,6 +209,11 @@ class thimport : public thdataobject {
 
   void import_file_img();
 
+  bool import_shot(struct thsst const & s1s, //
+                   struct thsst const & s2s, //
+                   struct thimg_shot const * sli,
+                   thsurvey * survey);
+
   void parse_calib(char * spec, int enc);
   
   const char * station_name(const char * sn, const char separator, struct thsst * sst);
