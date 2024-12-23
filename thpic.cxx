@@ -89,38 +89,13 @@ void thpic::init(const char * pfname, const char * incfnm)
   this->fname = thdb.strstore(pict_path_str.c_str());
   // thprintf("\npict name: %s\n", this->fname);  
 
-  thbuffer ccom;
-  int retcode;
-  bool isspc;
-
-  // program path
-  isspc = (strcspn(thini.get_path_identify()," \t") < strlen(thini.get_path_identify()));
-  ccom = "";
-  if (isspc) ccom += "\"";
-  ccom += thini.get_path_identify();
-  if (isspc) ccom += "\"";
-
-  // format
-  ccom += " -format \"%w\\n%h\\n\" ";
-
-  // filename
-  isspc = (strcspn(this->fname," \t") < strlen(this->fname));
-  if (isspc) ccom += "\"";
-  ccom += this->fname;
-  if (isspc) ccom += "\"";
-
-  // write into
-  ccom += " > ";
-  isspc = (strcspn(thpic_tmp," \t") < strlen(thpic_tmp));
-  if (isspc) ccom += "\"";
-  ccom += thpic_tmp;
-  if (isspc) ccom += "\"";
-  
 #ifdef THDEBUG
   thprintf("running convert\n");
 #endif
 
-  retcode = system(ccom.get_buffer());
+  // program path + format + filename + write into
+  const auto ccom = fmt::format(R"("{}" -format "%w\n%h\n" "{}" > "{}")", thini.get_path_identify(), this->fname, thpic_tmp);
+  int retcode = system(ccom.c_str());
   if (retcode == EXIT_SUCCESS) {
     FILE * tmp;
     tmp = fopen(thpic_tmp,"r");
@@ -149,41 +124,13 @@ const char * thpic::convert(const char * type, const char * ext, const std::stri
   if (!this->exists())
     return NULL;
 
-  thbuffer ccom;
-  int retcode;
-  bool isspc;
-  const char * tmpf;
   const auto tmpfn = fmt::sprintf("pic%04ld.%s", thpic_convert_number++, ext);
-  isspc = (strcspn(thini.get_path_convert()," \t") < strlen(thini.get_path_convert()));
-  ccom = "";
-  if (isspc) ccom += "\"";
-  ccom += thini.get_path_convert();
-  if (isspc) ccom += "\"";
-  ccom += " ";
-  ccom += options.c_str();
-  ccom += " ";
-
-  isspc = (strcspn(this->fname," \t") < strlen(this->fname));
-  if (isspc) ccom += "\"";
-  ccom += this->fname;
-  if (isspc) ccom += "\"";
-  ccom += " ";
-
-  tmpf = thtmp.get_file_name(tmpfn.c_str());
-  isspc = (strcspn(tmpf," \t") < strlen(tmpf));
-  if (isspc) ccom += "\"";
-  ccom += type;
-  ccom += ":";
-  ccom += tmpf;
-  if (isspc) ccom += "\"";
-
-  retcode = system(ccom.get_buffer());
+  std::string tmpf = thtmp.get_file_name(tmpfn.c_str());
+  const auto ccom = fmt::format(R"("{}" {} "{}" "{}:{}")", thini.get_path_convert(), options, this->fname, type, tmpf);
+  const auto retcode = system(ccom.c_str());
   if (retcode == EXIT_SUCCESS) {
-    ccom = thtmp.get_file_name(tmpfn.c_str());
-    size_t x, l;
-    l = strlen(ccom);
-    for (x = 0; x < l; x++) if (ccom.get_buffer()[x] == '\\') ccom.get_buffer()[x] = '/';
-    return (thdb.strstore(ccom));
+    std::replace(tmpf.begin(), tmpf.end(), '\\', '/');
+    return thdb.strstore(tmpf.c_str());
   } else {
     return NULL;
   }

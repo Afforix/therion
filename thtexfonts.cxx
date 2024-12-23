@@ -129,12 +129,9 @@ void encodings_new::write_enc_files() {
       // -- a few ligatures are initialised in the constructor
       
       std::string type1 = (t1_convert==1) ? " " : " --no-type1 ";
-
-      if (system(("\"" + std::string(thini.get_path_otftotfm()) + "\" -e " + fname_enc +
-        " -fkern --no-default-ligkern --no-virtual --name " + fname_tfm +
-//        " -fkern --no-default-ligkern --name " + fname_tfm +
-//        type1 + " --warn-missing "+otf_file[i]+" > thotftfm.tmp").c_str()) > 0)
-        type1 + otf_file[i]+" > thotftfm.tmp").c_str()) != 0)
+      const auto com = fmt::format(R"("{}" -e {} -fkern --no-default-ligkern --no-virtual --name {}{}{} > thotftfm.tmp)",
+                                   thini.get_path_otftotfm(), fname_enc, fname_tfm, type1, otf_file[i]);
+      if (system(com.c_str()) != 0)
           therror((("can't generate TFM file from "+otf_file[i]+" (LCDF typetools not installed?)").c_str()));
       std::ifstream G ("thotftfm.tmp");
       if (!G) therror(("could not read font mapping data\n"));

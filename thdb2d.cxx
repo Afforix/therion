@@ -3603,20 +3603,13 @@ void thdb2d::process_areas_in_projection(thdb2dprj * prj)
   }
 #endif  
 
-  thbuffer com;
   // working directory will be the tmpdir until this scope ends
   const auto tmp_handle = thtmp.switch_to_tmpdir();
-  int retcode;
-
-  com = "\"";
-  com += thini.get_path_mpost();
-  com += "\" ";
-  com += thini.get_opt_mpost();
-  com += " data.mp";
+  const auto com = fmt::format(R"("{}" {} data.mp)", thini.get_path_mpost(), thini.get_opt_mpost());
 #ifdef THDEBUG
   thprintf("running metapost\n");
 #endif
-  retcode = system(com.get_buffer());
+  const auto retcode = system(com.c_str());
   thexpmap_log_log_file("data.log",
   "####################### metapost log file ########################\n",
   "#################### end of metapost log file ####################\n",true);
@@ -3629,31 +3622,32 @@ void thdb2d::process_areas_in_projection(thdb2dprj * prj)
   if (!af)
     ththrow("can't open file data.1");
   double n[6] = {};
-  com.guarantee(256);
   std::unique_ptr<thline> cln;
-  char * buff = com.get_buffer();
+  std::array<char, 256> buff{};
   ti = todo.begin();
-  while ((fscanf(af.get(),"%32s",buff) > 0) && (ti != todo.end())) {
+  while ((fscanf(af.get(),"%32s",buff.data()) > 0) && (ti != todo.end())) {
     if (cnt < 6) {
-      thparse_double(retcode, n[cnt], buff);
-      if (retcode == TT_SV_NUMBER) {
+      int value = {};
+      thparse_double(value, n[cnt], buff.data());
+      if (value == TT_SV_NUMBER) {
         cnt++;
       }
     }
-    if ((cnt == 6) && (strcmp(buff,"curveto") == 0) && (cln != NULL)) {
+    std::string_view buffStr = buff.data();
+    if ((cnt == 6) && (buffStr == "curveto") && (cln != NULL)) {
       cln->insert_line_point(6, NULL, n);
       cnt = 0;
     }
-    if ((cnt == 2) && ((strcmp(buff,"lineto") == 0) || (strcmp(buff,"moveto") == 0)) && (cln != NULL)) {
+    if ((cnt == 2) && ((buffStr == "lineto") || (buffStr == "moveto")) && (cln != NULL)) {
       cln->insert_line_point(2, NULL, n);
       cnt = 0;
     }
-    if (strcmp(buff,"newpath") == 0) { 
+    if (buffStr == "newpath") { 
       cln = std::make_unique<thline>();
       cln->db = this->db;
       cnt = 0;
     }
-    if ((cln != NULL) && (cln->first_point != NULL) && (cln->first_point->nextlp != NULL) && (strcmp(buff,"closepath") == 0)) {
+    if ((cln != NULL) && (cln->first_point != NULL) && (cln->first_point->nextlp != NULL) && (buffStr == "closepath")) {
       
       // close path if not closed
       if ((cln->last_point->point->x != cln->first_point->point->x) ||

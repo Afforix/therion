@@ -1707,13 +1707,8 @@ void export_all_symbols()
   {
     const auto tmp_handle = thtmp.switch_to_tmpdir();
 
-    // run MP
-    thbuffer com;
-
     // vypise kodovania
     print_fonts_setup();
-
-    int retcode;
 
 #ifdef THWIN32
     if (!thini.tex_env) {
@@ -1756,18 +1751,11 @@ void export_all_symbols()
       putenv("WEB2C=");
     }
 #endif
-
-    // exportuje
-    com = "\"";
-    com += thini.get_path_mpost();
-    com += "\" ";
-    com += thini.get_opt_mpost();
-  //    com += " --interaction nonstopmode data.mp";
-    com += " data.mp";
 #ifdef THDEBUG
     thprintf("running metapost\n");
 #endif
-    retcode = system(com.get_buffer());
+    const auto com = fmt::format(R"("{}" {} data.mp)", thini.get_path_mpost(), thini.get_opt_mpost());
+    const auto retcode = system(com.c_str());
     thsymbolset_log_log_file("data.log",
     "####################### metapost log file ########################\n",
     "#################### end of metapost log file ####################\n",true);

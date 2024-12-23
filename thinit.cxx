@@ -342,14 +342,11 @@ void thinit::load()
 
 	// try running survex
 	if (this->loopc == THINIT_LOOPC_UNKNOWN) {
-	  thbuffer svxcom;
-	  svxcom = "\"";
-	  svxcom += thini.get_path_cavern();
-	  svxcom += "\" --version";  
+    const auto svxcom = fmt::format(R"("{}" --version)", thini.get_path_cavern());
 #ifdef THDEBUG
 	  thprintf("testing cavern\n");
 #endif
-	  if (system(svxcom.get_buffer()) == EXIT_SUCCESS) {
+	  if (system(svxcom.c_str()) == EXIT_SUCCESS) {
 			this->loopc = THINIT_LOOPC_SURVEX;
 		} else {
 			this->loopc = THINIT_LOOPC_THERION;
@@ -681,16 +678,9 @@ void thinit::load()
       fprintf(ff,"\\nopagenumbers\n\\batchmode\n\\def\\fonttest#1{\\font\\a=#1\\a}\n\\fonttest{%s}\n\\fonttest{%s}\n\\fonttest{%s}\n\\fonttest{%s}\n\\fonttest{%s}\n\\end", J->rm.c_str(), J->it.c_str(), J->bf.c_str(), J->ss.c_str(), J->si.c_str());
       fclose(ff);
 
-      thbuffer com;
       const auto tmp_handle = thtmp.switch_to_tmpdir();
-      int retcode;
-
-      com = "\"";
-      com += this->get_path_pdftex();
-      com += "\"";
-    //  com += " --interaction nonstopmode data.tex";
-      com += " --no-mktex=tfm fonttest.tex";
-      retcode = system(com.get_buffer());
+      const auto com = fmt::format(R"("{}" --no-mktex=tfm fonttest.tex)", this->get_path_pdftex());
+      const auto retcode = system(com.c_str());
       thprintf("checking optional fonts %s %s %s %s %s ...", J->rm.c_str(), J->it.c_str(), J->bf.c_str(), J->ss.c_str(), J->si.c_str());
       if (retcode != EXIT_SUCCESS) {
         thprintf(" NOT INSTALLED\n");

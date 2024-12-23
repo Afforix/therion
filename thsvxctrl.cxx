@@ -393,21 +393,14 @@ void thsvxctrl::process_survey_data(class thdatabase * dbp)
   fclose(svxf);
   
   // run survex
-  thbuffer svxcom;
-  int retcode;
-  svxcom = "\"";
-  svxcom += thini.get_path_cavern();
-  svxcom += "\" --quiet --log --output=";
-  svxcom += thtmp.get_dir_name();
-  svxcom += " ";
-  svxcom += svxfn;
+  const auto svxcom = fmt::format(R"("{}" --quiet --log --output={} {})", thini.get_path_cavern(), thtmp.get_dir_name(), svxfn);
   
 #ifdef THDEBUG
   thprintf("running cavern\n");
 #else
 //    thprintf("processing ... ");
 #endif
-  retcode = system(svxcom.get_buffer());
+  const auto retcode = system(svxcom.c_str());
 
   this->transcript_log_file(dbp, thtmp.get_file_name("data.log"));
 

@@ -2294,13 +2294,10 @@ if (ENC_NEW.NFSS==0) {
 
   // teraz sa hodi do temp adresara - spusti metapost, thpdf, a pdftex a skopiruje vysledok
   auto tmp_handle = thtmp.switch_to_tmpdir();
-  thbuffer com;
   
   // vypise kodovania
   print_fonts_setup();
   ENC_NEW.write_enc_files();
-  
-  int retcode;
   
 #ifdef THWIN32
   if (!thini.tex_env) {
@@ -2350,16 +2347,11 @@ if (ENC_NEW.NFSS==0) {
 #endif  
   
   if (!quick_map_exp) {
-    com = "\"";
-    com += thini.get_path_mpost();
-    com += "\" ";
-    com += thini.get_opt_mpost();
-//    com += " --interaction nonstopmode data.mp";
-    com += " data.mp";
+    const auto com = fmt::format(R"("{}" {} data.mp)", thini.get_path_mpost(), thini.get_opt_mpost());
 #ifdef THDEBUG
     thprintf("running metapost\n");
 #endif
-    retcode = system(com.get_buffer());
+    const auto retcode = system(com.c_str());
     thexpmap_log_log_file("data.log",
     "####################### metapost log file ########################\n",
     "#################### end of metapost log file ####################\n",true);
@@ -2387,23 +2379,19 @@ if (ENC_NEW.NFSS==0) {
 
   print_fonts_setup();
   ENC_NEW.write_enc_files();
-
-      com = "\"";
-      com += thini.get_path_pdftex();
-      com += "\"";
-    //  com += " --interaction nonstopmode data.tex";
-      com += " data.tex";
+      {
+        const auto com = fmt::format(R"("{}" data.tex)", thini.get_path_pdftex());
 #ifdef THDEBUG
-      thprintf("running pdftex\n");
+        thprintf("running pdftex\n");
 #endif
-      retcode = system(com.get_buffer());
-      thexpmap_log_log_file("data.log",
-      "######################## pdftex log file #########################\n",
-      "##################### end of pdftex log file #####################\n",false);
-      if (retcode != EXIT_SUCCESS) {
-        ththrow("pdftex exit code -- {}", retcode);
+        const auto retcode = system(com.c_str());
+        thexpmap_log_log_file("data.log",
+        "######################## pdftex log file #########################\n",
+        "##################### end of pdftex log file #####################\n",false);
+        if (retcode != EXIT_SUCCESS) {
+          ththrow("pdftex exit code -- {}", retcode);
+        }
       }
-
       // Let's copy results and log-file to working directory
       tmp_handle.switch_from_tmpdir();
 #ifdef THDEBUG
