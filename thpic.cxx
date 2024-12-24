@@ -94,7 +94,7 @@ void thpic::init(const char * pfname, const char * incfnm)
 #endif
 
   // program path + format + filename + write into
-  const auto ccom = fmt::format(R"("{}" -format "%w\n%h\n" "{}" > "{}")", thini.get_path_identify(), this->fname, thpic_tmp);
+  const auto ccom = fmt::format(R"({} -format "%w\n%h\n" "{}" > "{}")", thini.get_path_identify(), this->fname, thpic_tmp);
   const auto retcode = system(ccom.c_str());
   if (retcode != EXIT_SUCCESS) {
     thwarning(("error running command: %s, retcode: %d", ccom.c_str(), retcode))
