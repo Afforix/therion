@@ -34,6 +34,7 @@
 #include "thexception.h"
 #include "thconfig.h"
 #include "therion.h"
+#include "thfilehandle.h"
 #include <filesystem>
 
 #include <fmt/printf.h>
@@ -94,27 +95,30 @@ void thpic::init(const char * pfname, const char * incfnm)
 
   // program path + format + filename + write into
   const auto ccom = fmt::format(R"("{}" -format "%w\n%h\n" "{}" > "{}")", thini.get_path_identify(), this->fname, thpic_tmp);
-  int retcode = system(ccom.c_str());
-  if (retcode == EXIT_SUCCESS) {
-    FILE * tmp;
-    tmp = fopen(thpic_tmp,"r");
-    if (tmp == NULL)
-      retcode = EXIT_FAILURE;
-    else {
-      if (fscanf(tmp,"%ld",&this->width) != 1)
-        retcode = EXIT_FAILURE;
-      if (fscanf(tmp,"%ld",&this->height) != 1)
-        retcode = EXIT_FAILURE;
-      fclose(tmp);
-    }
+  const auto retcode = system(ccom.c_str());
+  if (retcode != EXIT_SUCCESS) {
+    thwarning(("error running command: %s", ccom.c_str()))
+    return;
   }
 
-  if ((retcode != EXIT_SUCCESS) || (!this->exists())) {
-    thwarning(("unable to read \"%s\"", this->fname))
+  auto tmp = thopen_file(thpic_tmp, "r");
+  if (!tmp) {
+    thwarning(("can't open file: %s", thpic_tmp))
+    return;
+  }
+
+  if ((fscanf(tmp.get(),"%ld",&this->width) != 1) || (fscanf(tmp.get(),"%ld",&this->height) != 1)) {
+    thwarning(("error reading width and height"))
+    this->height = -1;
+    this->width = -1;
+    return;
+  }
+
+  if (!this->exists()) {
+    thwarning(("invalid dimensions: %ldx%ld", this->width, this->height))
     this->height = -1;
     this->width = -1;
   }
-
 }
 
 
