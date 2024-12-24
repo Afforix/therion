@@ -84,8 +84,7 @@ void thpic::init(const char * pfname, const char * incfnm)
   }
   pict_path = pict_path.parent_path() / pfname;
 
-  auto pict_path_str = pict_path.string();
-  std::replace(pict_path_str.begin(), pict_path_str.end(), '\\', '/');
+  const auto pict_path_str = pict_path.make_preferred().string();
   this->fname = thdb.strstore(pict_path_str.c_str());
   // thprintf("\npict name: %s\n", this->fname);  
 
