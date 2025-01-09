@@ -161,6 +161,7 @@ if (BUILD_THERION)
         generate_thchencdata
         generate_thcsdata
     )
+    target_precompile_headers(therion-common PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/therion-pch.h)
 
     # therion executable
     add_executable(therion therion-main.cxx)

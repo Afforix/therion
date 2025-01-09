@@ -66,6 +66,7 @@ add_dependencies(loch version)
 if (WIN32)
     add_dependencies(loch generate_resource)
 endif()
+target_precompile_headers(loch PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/loch-pch.h)
 
 if (APPLE)
     set(ICONS "loch.app/Contents/Resources/loch.icns")

@@ -1,0 +1,45 @@
+#pragma once
+
+#include <fmt/core.h>
+#include <fmt/format.h>
+#include <fmt/ostream.h>
+#include <fmt/printf.h>
+
+#include <proj.h>
+
+#include <algorithm>
+#include <any>
+#include <array>
+#include <cassert>
+#include <cctype>
+#include <cerrno>
+#include <cfloat>
+#include <chrono>
+#include <cinttypes>
+#include <climits>
+#include <clocale>
+#include <cmath>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <deque>
+#include <exception>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <list>
+#include <map>
+#include <memory>
+#include <regex>
+#include <set>
+#include <sstream>
+#include <stdexcept>
+#include <string_view>
+#include <string>
+#include <variant>
+#include <vector>
