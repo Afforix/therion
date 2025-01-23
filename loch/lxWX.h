@@ -13,6 +13,9 @@
 #endif  
 //LXDEPCHECK - standard libraries
 
+#if !wxCHECK_VERSION(3, 1, 4)
+wxALLOW_COMBINING_ENUMS(wxDirection, wxAlignment)
+#endif
 
 #ifdef __WXGTK__
 #define lxBORDER 3
