@@ -32,8 +32,8 @@ wxALLOW_COMBINING_ENUMS(wxDirection, wxAlignment)
 #define lxFSlider(ID) (dynamic_cast<wxSlider*>(FindWindow(ID)))
 #define lxFChoice(ID) (dynamic_cast<wxChoice*>(FindWindow(ID)))
 
-#define lxNOTTOP wxBOTTOM | wxLEFT | wxRIGHT
-#define lxNOTLEFT wxBOTTOM | wxTOP | wxRIGHT
+inline constexpr int lxNOTTOP = wxBOTTOM | wxLEFT | wxRIGHT;
+inline constexpr int lxNOTLEFT = wxBOTTOM | wxTOP | wxRIGHT;
 
 void lxAdjustBitmapRGB(size_t s, unsigned char * d);
 
