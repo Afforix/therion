@@ -318,7 +318,7 @@ void thsvxctrl::process_survey_data(class thdatabase * dbp)
   const char * svxfn = thtmp.get_file_name("data.svx");
   this->svxf = fopen(svxfn,"w");
   if (svxf == NULL)
-    ththrow("can't open survex file for output -- {}", svxfn);
+    throw thexception(fmt::format("can't open survex file for output -- {}", svxfn));
 
   this->meridian_convergence = thcfg.get_outcs_convergence();
   this->lastleggridmccs = TTCS_LOCAL;
@@ -412,7 +412,7 @@ void thsvxctrl::process_survey_data(class thdatabase * dbp)
   this->transcript_log_file(dbp, thtmp.get_file_name("data.log"));
 
   if (retcode != EXIT_SUCCESS)
-    ththrow("cavern exit code -- {}", retcode);
+    throw thexception(fmt::format("cavern exit code -- {}", retcode));
   else
     this->load_err_file(dbp, thtmp.get_file_name("data.err"));
 
@@ -424,7 +424,7 @@ void thsvxctrl::process_survey_data(class thdatabase * dbp)
   thdb1ds * stp;
   img* pimg = img_open(thtmp.get_file_name("data.3d"));
   if (pimg == NULL)
-    ththrow("can't open cavern output");
+    throw thexception("can't open cavern output");
   do {
     result = img_read_item(pimg, &imgpt);
     switch (result) {
@@ -441,7 +441,7 @@ void thsvxctrl::process_survey_data(class thdatabase * dbp)
         break;
       case img_BAD:
         img_close(pimg);
-        ththrow("error reading cavern output");
+        throw thexception("error reading cavern output");
         break;
     }
   } while (result != img_STOP);
@@ -572,10 +572,10 @@ void thsvxctrl::transcript_log_file(class thdatabase * dbp, const char * lfnm)
   std::string lnbuff;
   std::string numbuff;
   unsigned long lnum = 0;
-  thlog.printf("\n####################### cavern log file ########################\n");
+  thlog().printf("\n####################### cavern log file ########################\n");
   std::ifstream clf(lfnm);
   if (!(clf.is_open()))
-    ththrow("can't open cavern log file for input");
+    throw thexception("can't open cavern log file for input");
   // let's read line by line and print to log file
   size_t chidx, nchs;
   const char * chch;
@@ -586,7 +586,7 @@ void thsvxctrl::transcript_log_file(class thdatabase * dbp, const char * lfnm)
   while (!(clf.eof())) {
     lnum++;
     std::getline(clf, lnbuff);
-    thlog.printf("%2lu> %s\n",lnum,lnbuff);
+    thlog().printf("%2lu> %s\n",lnum,lnbuff);
     // let's scan the line
     chch = lnbuff.c_str();
     nchs = strlen(chch);
@@ -694,8 +694,8 @@ void thsvxctrl::transcript_log_file(class thdatabase * dbp, const char * lfnm)
 
   }
   clf.close();
-  thlog.printf("######################### transcription ########################\n%s",tsbuff.get_buffer());
-  thlog.printf("#################### end of cavern log file ####################\n");
+  thlog().printf("######################### transcription ########################\n%s",tsbuff.get_buffer());
+  thlog().printf("#################### end of cavern log file ####################\n");
 }
 
 void thsvxctrl::load_err_file(class thdatabase * dbp, const char * lfnm) {

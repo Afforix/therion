@@ -63,59 +63,59 @@ void thexptable::parse_options(int & argx, int nargs, char ** args)
     case TT_EXPTABLE_OPT_ATTRIBUTES:
       argx++;
       if (argx >= nargs)
-        ththrow("missing attributes switch -- \"{}\"",args[optx]);
+        throw thexception(fmt::format("missing attributes switch -- \"{}\"",args[optx]));
       sv = thmatch_token(args[argx], thtt_bool);
       if (sv == TT_UNKNOWN_BOOL)
-        ththrow("invalid attributes switch -- \"{}\"", args[argx]);
+        throw thexception(fmt::format("invalid attributes switch -- \"{}\"", args[argx]));
       this->expattr = (sv == TT_TRUE);
       argx++;
       break;
     case TT_EXPTABLE_OPT_LOCATION:
       argx++;
       if (argx >= nargs)
-        ththrow("missing location switch -- \"{}\"",args[optx]);
+        throw thexception(fmt::format("missing location switch -- \"{}\"",args[optx]));
       sv = thmatch_token(args[argx], thtt_bool);
       if (sv == TT_UNKNOWN_BOOL)
-        ththrow("invalid location switch -- \"{}\"", args[argx]);
+        throw thexception(fmt::format("invalid location switch -- \"{}\"", args[argx]));
       this->exploc = (sv == TT_TRUE);
       argx++;
       break;
     case TT_EXPTABLE_OPT_FILTER:
       argx++;
       if (argx >= nargs)
-        ththrow("missing filter switch -- \"{}\"",args[optx]);
+        throw thexception(fmt::format("missing filter switch -- \"{}\"",args[optx]));
       sv = thmatch_token(args[argx], thtt_bool);
       if (sv == TT_UNKNOWN_BOOL)
-        ththrow("invalid filter switch -- \"{}\"", args[argx]);
+        throw thexception(fmt::format("invalid filter switch -- \"{}\"", args[argx]));
       this->filter = (sv == TT_TRUE);
       argx++;
       break;
     case TT_EXPTABLE_OPT_SURVEYS:
       argx++;
       if (argx >= nargs)
-        ththrow("missing surveys switch -- \"{}\"",args[optx]);
+        throw thexception(fmt::format("missing surveys switch -- \"{}\"",args[optx]));
       sv = thmatch_token(args[argx], thtt_bool);
       if (sv == TT_UNKNOWN_BOOL)
-        ththrow("invalid surveys switch -- \"{}\"", args[argx]);
+        throw thexception(fmt::format("invalid surveys switch -- \"{}\"", args[argx]));
       this->surveys = (sv == TT_TRUE);
       argx++;
       break;    
     case TT_EXPTABLE_OPT_FORMAT:  
       argx++;
       if (argx >= nargs)
-        ththrow("missing format -- \"{}\"",args[optx]);
+        throw thexception(fmt::format("missing format -- \"{}\"",args[optx]));
       this->format = thmatch_token(args[argx], thtt_exptable_fmt);
       if (this->format == TT_EXPTABLE_FMT_UNKNOWN)
-        ththrow("unknown format -- \"{}\"", args[argx]);
+        throw thexception(fmt::format("unknown format -- \"{}\"", args[argx]));
       argx++;
       break;
     case TT_EXPTABLE_OPT_ENCODING:  
       argx++;
       if (argx >= nargs)
-        ththrow("missing encoding -- \"{}\"",args[optx]);
+        throw thexception(fmt::format("missing encoding -- \"{}\"",args[optx]));
       this->encoding = thmatch_token(args[argx], thtt_encoding);
       if (this->encoding == TT_UNKNOWN_ENCODING)
-        ththrow("unknown encoding -- \"{}\"", args[argx]);
+        throw thexception(fmt::format("unknown encoding -- \"{}\"", args[argx]));
       argx++;
       break;
     default:
@@ -290,10 +290,12 @@ void thexptable::process_db(class thdatabase * dbp)
         for(oi = this->db->object_list.begin(); oi != this->db->object_list.end(); oi++) {
           if ((*oi)->get_class_id() == TT_POINT_CMD) {
             pt = dynamic_cast<thpoint*>(oi->get());
+            const auto * textptr = pt->get_text();
             if ((pt->type == TT_POINT_TYPE_CONTINUATION) && ((pt->get_text() != nullptr) || (!this->filter)) && (pt->fsptr->is_selected())) {
               this->db->db2d.process_projection(pt->fscrapptr->proj);
               this->m_table.insert_object(nullptr);
-              this->m_table.insert_attribute("Comment",ths2txt(*pt->get_text(), layout->lang).c_str());
+              std::string comment = textptr ? ths2txt(*textptr, layout->lang) : "";
+              this->m_table.insert_attribute("Comment", comment.c_str());
 	            if (!thisnan(pt->xsize))
                       this->m_table.insert_attribute("Explored",pt->xsize);
 	            else
