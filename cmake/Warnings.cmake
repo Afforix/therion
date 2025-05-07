@@ -8,6 +8,9 @@ if (MSVC)
     target_compile_options(enable-warnings INTERFACE /W4)
     target_compile_options(disable-warnings INTERFACE /w)
 else()
-    target_compile_options(enable-warnings INTERFACE -Wall -Wextra -Wno-deprecated-enum-enum-conversion -Wno-array-bounds -Wno-stringop-overflow)
+    target_compile_options(enable-warnings INTERFACE
+        -Wall -Wextra -Wno-deprecated-enum-enum-conversion
+        $<$<AND:$<CXX_COMPILER_ID:GNU>,$<VERSION_GREATER_EQUAL:$<CXX_COMPILER_VERSION>,13.0>>:-Wno-array-bounds -Wno-stringop-overflow>
+    )
     target_compile_options(disable-warnings INTERFACE -w)
 endif()
