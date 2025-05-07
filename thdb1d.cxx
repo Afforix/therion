@@ -128,6 +128,7 @@ void thdb1d::scan_data()
   this->max_year = thnan;
 
   obi = this->db->object_list.begin();
+  thobjectsrc min_year_src;
   while (obi != this->db->object_list.end()) {
     if ((*obi)->get_class_id() == TT_DATA_CMD) {
       dp = dynamic_cast<thdata*>(obi->get());
@@ -139,9 +140,13 @@ void thdb1d::scan_data()
           eyear = dp->date.get_end_year();
         if (thisnan(this->min_year)) {
           this->min_year = syear;
+          min_year_src = dp->source;
           this->max_year = eyear;
         } else {
-          if (this->min_year > syear) this->min_year = syear;
+          if (this->min_year > syear) {
+        	  this->min_year = syear;
+        	  min_year_src = dp->source;
+          }
           if (this->max_year < eyear) this->max_year = eyear;
         }
       }
@@ -154,7 +159,7 @@ void thdb1d::scan_data()
   default_dpdeclin = 0.0;
   default_dpdeclinused = false;
   if (!thisnan(this->min_year)) {
-    thcfg.get_outcs_mag_decl(this->min_year, default_dpdeclin);
+    thcfg.get_outcs_mag_decl(this->min_year, default_dpdeclin, min_year_src);
     default_dpdeclinused = true;
   }
 
@@ -169,8 +174,8 @@ void thdb1d::scan_data()
 
       dpdeclin = 0.0;
       dpdeclindef = false;
-      if (dp->date.is_defined() && (thcfg.get_outcs_mag_decl(dp->date.get_average_year(), dpdeclin)))
-        dpdeclindef = true;      
+      if (dp->date.is_defined() && (thcfg.get_outcs_mag_decl(dp->date.get_average_year(), dpdeclin, dp->source)))
+        dpdeclindef = true;
         
       // scan data shots
       lei = dp->leg_list.begin();
@@ -2388,8 +2393,8 @@ void thdb1d::close_loops()
 
     if (cleg->leg->data_type == TT_DATATYPE_NOSURVEY) {
       // ignore cleg->reverse
-      froms = &(this->station_vec[cleg->leg->from.id - 1]);
-      tos = &(this->station_vec[cleg->leg->to.id - 1]);
+      froms = &(this->station_vec[this->station_vec[cleg->leg->from.id - 1].uid - 1]);
+      tos = &(this->station_vec[this->station_vec[cleg->leg->to.id - 1].uid - 1]);
       // ak je no-survey, nastavi mu total statistiku
       cleg->leg->total_dx = tos->x - froms->x;
       cleg->leg->total_dy = tos->y - froms->y;
@@ -2595,18 +2600,18 @@ void thdb1d::print_loops() {
   thdb1ds * ps;
   unsigned long psid, prev_psid, first_psid;
   
-  thlog().printf("\n\n######################### loop errors ##########################\n");
-  thlog().printf(    "REL-ERR ABS-ERR TOTAL-L STS X-ERROR Y-ERROR Z-ERROR STATIONS\n");
+  thlog("\n\n######################### loop errors ##########################\n");
+  thlog("REL-ERR ABS-ERR TOTAL-L STS X-ERROR Y-ERROR Z-ERROR STATIONS\n");
   for (i = 0; i < nloops; i++) {
     li = lpr[i].li;
-    thlog().printf("%6.2f%% %s%s %s%s %3ld %s%s %s%s %s%s [",
+    thlog(fmt::format("{:6.2f}% {}{} {}{} {:3} {}{} {}{} {}{} [",
       li->src_length > 0.0 ? 100.0 * li->err_length / li->src_length : 0.0,
 			thdeflocale.format_length(li->err_length,1,totlen), thdeflocale.format_length_units(),			
 			thdeflocale.format_length(li->src_length,1,totlen), thdeflocale.format_length_units(),			
 			li->nlegs,
 			thdeflocale.format_length(li->err_dx,1,totlen), thdeflocale.format_length_units(),			
 			thdeflocale.format_length(li->err_dy,1,totlen), thdeflocale.format_length_units(),			
-			thdeflocale.format_length(li->err_dz,1,totlen), thdeflocale.format_length_units());
+			thdeflocale.format_length(li->err_dz,1,totlen), thdeflocale.format_length_units()));
     ll = li->first_leg;
     ss = NULL;
     if (ll->reverse)
@@ -2615,10 +2620,10 @@ void thdb1d::print_loops() {
       psid = ll->leg->from.id;
     ps = &(this->station_vec[psid - 1]);
     first_psid = psid;
-    thlog().printf("%s", ps->name);
+    thlog(ps->name);
     if ((ss == NULL) || (ss->id != ps->survey->id)) {
       ss = ps->survey;
-      thlog().printf("@%s", ss->get_full_name());
+      thlog(fmt::format("@{}", ss->get_full_name()));
     }
     prev_psid = psid;
     while (ll != NULL) {
@@ -2630,10 +2635,10 @@ void thdb1d::print_loops() {
 
       if (prev_psid != psid) {
         ps = &(this->station_vec[psid - 1]);
-        thlog().printf(" = %s", ps->name);
+        thlog(fmt::format(" = {}", ps->name));
         if (ss->id != ps->survey->id) {
           ss = ps->survey;
-          thlog().printf("@%s", ss->get_full_name());
+          thlog(fmt::format("@{}", ss->get_full_name()));
         }
       }
 
@@ -2642,20 +2647,20 @@ void thdb1d::print_loops() {
       else
         psid = ll->leg->to.id;
       ps = &(this->station_vec[psid - 1]);
-      thlog().printf(" - %s", ps->name);
+      thlog(fmt::format(" - {}", ps->name));
       if (ss->id != ps->survey->id) {
         ss = ps->survey;
-        thlog().printf("@%s", ss->get_full_name());
+        thlog(fmt::format("@{}", ss->get_full_name()));
       }
       
       if ((ll->next_leg == NULL) && (!li->open)) {
         if (first_psid != psid) {
           psid = first_psid;
           ps = &(this->station_vec[psid - 1]);
-          thlog().printf(" = %s", ps->name);
+          thlog(fmt::format(" = {}", ps->name));
           if (ss->id != ps->survey->id) {
             ss = ps->survey;
-            thlog().printf("@%s", ss->get_full_name());
+            thlog(fmt::format("@{}", ss->get_full_name()));
           }
         }
       }
@@ -2663,9 +2668,9 @@ void thdb1d::print_loops() {
       prev_psid = psid;
       ll = ll->next_leg;
     }
-    thlog().printf("]\n");
+    thlog("]\n");
   }
-  thlog().printf("##################### end of loop errors #######################\n");
+  thlog("##################### end of loop errors #######################\n");
 }
 
 thdb3ddata * thdb1d::get_3d_surface() {

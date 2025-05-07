@@ -28,7 +28,6 @@
 
 #include "thlogfile.h"
 #include "therion.h"
-#include "thinfnan.h"
 #include <string.h>
 
 const char * logfilemode = "w";
@@ -81,7 +80,20 @@ void thlogfile::close_file()
   }
 }
   
-void thlogfile::set_file_name(char *fname)
+void thlogfile::print(std::string_view msg)
+{
+  if (this->is_logging) {
+    if (!this->is_open)
+      this->open_file();
+    if (this->is_open) {
+      fmt::print(this->fileh, "{}", msg);
+      if (std::fflush(this->fileh) != 0)
+        this->log_error();
+    }
+  }
+}
+
+void thlogfile::set_file_name(const char *fname)
 {
   size_t fnl = strlen(fname);
   if ((!this->is_open) && (fnl > 0))
@@ -107,15 +119,6 @@ void thlogfile::logging_on()
 {
   this->is_logging = true;
 }
-
-void thlogfile::printf_double(const char * format, const char * nanstr, double dbl)
-{
-	if (thisnan(dbl))
-		this->printf(nanstr);
-	else
-		this->printf(format, dbl);
-}
-
    
 void thlogfile::logging_off()
 {
@@ -135,7 +138,7 @@ void thlogfile::log_error() {
 	fprintf(stderr,"error -- unable to write to log file (disk full?, insufficient permissions?)\n");
 }
 
-thlogfile& thlog()
+thlogfile& get_thlogfile()
 {
   static thlogfile log; // global instance
   return log;

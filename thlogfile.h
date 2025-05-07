@@ -31,7 +31,7 @@
 
 #include "thbuffer.h"
 #include <stdio.h>
-#include <fmt/printf.h>
+#include <string_view>
 
 /**
  * Log file module.
@@ -83,28 +83,10 @@ class thlogfile {
   thlogfile& operator=(thlogfile&&) = delete;
 
   /**
-   * Print formatted into log file.
+   * Print string into log file.
+   * @param msg Message.
    */
-  template <typename FormatStr, typename... Args>
-  void printf(const FormatStr& format, const Args&... args)
-  {
-    if (this->is_logging) {
-      if (!this->is_open)
-        this->open_file();
-      if (this->is_open) {
-        fmt::fprintf(this->fileh, format, args...);
-        if (std::fflush(this->fileh) != 0)
-          this->log_error();
-      }
-    }
-  }
-  
-  /**
-   * Print double into log file - take concern of nan.
-   */
-
-  void printf_double(const char * format, const char * nanstr, double dbl);
-
+  void print(std::string_view msg);
   
   /**
    * Set log file name.
@@ -112,7 +94,7 @@ class thlogfile {
    * @param fname File name.
    */
    
-  void set_file_name(char *fname);
+  void set_file_name(const char *fname);
   
   
   /**
@@ -168,7 +150,7 @@ class thlogfile {
 /**
  * Global log file instance.
  */
-thlogfile& thlog();
+thlogfile& get_thlogfile();
 
 #endif
 

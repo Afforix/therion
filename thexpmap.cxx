@@ -89,13 +89,13 @@ thexpmap::~thexpmap() {
 void thexpmap_log_log_file(const char * logfpath, const char * on_title, const char * off_title, bool mpbug) {
   std::string lnbuff;
 //  unsigned long lnum = 0;
-  thlog().printf("%s",on_title);
+  thlog(on_title);
   std::ifstream lf(logfpath);
   if (!(lf.is_open())) {{
     thwarning(("can't open %s file for input", logfpath));
     }
-    thlog().printf("can't open %s file for input",logfpath);
-    thlog().printf("%s",off_title);
+    thlog(fmt::format("can't open {} file for input",logfpath));
+    thlog(off_title);
     return;
   }
   // let's read line by line and print to log file
@@ -111,7 +111,7 @@ void thexpmap_log_log_file(const char * logfpath, const char * on_title, const c
     }
     if (!skip_this) {
       if (!skip_next) {
-        thlog().printf("%s%s", (peoln ? "\n" : ""), lnbuff);
+        thlog(fmt::format("{}{}", (peoln ? "\n" : ""), lnbuff));
         peoln = true;
       } else {
         skip_next = false;
@@ -121,9 +121,9 @@ void thexpmap_log_log_file(const char * logfpath, const char * on_title, const c
     } 
   }
   if (peoln) 
-    thlog().printf("\n");
+    thlog("\n");
   lf.close();
-  thlog().printf("%s",off_title);
+  thlog(off_title);
 }
 
 
@@ -1773,7 +1773,7 @@ if (ENC_NEW.NFSS==0) {
                   SCRAPITEM->S1 = shx;
                   SCRAPITEM->S2 = shy;
                   
-                  this->export_scrap_backgroud_mesh(cs, &out, &(*SCRAPITEM));                  
+                  this->export_scrap_background_mesh(cs, &out, &(*SCRAPITEM));
                   
                   if ((!export_outlines_only) && (!export_sections) &&
                       (cbm->m_target->fmap->output_number != cbm->m_target->preview_output_number)
@@ -3695,7 +3695,7 @@ void thexpmap::export_pdf_set_colors_new(class thdb2dxm * maps, class thdb2dprj 
 }
 
 
-void thexpmap::export_scrap_backgroud_mesh(thscrap * cs, thexpmapmpxs * out, scraprecord * r) {
+void thexpmap::export_scrap_background_mesh(thscrap * cs, thexpmapmpxs * out, scraprecord * r) {
 	
 	switch(this->layout->color_crit) {
       case TT_LAYOUT_CCRIT_ALTITUDE:

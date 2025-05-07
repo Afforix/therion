@@ -943,15 +943,23 @@ double thconfig::get_cs_convergence(int cs)
 }
 
 
-bool thconfig::get_outcs_mag_decl(double year, double & decl)
+bool thconfig::get_outcs_mag_decl(double year, double & decl, thobjectsrc src)
 {
   double x, y, z, lat, lon, alt;
   if (!this->get_outcs_center(x, y, z))
     return false;
+  try {
   if (year < 1900.0)
     throw thexception("automatic declination calculation before 1900 not supported, please specify declination explicitly");
   if (year > double(thgeomag_minyear + thgeomag_step * (thgeomag_maxmindex + 3)))
     throw thexception(fmt::format("automatic declination calculation after {} not supported, please specify declination explicitly", thgeomag_minyear + thgeomag_step * (thgeomag_maxmindex + 3)));
+  } catch (const std::exception& e) {
+	if (src.is_valid())
+		throw thexception(fmt::format("{} [{}]", src.name, src.line), e);
+	else
+		throw e;
+  }
+
   if ((year < double(thgeomag_minyear)) || (year > double(thgeomag_minyear + thgeomag_step * (thgeomag_maxmindex + 1))))
     this->m_decl_out_of_geomag_range = true;
   thcs2cs(this->outcs, TTCS_LONG_LAT, x, y, z, lon, lat, alt);
@@ -978,17 +986,17 @@ void thconfig::log_outcs(double decsyear, double deceyear) {
   double x, y, z, dec;
   bool firstdec = true;
   if (this->get_outcs_center(x, y, z)) {
-    thlog().printf("output coordinate system: %s\n", thcs_get_name(this->outcs));
-    thlog().printf("meridian convergence (deg): %.4f\n", this->get_outcs_convergence());
+    thlog(fmt::format("output coordinate system: {}\n", thcs_get_name(this->outcs)));
+    thlog(fmt::format("meridian convergence (deg): {:.4}\n", this->get_outcs_convergence()));
     if (!thisnan(decsyear)) {
       long min = long(decsyear), max = long(deceyear + 1.0), yyy;
       for(yyy = min; yyy <= max; yyy++) {
         if (firstdec) {
-          thlog().printf("geomag declinations (deg):\n");
+          thlog("geomag declinations (deg):\n");
           firstdec = false;
         }
         if (this->get_outcs_mag_decl(double(yyy), dec)) {
-          thlog().printf("  %4ld.1.1  %.4f\n", yyy, dec);
+          thlog(fmt::format("  {:4}.1.1  {:.4}\n", yyy, dec));
         }
       }
     }
