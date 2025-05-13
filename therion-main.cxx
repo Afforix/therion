@@ -37,6 +37,7 @@
 #include "thlogfile.h"
 #include "thproj.h"
 #include "thdatabase.h"
+#include "thlog.h"
 
 extern const thstok thtt_texts [];
 
@@ -223,7 +224,7 @@ int main(int argc, char * argv[]) {
     thprintf("\n\nlisting database\n");
     if (thverbose_mode)
       thdb.self_print(stdout);
-    thdb.self_print(thlog().get_fileh());
+    thdb.self_print(get_thlogfile().get_fileh());
     thprintf("\ndatabase listed\n\n");
 #endif   
 
