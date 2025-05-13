@@ -73,7 +73,7 @@ lxAboutDlg::lxAboutDlg(wxWindow * parent)
 
   wxBoxSizer * sizerBmp = new wxBoxSizer(wxHORIZONTAL);
   sizerBmp->AddSpacer(100);
-  sizerBmp->Add(pbmp, 0, static_cast<int>(wxALL) | static_cast<int>(wxALIGN_CENTER) | static_cast<int>(wxALIGN_CENTER_VERTICAL), 0);
+  sizerBmp->Add(pbmp, 0, wxALL | wxALIGN_CENTER | wxALIGN_CENTER_VERTICAL, 0);
 
   wxBoxSizer * sizerAll = new wxBoxSizer(wxVERTICAL);
   sizerAll->Add(new wxStaticText(this, lxABDG_TEXT1,_T("Loch")), 0, wxALL, lxBORDER);

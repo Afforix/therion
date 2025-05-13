@@ -13,6 +13,7 @@
 #endif  
 //LXDEPCHECK - standard libraries
 
+
 #ifdef __WXGTK__
 #define lxBORDER 3
 #else
@@ -28,8 +29,8 @@
 #define lxFSlider(ID) (dynamic_cast<wxSlider*>(FindWindow(ID)))
 #define lxFChoice(ID) (dynamic_cast<wxChoice*>(FindWindow(ID)))
 
-inline constexpr int lxNOTTOP = static_cast<int>(wxBOTTOM) | static_cast<int>(wxLEFT) | static_cast<int>(wxRIGHT);
-inline constexpr int lxNOTLEFT = static_cast<int>(wxBOTTOM) | static_cast<int>(wxTOP) | static_cast<int>(wxRIGHT);
+#define lxNOTTOP wxBOTTOM | wxLEFT | wxRIGHT
+#define lxNOTLEFT wxBOTTOM | wxTOP | wxRIGHT
 
 void lxAdjustBitmapRGB(size_t s, unsigned char * d);
 
