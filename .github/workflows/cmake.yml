@@ -32,7 +32,7 @@ jobs:
                 -DUSE_BUNDLED_SHAPELIB=OFF \
                 ${{ matrix.args }} ..
       - run: cmake --build build
-      - run: cmake --build build -t test
+      - run: ctest --test-dir build --verbose
       - name: Run samples
         if: matrix.os == 'ubuntu-24.04'
         run: cmake --build build -t samples-verify-crc -- -j 4
@@ -62,7 +62,7 @@ jobs:
         run: |
           mkdir build && cd build && cmake -G Ninja -DECM_ENABLE_SANITIZERS=address -DENABLE_WERROR=ON -DOPENGL_gl_LIBRARY:FILEPATH=/opt/X11/lib/libGL.dylib -DOPENGL_glu_LIBRARY:FILEPATH=/opt/X11/lib/libGLU.dylib -DBUILD_THBOOK=OFF ..
       - run: cmake --build build -t therion loch utest
-      - run: cmake --build build -t test
+      - run: ctest --test-dir build --verbose
       - name: Run samples
         run: |
           eval "$(/usr/libexec/path_helper)"
@@ -124,7 +124,7 @@ jobs:
           echo -e "mpost-path ${THDIR}/therion-batteries/bin/windows/mpost.exe\npdftex-path ${THDIR}/therion-batteries/bin/windows/pdftex.exe\nidentify-path ${THDIR}/therion-batteries/bin/identify.exe\nconvert-path ${THDIR}/therion-batteries/bin/convert.exe\n" > $HOME/.therion/therion.ini
           wget -qO - https://github.com/therion/therion-batteries/archive/master.tar.gz | tar -xzf - && mv therion-batteries-master ../therion-batteries
           cp -r ../therion-batteries/_proj/{proj-$(awk -F "=" '/version/{print $2}' build/innosetup.ini),proj-datumgrid}/ ../therion-batteries/lib/
-      - run: cmake --build build -t test
+      - run: ctest --test-dir build --verbose
       - run: cmake --build build -t samples-verify-crc -- -j 4
       - run: cmake --build build -t samples-verify-ref -- -j 4
       - uses: actions/upload-artifact@v4

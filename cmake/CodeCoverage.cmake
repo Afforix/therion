@@ -28,7 +28,7 @@ set(COVERAGE_FOLDER ${CMAKE_BINARY_DIR}/coverage)
 
 add_custom_target(ccov-report
     # process raw coverage profile
-    COMMAND llvm-profdata merge -sparse ${COVERAGE_FOLDER}/utest.profraw -o ${COVERAGE_FOLDER}/utest.profdata
+    COMMAND llvm-profdata merge -sparse ${COVERAGE_FOLDER}/utest.profraw ${COVERAGE_FOLDER}/utest-thassert.profraw -o ${COVERAGE_FOLDER}/utest.profdata
     # generate HTML report
     COMMAND llvm-cov show 
         $<TARGET_FILE:utest>

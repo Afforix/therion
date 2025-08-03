@@ -214,6 +214,15 @@ if (BUILD_THERION)
         set_property(TEST utest PROPERTY ENVIRONMENT LLVM_PROFILE_FILE=${COVERAGE_FOLDER}/utest.profraw)
     endif()
 
+    # separate executable to test assertion fail
+    add_executable(utest-thassert utest-thassert-main.cxx)
+    target_link_libraries(utest-thassert PUBLIC therion-common)
+    add_test(NAME utest-thassert COMMAND $<TARGET_FILE:utest-thassert> WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+    set_property(TEST utest-thassert PROPERTY WILL_FAIL TRUE)
+    if (ENABLE_CODE_COVERAGE)
+        set_property(TEST utest-thassert PROPERTY ENVIRONMENT LLVM_PROFILE_FILE=${COVERAGE_FOLDER}/utest-thassert.profraw)
+    endif()
+
     # updates thlibrarydata.cxx
     add_custom_target(library 
         ${CMAKE_COMMAND} -D THERION=$<TARGET_FILE:therion> -P cmake/Library.cmake
