@@ -61,7 +61,7 @@ jobs:
       - name: Configure CMake
         run: |
           mkdir build && cd build && cmake -G Ninja -DECM_ENABLE_SANITIZERS=address -DENABLE_WERROR=ON -DOPENGL_gl_LIBRARY:FILEPATH=/opt/X11/lib/libGL.dylib -DOPENGL_glu_LIBRARY:FILEPATH=/opt/X11/lib/libGLU.dylib -DBUILD_THBOOK=OFF ..
-      - run: cmake --build build -t therion loch utest
+      - run: cmake --build build -t therion loch utest utest-thassert
       - run: ctest --test-dir build --verbose
       - name: Run samples
         run: |
@@ -115,7 +115,7 @@ jobs:
             mingw-w64-${{ matrix.config.arch }}-fmt
             mingw-w64-${{ matrix.config.arch }}-catch
       - run: mkdir build && cd build && cmake -G "MSYS Makefiles" -DENABLE_WERROR=ON -DBUILD_THBOOK=OFF ${{ matrix.config.args }} ..
-      - run: cmake --build build -t therion loch utest -- -j 4
+      - run: cmake --build build -t therion loch utest utest-thassert -- -j 4
       - name: Set up the batteries
         run: |
           THDIR="${THDIR:0:2}/a/therion"
