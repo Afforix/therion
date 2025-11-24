@@ -37,8 +37,7 @@ endif()
 
 set(PDFTEX_COMMAND
     ${CMAKE_COMMAND} -E env FORCE_SOURCE_DATE=1 TEXINPUTS="${CMAKE_CURRENT_BINARY_DIR}$<SEMICOLON>."
-    ${CMAKE_CROSSCOMPILING_EMULATOR} ${PDFTEX}
-    --output-dir=${CMAKE_CURRENT_BINARY_DIR} "\\\\def\\\\outputsize{${THBOOK_FORMAT}}${THBOOK_REPR}\\\\input thbook.tex")
+    ${PDFTEX} --output-dir=${CMAKE_CURRENT_BINARY_DIR} "\\\\def\\\\outputsize{${THBOOK_FORMAT}}${THBOOK_REPR}\\\\input thbook.tex")
 
 add_custom_command(
   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/thbook.pdf

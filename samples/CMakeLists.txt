@@ -47,7 +47,7 @@ function(therion_add_sample SAMPLE_NAME THCONFIG)
 
     # Build samples with therion.
     add_custom_target(_samples-${SAMPLE_NAME}
-                      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:therion> --reproducible-output ${THCONFIG}
+                      COMMAND $<TARGET_FILE:therion> --reproducible-output ${THCONFIG}
                       DEPENDS ${SAMPLE_DEPENDS_OTHER}
                       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                       COMMAND_EXPAND_LISTS)
@@ -56,7 +56,7 @@ function(therion_add_sample SAMPLE_NAME THCONFIG)
     # CRC verification: Copy .crc files from source dir and then build the sample with verification.
     add_custom_target(_samples-verify-crc-${SAMPLE_NAME}
                       ${CMAKE_COMMAND} -E copy "$<JOIN:${OUTPUTS_SRC},.crc;>.crc" ${CMAKE_CURRENT_BINARY_DIR}
-                      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:therion> --reproducible-output --verify-output-crc ${THCONFIG}
+                      COMMAND $<TARGET_FILE:therion> --reproducible-output --verify-output-crc ${THCONFIG}
                       DEPENDS ${SAMPLE_DEPENDS_OTHER}
                       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
                       COMMAND_EXPAND_LISTS)
@@ -64,7 +64,7 @@ function(therion_add_sample SAMPLE_NAME THCONFIG)
 
     # CRC generation: Build sample with checksum generation and copy resulting .crc files to the source dir.
     add_custom_target(_samples-generate-crc-${SAMPLE_NAME}
-                      ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:therion> --reproducible-output --generate-output-crc ${THCONFIG}
+                      $<TARGET_FILE:therion> --reproducible-output --generate-output-crc ${THCONFIG}
                       COMMAND ${CMAKE_COMMAND} -E copy "$<JOIN:${OUTPUTS_BIN},.crc;>.crc" ${CMAKE_CURRENT_SOURCE_DIR}
                       DEPENDS ${SAMPLE_DEPENDS_OTHER}
                       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -87,7 +87,7 @@ function(therion_add_sample_with_ref SAMPLE_NAME THCONFIG)
     add_custom_command(
         OUTPUT ${SAMPLE_OUTPUT}
         DEPENDS therion ${THCONFIG} ${SAMPLE_DEPENDS_SRC}
-        COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:therion> --reproducible-output ${THCONFIG}
+        COMMAND $<TARGET_FILE:therion> --reproducible-output ${THCONFIG}
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     )
 
