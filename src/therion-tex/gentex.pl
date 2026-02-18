@@ -12,38 +12,16 @@ sub encodecxx {
   return $str;
 }
 
-print "reading therion.tex\n";
+my ($in_file_name, $out_file_name) = @ARGV;
 
 $thtex_library = "";
-open(INPT,"therion.tex");
+open(INPT,$in_file_name);
 while ($ln = <INPT>) {
   $thtex_library .= "\n\"" . encodecxx($ln) . "\\n\"";
 }
 close(INPT);
 
-open(OUTPT,">../thtex.h");
-print OUTPT <<ENDOUTPT;
-/**
- * \@file thmpost.h
- *
- * THIS FILE IS GENERATED AUTOMATICALLY, DO NOT MODIFY IT !!!
- */  
- 
-#ifndef thtex_h
-#define thtex_h
-
-/**
- * Metapost source file.
- */
- 
-extern const char * thtex_library;
- 
-#endif
-ENDOUTPT
-close(OUTPT);
-
-
-open(OUTPT,">../thtex.cxx");
+open(OUTPT,">$out_file_name");
 print OUTPT <<ENDOUTPT;
 /**
  * \@file thtex.cxx
@@ -64,5 +42,3 @@ const char * thtex_library = "\\\\input therion.tex\\n";
 #endif
 ENDOUTPT
 close(OUTPT);
-
-print "done\n";
