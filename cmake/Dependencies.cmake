@@ -10,6 +10,7 @@ endif()
 
 # therion dependencies
 if (BUILD_THERION)
+    find_package(Perl REQUIRED)
     include(PROJ)
     include(Shapelib)
 endif()

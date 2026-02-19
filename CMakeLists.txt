@@ -64,10 +64,6 @@ set_source_files_properties(
     ${CMAKE_BINARY_DIR}/thchencdata.cxx
     ${CMAKE_BINARY_DIR}/thlangdata.h
     ${CMAKE_BINARY_DIR}/thlangdatafields.h
-    ${CMAKE_BINARY_DIR}/thmpost.h 
-    ${CMAKE_BINARY_DIR}/thmpost.cxx
-    ${CMAKE_BINARY_DIR}/thsymbolsets.h
-    ${CMAKE_BINARY_DIR}/thsymbolsets.cxx
     ${CMAKE_BINARY_DIR}/thversion.h
     ${CMAKE_BINARY_DIR}/thcsdata.h
     ${CMAKE_BINARY_DIR}/thcsdata.cxx
@@ -172,7 +168,6 @@ if (BUILD_THERION)
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src/therion-core
     )
 
-    add_subdirectory(mpost)
     add_subdirectory(thchencdata)
     add_subdirectory(tex)
     add_subdirectory(thlang)
