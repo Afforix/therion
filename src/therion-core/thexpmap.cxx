@@ -1805,7 +1805,7 @@ if (ENC_NEW.NFSS==0) {
               if (!export_sections) {
                 export_sections = true;
 //                if ((export_outlines_only) || (!this->symset.assigned[SYMP_SECTION]))
-                if (export_outlines_only || !cs)
+                if (export_outlines_only)
                   // rezy sa neexportuju
                   op2 = NULL;
                 else
@@ -3169,12 +3169,12 @@ void thexpmap::export_pdf_set_colors(class thdb2dxm * maps, class thdb2dprj * /*
       cmi = cbm->bm->last_item;
 //      if ((cbm->mode == TT_MAPITEM_NORMAL) && (strlen(cbm->bm->name) > 0)) while (cmi != NULL) {
       if (cbm->mode == TT_MAPITEM_NORMAL) while (cmi != NULL) {
-        cs = dynamic_cast<thscrap*>(cmi->object);
-        if (cs && cmi->type == TT_MAPITEM_NORMAL) {
+        if (cmi->type == TT_MAPITEM_NORMAL) {
           if (firstmapscrap) {
             nmap++;
             firstmapscrap = false;
           }
+          cs = dynamic_cast<thscrap*>(cmi->object);
           curz = cs->a;
 //          if ((!thisnan(curz)) && (cs->fsptr != NULL))
 //            curz += prj->shift_z;
@@ -3242,8 +3242,8 @@ void thexpmap::export_pdf_set_colors(class thdb2dxm * maps, class thdb2dprj * /*
       cmi = cbm->bm->last_item;
 //      if ((cbm->mode == TT_MAPITEM_NORMAL) && (strlen(cbm->bm->name) > 0)) while (cmi != NULL) {
       if (cbm->mode == TT_MAPITEM_NORMAL) while (cmi != NULL) {
-        cs = dynamic_cast<thscrap*>(cmi->object);
-        if (cs && cmi->type == TT_MAPITEM_NORMAL) {
+        if (cmi->type == TT_MAPITEM_NORMAL) {
+          cs = dynamic_cast<thscrap*>(cmi->object);
           curz = cs->a;
 //          if ((!thisnan(curz)) && (cs->fsptr != NULL))
 //            curz += prj->shift_z;
@@ -3362,9 +3362,8 @@ void thexpmap::export_uni(class thdb2dxm * maps, class thdb2dprj * /*prj*/) // T
       cmi = cbm->bm->last_item;
       if (cbm->mode == TT_MAPITEM_NORMAL) {
         while (cmi != NULL) {
-          auto cs = dynamic_cast<thscrap*>(cmi->object);
-          if (cs && cmi->type == TT_MAPITEM_NORMAL)
-            this->export_uni_scrap((FILE *)pimg, cs);
+          if (cmi->type == TT_MAPITEM_NORMAL)
+						this->export_uni_scrap((FILE *) pimg, dynamic_cast<thscrap*>(cmi->object));
           cmi = cmi->prev_item;  
         }
       }
@@ -3588,9 +3587,7 @@ void thexpmap::export_pdf_set_colors_new(class thdb2dxm * maps, class thdb2dprj 
       if (cbm->mode == TT_MAPITEM_NORMAL) while (cmi != NULL) {
         if (cmi->type == TT_MAPITEM_NORMAL) {
           cs = dynamic_cast<thscrap*>(cmi->object);
-          if (cs) {
-            cs->RGBsrc = 0;
-          }
+          cs->RGBsrc = 0;
         }
         cmi = cmi->prev_item;
       }
@@ -3613,8 +3610,7 @@ void thexpmap::export_pdf_set_colors_new(class thdb2dxm * maps, class thdb2dprj 
       cmi = cbm->bm->last_item;
 //      if ((cbm->mode == TT_MAPITEM_NORMAL) && (strlen(cbm->bm->name) > 0)) while (cmi != NULL) {
       if (cbm->mode == TT_MAPITEM_NORMAL) while (cmi != NULL) {
-        cs = dynamic_cast<thscrap*>(cmi->object);
-        if (cs && cmi->type == TT_MAPITEM_NORMAL) {
+        if (cmi->type == TT_MAPITEM_NORMAL) {
           if (firstmapscrap) {
             // nmap++;
             firstmapscrap = false;
@@ -3625,6 +3621,7 @@ void thexpmap::export_pdf_set_colors_new(class thdb2dxm * maps, class thdb2dprj 
               lkp->scan_map(cmap->map);
             }
           }
+          cs = dynamic_cast<thscrap*>(cmi->object);
           // add scrap if according to scraps
           if ((nolkpitems) && (lkp->m_type == TT_LAYOUT_CCRIT_SCRAP)) {
             csc.defined = 0;
@@ -3671,9 +3668,7 @@ void thexpmap::export_pdf_set_colors_new(class thdb2dxm * maps, class thdb2dprj 
       if (cbm->mode == TT_MAPITEM_NORMAL) while (cmi != NULL) {
         if (cmi->type == TT_MAPITEM_NORMAL) {
           cs = dynamic_cast<thscrap*>(cmi->object);
-          if (cs) {
-            lkp->color_scrap(cs);
-          }
+          lkp->color_scrap(cs);
         }
         cmi = cmi->prev_item;
       }
