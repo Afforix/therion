@@ -62,8 +62,6 @@ endif()
 set_source_files_properties(
     ${CMAKE_BINARY_DIR}/thchencdata.h
     ${CMAKE_BINARY_DIR}/thchencdata.cxx
-    ${CMAKE_BINARY_DIR}/thlangdata.h
-    ${CMAKE_BINARY_DIR}/thlangdatafields.h
     ${CMAKE_BINARY_DIR}/thversion.h
     ${CMAKE_BINARY_DIR}/thcsdata.h
     ${CMAKE_BINARY_DIR}/thcsdata.cxx
@@ -149,7 +147,6 @@ if (BUILD_THERION)
         COMPONENT th-runtime)
 
     add_subdirectory(thchencdata)
-    add_subdirectory(thlang)
     add_subdirectory(samples)
 endif()
 
