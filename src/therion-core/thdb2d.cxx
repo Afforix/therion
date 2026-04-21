@@ -52,6 +52,7 @@
 #include <cassert>
 #include <cstdio>
 #include <algorithm>
+#include <numbers>
 
 static void print_double(const double dbl)
 {
@@ -1311,8 +1312,8 @@ void thdb2d::pp_calc_stations(thdb2dprj * prj)
 
   switch (prj->type) {
     case TT_2DPROJ_ELEV:
-      sina = sin(prj->pp1 / 180.0 * 3.14159265358);
-      cosa = cos(prj->pp1 / 180.0 * 3.14159265358);
+      sina = sin(prj->pp1 / 180.0 * std::numbers::pi);
+      cosa = cos(prj->pp1 / 180.0 * std::numbers::pi);
       break;
   }
 
@@ -1646,7 +1647,7 @@ void thdb2d::pp_scale_points(thdb2dprj * prj)
         
         scale = maxdist / cdist;
         ps->ms = scale;
-        ps->mr = - tang / 3.14159265358 * 180.0;
+        ps->mr = - tang / std::numbers::pi * 180.0;
         ps->mxx *= scale;
         ps->myy *= scale;
         ps->mxy *= scale;
@@ -1966,7 +1967,7 @@ void thdb2d::pp_adjust_points(thdb2dprj * prj)
         
         scale = maxdist / cdist;
         pscrap->ms = scale;
-        pscrap->mr = - tang / 3.14159265358 * 180.0;
+        pscrap->mr = - tang / std::numbers::pi * 180.0;
         pscrap->mxx *= scale;
         pscrap->myy *= scale;
         pscrap->mxy *= scale;
@@ -2015,7 +2016,7 @@ void thdb2d::pp_adjust_points(thdb2dprj * prj)
         pscrap->mx = movetx;
         pscrap->my = movety;
         pscrap->ms = std::hypot(a,b);
-        pscrap->mr = - atan2(b,a) / 3.14159265358 * 180.0;
+        pscrap->mr = - atan2(b,a) / std::numbers::pi * 180.0;
         
 #endif
       } else {
