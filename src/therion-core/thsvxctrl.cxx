@@ -44,8 +44,6 @@
 #include <string>
 #include <fstream>
 
-#define THPI 3.1415926535898
-
 thsvxctrl::thsvxctrl()
 {
   this->pdl.clear();

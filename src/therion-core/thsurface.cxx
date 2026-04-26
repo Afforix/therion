@@ -39,6 +39,7 @@
 #include "therion.h"
 #include <algorithm>
 #include <filesystem>
+#include <numbers>
 
 namespace fs = std::filesystem;
 
@@ -314,7 +315,7 @@ void thsurface::calibrate() {
   this->calib_yy = cos(tang);
   scale = nlen / olen;
   this->calib_s = scale;
-  this->calib_r = - tang / 3.14159265358 * 180.0;
+  this->calib_r = - tang / std::numbers::pi * 180.0;
   this->calib_xx *= scale;
   this->calib_yy *= scale;
   this->calib_xy *= scale;

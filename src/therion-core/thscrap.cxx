@@ -42,6 +42,8 @@
 #include "thdatabase.h"
 #include "therion.h"
 
+#include <numbers>
+
 #define EXPORT3D_INVISIBLE true
 
 thscrap::thscrap()
@@ -623,8 +625,8 @@ thscraplp * thscrap::get_polygon() {
   double sina = 0.0, cosa = 0.0;
   switch (this->proj->type) {
     case TT_2DPROJ_ELEV:
-      sina = sin(this->proj->pp1 / 180.0 * 3.14159265358);
-      cosa = cos(this->proj->pp1 / 180.0 * 3.14159265358);
+      sina = sin(this->proj->pp1 / 180.0 * std::numbers::pi);
+      cosa = cos(this->proj->pp1 / 180.0 * std::numbers::pi);
       break;
   }
   bool incp;
