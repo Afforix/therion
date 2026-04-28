@@ -1,5 +1,4 @@
 set(THERION_SOURCES
-    ${CMAKE_BINARY_DIR}/thcsdata.cxx
     ${CMAKE_SOURCE_DIR}/src/therion-core/th2ddataobject.cxx
     ${CMAKE_SOURCE_DIR}/src/therion-core/tharea.cxx
     ${CMAKE_SOURCE_DIR}/src/therion-core/thattr.cxx
