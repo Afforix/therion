@@ -63,8 +63,6 @@ set_source_files_properties(
     ${CMAKE_BINARY_DIR}/thchencdata.h
     ${CMAKE_BINARY_DIR}/thchencdata.cxx
     ${CMAKE_BINARY_DIR}/thversion.h
-    ${CMAKE_BINARY_DIR}/thcsdata.h
-    ${CMAKE_BINARY_DIR}/thcsdata.cxx
     PROPERTIES GENERATED TRUE 
 )
 
@@ -84,19 +82,7 @@ macro(therion_make_files_lists LIST_NAME)
 endmacro()
 
 # copy files needed by some build steps
-therion_copy_files(thcsdata.tcl .clang-tidy)
-
-# generate thcsdata sources
-add_custom_command(OUTPUT ${CMAKE_BINARY_DIR}/thcsdata.h
-                          ${CMAKE_BINARY_DIR}/thcsdata.cxx
-                   COMMAND tclsh thcsdata.tcl ${PROJ_PREFIX}/share/proj
-                   DEPENDS ${CMAKE_BINARY_DIR}/thcsdata.tcl
-                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-add_custom_target(generate_thcsdata DEPENDS
-    ${CMAKE_BINARY_DIR}/thcsdata.h
-    ${CMAKE_BINARY_DIR}/thcsdata.cxx
-)
+therion_copy_files(.clang-tidy)
 
 # generate version files
 add_custom_target(thversion python3 set_version.py ${CMAKE_BINARY_DIR}
