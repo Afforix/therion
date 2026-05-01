@@ -146,12 +146,12 @@ jobs:
       - uses: actions/checkout@v6
       - name: Configure CMake
         run: |
-          cmake -S . \
-                -B build \
-                -D CMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake \
-                -D BUILD_LOCH=OFF \
-                -D BUILD_THBOOK=OFF \
-                -D BUILD_XTHERION=OFF \
+          cmake -S . `
+                -B build `
+                -D CMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake `
+                -D BUILD_LOCH=OFF `
+                -D BUILD_THBOOK=OFF `
+                -D BUILD_XTHERION=OFF `
                 -D ENABLE_PROJ_CMAKE=ON
       - name: Build Therion
         run: cmake --build build
