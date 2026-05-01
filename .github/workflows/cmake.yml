@@ -84,7 +84,7 @@ jobs:
       - name: Install
         run: sudo cmake --build build -t install
 
-  Windows:
+  Windows-MSYS2:
     runs-on: windows-latest
     strategy:
       matrix:
@@ -139,3 +139,21 @@ jobs:
           name: samples-windows-${{ matrix.config.msystem }}
           path: build/samples/
       - run: cmake --build build -t deploy -- -j 4
+
+  Windows-MSVC:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Configure CMake
+        run: |
+          cmake -S . \
+                -B build \
+                -D CMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake \
+                -D BUILD_LOCH=OFF \
+                -D BUILD_THBOOK=OFF \
+                -D BUILD_XTHERION=OFF \
+                -D ENABLE_PROJ_CMAKE=ON
+      - name: Build Therion
+        run: cmake --build build
+      - name: Run tests
+        run: cmake --build build -t test

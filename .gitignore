@@ -32,3 +32,4 @@ build/
 rel_notes.md
 .vs/
 out/
+vcpkg_installed/

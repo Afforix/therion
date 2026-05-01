@@ -1,0 +1,8 @@
+{
+    "dependencies": [
+        "catch2",
+        "fmt",
+        "getopt-win32",
+        "proj"
+    ]
+}
