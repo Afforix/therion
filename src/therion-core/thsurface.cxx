@@ -36,6 +36,7 @@
 #include "thdb1d.h"
 #include "thinfnan.h"
 #include "thproj.h"
+#include "thparse.h"
 #include "therion.h"
 #include <algorithm>
 #include <filesystem>

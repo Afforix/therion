@@ -34,6 +34,7 @@
 #include "thtflength.h"
 #include "thconfig.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <cassert>
 #include <fmt/core.h>

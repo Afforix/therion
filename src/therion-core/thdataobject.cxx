@@ -35,6 +35,7 @@
 #include "thproj.h"
 #include "thcs.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <fmt/core.h>
 

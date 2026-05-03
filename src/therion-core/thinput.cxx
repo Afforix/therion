@@ -30,6 +30,7 @@
 #include "therion.h"
 #include "thexception.h"
 #include "thversion.h"
+#include "thparse.h"
 
 #include <algorithm>
 #include <array>

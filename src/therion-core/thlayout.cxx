@@ -39,6 +39,7 @@
 #include "thconfig.h"
 #include "th2ddataobject.h"
 #include "thdatabase.h"
+#include "thparse.h"
 #include "therion.h"
 
 #include <fmt/ostream.h>

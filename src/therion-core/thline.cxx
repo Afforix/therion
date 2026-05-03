@@ -33,6 +33,7 @@
 #include "thtflength.h"
 #include "thscrap.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <fmt/core.h>
 

@@ -45,6 +45,7 @@
 #include "thtexfonts.h"
 #include "thlang.h"
 #include "thfilehandle.h"
+#include "thparse.h"
 #include "therion.h"
 #include <filesystem>
 

@@ -68,6 +68,7 @@
 #include "lxMath.h"
 #include "thsvg.h"
 #include "thlog.h"
+#include "thparse.h"
 #include "img.h"
 #include <filesystem>
 

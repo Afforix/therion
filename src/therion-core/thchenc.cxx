@@ -29,6 +29,7 @@
 #include "thchencdata.cxx"
 #include "therion.h"
 #include "thexception.h"
+#include "thparse.h"
 
 
 void thencode(thbuffer * dest, const char * src, int srcenc)

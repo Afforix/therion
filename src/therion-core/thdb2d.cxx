@@ -46,6 +46,7 @@
 #include "thfilehandle.h"
 #include "therion.h"
 #include "thlog.h"
+#include "thparse.h"
 #include <list>
 #include <set>
 #include <iterator>

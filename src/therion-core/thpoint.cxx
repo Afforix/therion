@@ -38,6 +38,7 @@
 #include "thobjectname.h"
 #include "therion.h"
 #include "thdataleg.h"
+#include "thparse.h"
 #include <string>
 #include <cstdio>
 

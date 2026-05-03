@@ -39,6 +39,7 @@
 #include "thlogfile.h"
 #include "therion.h"
 #include "thlog.h"
+#include "thparse.h"
 #include "img.h"
 #include <math.h>
 #include <string>

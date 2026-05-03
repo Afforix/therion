@@ -30,6 +30,7 @@
 #include "shapefil.h"
 #include "therion.h"
 #include "thchenc.h"
+#include "thparse.h"
 #include <cctype>
 #include <cmath>
 #include <cstring>

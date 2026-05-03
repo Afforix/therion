@@ -30,6 +30,7 @@
 #include "thdatabase.h"
 #include "thdataobject.h"
 #include "thsurvey.h"
+#include "thparse.h"
 
 #include <fmt/format.h>
 

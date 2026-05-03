@@ -51,6 +51,7 @@
 #include "thendscrap.h"
 #include "thconfig.h"
 #include "thproj.h"
+#include "thparse.h"
 #include "therion.h"
 
 #include <fmt/ostream.h>

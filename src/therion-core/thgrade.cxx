@@ -28,6 +28,7 @@
 #include "thgrade.h"
 #include "thdata.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <fmt/ostream.h>
 

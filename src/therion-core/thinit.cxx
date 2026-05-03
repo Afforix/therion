@@ -38,6 +38,7 @@
 #include "thcsdata.h"
 #include "thproj.h"
 #include "thpdfdbg.h"
+#include "thparse.h"
 #include "icase.h"
 #include <filesystem>
 
