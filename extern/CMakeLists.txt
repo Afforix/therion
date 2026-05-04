@@ -1,6 +1,7 @@
 if (BUILD_THERION)
     add_subdirectory(poly2tri)
     add_subdirectory(quickhull)
+    add_subdirectory(stb_image)
 endif()
 
 if (BUILD_LOCH)
