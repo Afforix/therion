@@ -322,7 +322,7 @@ void thselector_export_map_tree_node (FILE * cf, unsigned long level, unsigned l
     case TT_MAP_CMD:
       mptr = dynamic_cast<thmap*>(optr); //id fid level
       types = "map";
-      if (mptr->has_only_scrap_children())
+      if (mptr->is_basic)
         subtype = 1;
       break;
     default:
