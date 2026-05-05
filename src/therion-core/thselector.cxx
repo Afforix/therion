@@ -37,6 +37,7 @@
 #include <vector>
 #include "thchenc.h"
 #include "thmap.h"
+#include "thparse.h"
 #include "therion.h"
 
 thselector::thselector() {

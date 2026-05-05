@@ -40,6 +40,7 @@
 #include "thproj.h"
 #include "thdb2dmi.h"
 #include "thdatabase.h"
+#include "thparse.h"
 #include <vector>
 #include <algorithm>
 #include <string.h>

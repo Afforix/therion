@@ -26,6 +26,8 @@
  * --------------------------------------------------------------------
  */
 
+#include "thparse.h"
+
 #include "therion.h"
 #include "thlang.h"
 #include "thtexfonts.h"

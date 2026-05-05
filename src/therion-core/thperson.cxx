@@ -28,6 +28,7 @@
 #include "thperson.h"
 #include "thdatabase.h"
 #include "thexception.h"
+#include "thparse.h"
 #include <string.h>
 
 #include <fmt/core.h>

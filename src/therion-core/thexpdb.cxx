@@ -38,6 +38,7 @@
 #include "thchenc.h"
 #include <map>
 #include "thinfnan.h"
+#include "thparse.h"
 #include "therion.h"
 
 thexpdb::thexpdb() {

@@ -29,6 +29,7 @@
 #include "thexception.h"
 #include "thsymbolset.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <fmt/core.h>
 

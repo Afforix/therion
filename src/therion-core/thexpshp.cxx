@@ -44,6 +44,7 @@
 #include <time.h>
 #include "thcs.h"
 #include "thproj.h"
+#include "thparse.h"
 #include "therion.h"
 #include <filesystem>
 

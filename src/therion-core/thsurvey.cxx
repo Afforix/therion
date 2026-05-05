@@ -32,6 +32,7 @@
 #include "thtfangle.h"
 #include "thinfnan.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <fmt/core.h>
 

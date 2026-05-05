@@ -46,6 +46,7 @@
 #include "thsketch.h"
 #include "thcs.h"
 #include "thlog.h"
+#include "thparse.h"
 #ifdef THWIN32
 #include <windows.h>
 #endif

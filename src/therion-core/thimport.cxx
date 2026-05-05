@@ -32,6 +32,7 @@
 #include "thdata.h"
 #include "thsurvey.h"
 #include "thdatabase.h"
+#include "thparse.h"
 #include "therion.h"
 #include "img.h"
 #include <string.h>

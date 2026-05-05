@@ -34,6 +34,7 @@
 #include "thcsdata.h"
 #include "thdatareader.h"
 #include "thdatabase.h"
+#include "thparse.h"
 #include "therion.h"
 #include "icase.h"
 

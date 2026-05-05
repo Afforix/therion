@@ -30,6 +30,7 @@
 #include "thobjectsrc.h"
 #include "thdataobject.h"
 #include "thdatabase.h"
+#include "thparse.h"
 
 #include <fmt/core.h>
 

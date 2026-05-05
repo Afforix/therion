@@ -40,6 +40,7 @@
 #include "thsketch.h"
 #include "thcsdata.h"
 #include "thdatabase.h"
+#include "thparse.h"
 #include "therion.h"
 
 #include <numbers>

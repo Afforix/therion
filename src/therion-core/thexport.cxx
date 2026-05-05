@@ -31,6 +31,7 @@
 #include "thdatabase.h"
 #include "thexporter.h"
 #include "thcs.h"
+#include "thparse.h"
 #include "icase.h"
 #include <stdio.h>
 #include <algorithm>
