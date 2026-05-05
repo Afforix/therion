@@ -34,14 +34,15 @@
 #include "thexception.h"
 #include "thconfig.h"
 #include "therion.h"
+
+#include <Magick++/Image.h>
+
 #include <filesystem>
 #include <algorithm>
 
 namespace fs = std::filesystem;
 
 long thpic_convert_number(1);
-
-const char * thpic_tmp(NULL);
 
 thpic::thpic() {
   this->fname = NULL;
@@ -53,11 +54,6 @@ thpic::thpic() {
   this->x = 0.0;
   this->y = 0.0;
   this->scale = 1.0;
-
-  if (thpic_tmp == NULL) {
-    thdb.buff_tmp = thtmp.get_file_name("pic0000.txt");
-    thpic_tmp = thdb.strstore(thdb.buff_tmp.c_str());
-  }
 }
 
 
@@ -87,53 +83,13 @@ void thpic::init(const char * pfname, const char * incfnm)
   std::replace(pict_path_str.begin(), pict_path_str.end(), '\\', '/');
   this->fname = thdb.strstore(pict_path_str.c_str());
 
-  thbuffer ccom;
-  int retcode;
-  bool isspc;
-
-  // program path
-  isspc = (strcspn(thini.get_path_identify()," \t") < strlen(thini.get_path_identify()));
-  ccom = "";
-  if (isspc) ccom += "\"";
-  ccom += thini.get_path_identify();
-  if (isspc) ccom += "\"";
-
-  // format
-  ccom += " -format \"%w\\n%h\\n\" ";
-
-  // filename
-  isspc = (strcspn(this->fname," \t") < strlen(this->fname));
-  if (isspc) ccom += "\"";
-  ccom += this->fname;
-  if (isspc) ccom += "\"";
-
-  // write into
-  ccom += " > ";
-  isspc = (strcspn(thpic_tmp," \t") < strlen(thpic_tmp));
-  if (isspc) ccom += "\"";
-  ccom += thpic_tmp;
-  if (isspc) ccom += "\"";
-  
-#ifdef THDEBUG
-  thprint("running convert\n");
-#endif
-
-  retcode = system(ccom.c_str());
-  if (retcode == EXIT_SUCCESS) {
-    FILE * tmp;
-    tmp = fopen(thpic_tmp,"r");
-    if (tmp == NULL)
-      retcode = EXIT_FAILURE;
-    else {
-      if (fscanf(tmp,"%ld",&this->width) != 1)
-        retcode = EXIT_FAILURE;
-      if (fscanf(tmp,"%ld",&this->height) != 1)
-        retcode = EXIT_FAILURE;
-      fclose(tmp);
-    }
+  if (Magick::Image img(this->fname); img.isValid())
+  {
+    this->width = img.columns();
+    this->height = img.rows();
   }
-
-  if ((retcode != EXIT_SUCCESS) || (!this->exists())) {
+  else
+  {
     thwarning(fmt::format("unable to read \"{}\"", this->fname))
     this->height = -1;
     this->width = -1;
