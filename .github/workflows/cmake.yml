@@ -22,7 +22,7 @@ jobs:
       - name: install dependencies
         run: |
           sudo apt -qq update
-          sudo apt install -y ${{ matrix.pkgs }} texlive-binaries texlive-metapost libproj-dev libshp-dev survex imagemagick ghostscript ninja-build clang-tidy gettext libfmt-dev
+          sudo apt install -y ${{ matrix.pkgs }} texlive-binaries texlive-metapost libproj-dev libshp-dev survex imagemagick libmagick++-dev ghostscript ninja-build clang-tidy gettext libfmt-dev
       - name: install additional texlive languages
         if: matrix.os == 'ubuntu-24.04'
         run:  sudo apt install -y texlive-lang-czechslovak texlive-lang-cyrillic
