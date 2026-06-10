@@ -147,30 +147,15 @@ const char * thpic::convert(const char * type, const char * ext, const std::stri
 
 void thpic::rgba_load()
 {
-
   if (!this->exists())
     return;
 
-  if (this->rgbafn == NULL) {
-    this->rgbafn = this->convert("RGBA","rgba","-define jpeg:dct-method=islow -set colorspace RGB -depth 8");
-  }
-
-  if (this->rgbafn == NULL)
+  Magick::Image img(this->fname);
+  if (!img.isValid())
     return;
 
-  FILE * f;
-  f = fopen(this->rgbafn,"rb");
-  if (f != NULL) {
-    size_t rawsize, readsize;
-    rawsize = (size_t)(this->width * this->height * 4);
-    this->rgba.resize(rawsize);
-    readsize = fread(this->rgba.data(), 1, rawsize, f);
-    if (readsize < rawsize) {
-      this->rgba_free();
-    }
-    fclose(f);
-  }
-
+  this->rgba.resize(img.columns() * img.rows() * 4);
+  img.write(0, 0, img.columns(), img.rows(), "RGBA", MagickCore::CharPixel, this->rgba.data());
 }
 
 
