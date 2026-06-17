@@ -5,19 +5,21 @@ add_library(enable-warnings INTERFACE)
 add_library(disable-warnings INTERFACE)
 
 if (MSVC)
-    target_compile_options(enable-warnings INTERFACE /W4)
+    target_compile_options(enable-warnings INTERFACE /W1)
     target_compile_options(disable-warnings INTERFACE /w)
 else()
-    target_compile_options(enable-warnings INTERFACE -Wall -Wextra -Wno-deprecated-enum-enum-conversion)
+    target_compile_options(enable-warnings INTERFACE
+        -Wall
+        -Wextra
+        -Wpedantic
+        -Wno-deprecated-enum-enum-conversion
+        -Wno-overlength-strings
+    )
     target_compile_options(disable-warnings INTERFACE -w)
 endif()
 
-# enforce warnings as errors
-set(ENABLE_WERROR OFF CACHE BOOL "Report warnings as errors.")
-if (ENABLE_WERROR)
-    if (MSVC)
-        target_compile_options(enable-warnings INTERFACE /WX)
-    else()
-        target_compile_options(enable-warnings INTERFACE -Werror)
-    endif()
+# silence Clang warning: '__COUNTER__' is a C2y extension
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND
+    CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 22)
+    target_compile_options(enable-warnings INTERFACE -Wno-c2y-extensions)
 endif()

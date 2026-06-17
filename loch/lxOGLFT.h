@@ -22,8 +22,6 @@
 #ifndef OGLFT_H
 #define OGLFT_H
 
-#ifndef LXDEPCHECK
-
 #ifndef OGLFT_NO_WX
 #include <wx/colour.h>
 #else
@@ -36,6 +34,10 @@
 #include <vector>
 #ifdef HAVE_MPATROL
 #include <mpdebug.h>
+#endif
+
+#ifdef _MSC_VER
+#include <Windows.h>
 #endif
 
 #ifdef LXMACOSX
@@ -59,9 +61,6 @@
 #include FT_GLYPH_H
 #include FT_OUTLINE_H
 #include FT_TRIGONOMETRY_H
-
-#endif  
-
 
 //! All of OGLFT C++ objects are in this namespace.
 

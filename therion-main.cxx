@@ -29,7 +29,7 @@
 #include "thcmdline.h"
 #include "thconfig.h"
 #include "thdatareader.h"
-#include "thlibrary.h"
+#include "thlibrarydata.h"
 #include "thinit.h"
 #include "thversion.h"
 #include "thtexfonts.h"
@@ -38,6 +38,8 @@
 #include "thproj.h"
 #include "thdatabase.h"
 #include "thlog.h"
+
+#include <fstream>
 
 extern const thstok thtt_texts [];
 
@@ -124,8 +126,7 @@ int main(int argc, char * argv[]) {
     thprint("\n");
     thlog(fmt::format("  - using Proj {}, compiled against {}\n", thcs_get_proj_version(), thcs_get_proj_version_headers()));
     if (thcs_get_proj_version() != thcs_get_proj_version_headers())
-      thwarning(("Proj version mismatch: using %s, compiled against %s", thcs_get_proj_version().c_str(),
-                                                         thcs_get_proj_version_headers().c_str()));
+      thwarning(fmt::format("Proj version mismatch: using {}, compiled against {}", thcs_get_proj_version(), thcs_get_proj_version_headers()));
     
     // load initialization file
     thini.load();
@@ -156,7 +157,7 @@ int main(int argc, char * argv[]) {
     thconfig_src_list * sources = thcfg.get_sources();
     thconfig_src_list::iterator srcit;
     if (sources->size() == 0)
-      therror(("source files not specified"));
+      therror("source files not specified");
 #ifndef THDEBUG
     thprint("reading source files ... ");
     thtext_inline = true;
@@ -184,10 +185,13 @@ int main(int argc, char * argv[]) {
 #endif 
 
     // After reading printing
-    switch (thcmdln.get_print_state()) {
-      case THPS_LIB_SRC:
-        thdb.self_print_library();
-        thexit(EXIT_SUCCESS);
+    if (thcmdln.get_print_state() == THPS_LIB_SRC) {
+      std::fstream output("thlibrarydata.cxx", std::ios::out | std::ios::trunc);
+      if (!output) {
+        therror("can't write therion library to thlibrarydata.cxx");
+      }
+      thdb.self_print_library(output);
+      return EXIT_SUCCESS;
     }
 
     // process 2D references
@@ -251,7 +255,7 @@ int main(int argc, char * argv[]) {
   }
   catch(const std::exception& e)
   {
-      therror((e.what()));
+      therror(e.what());
   }
 #endif
 
