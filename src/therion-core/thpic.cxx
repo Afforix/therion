@@ -174,7 +174,7 @@ void thpic::rgba_init(long w, long h)
   std::fill(this->rgba.begin(), this->rgba.end(), 0);
 }
 
-void thpic::rgba_save(const char * type, const char * ext, int colors)
+void thpic::rgba_save(const char * ext, int colors)
 {
   if (this->rgba.empty()) {
     this->width = -1;
@@ -182,22 +182,19 @@ void thpic::rgba_save(const char * type, const char * ext, int colors)
     this->fname = NULL;
     return;
   }
-  thpic tmp;
-  tmp.width = this->width;
-  tmp.height = this->height;
-  auto tmpfn = fmt::format("pic{:04d}.rgba", thpic_convert_number++);
-  tmp.fname = thdb.strstore(thtmp.get_file_name(tmpfn.c_str()));
-  this->rgbafn = tmp.fname;
-  FILE * f;
-  f = fopen(tmp.fname,"wb");
-  fwrite(this->rgba.data(),1,4 * this->width * this->height,f);
-  fclose(f);
-  if ((colors > 1) && (!thcfg.reproducible_output))
-    this->fname = tmp.convert(type, ext, fmt::format("-define png:exclude-chunks=date,time -depth 8 -size {}x{} -density 300 +dither -colors {}", this->width, this->height, colors));
-  else
-    this->fname = tmp.convert(type, ext, fmt::format("-define png:exclude-chunks=date,time -depth 8 -size {}x{} -density 300", this->width, this->height));
-  tmpfn = fmt::format("pic{:04d}.{}", thpic_convert_number - 1, ext);
-  this->texfname = thdb.strstore(tmpfn.c_str());
+
+  Magick::Image image(this->width, this->height, "RGBA", Magick::CharPixel, this->rgba.data());
+  image.defineValue("PNG", "exclude-chunks", "date,time");
+  image.depth(8);
+  image.density(300);
+  if (colors > 1 && !thcfg.reproducible_output) {
+    image.quantizeColors(colors);
+    image.quantizeDither(true);
+  }
+  const auto fileName = fmt::format("pic{:04d}.{}", thpic_convert_number++, ext);
+  const auto tmpFile = thtmp.get_file_name(fileName.c_str());
+  image.write(tmpFile);
+  this->texfname = this->texfname = thdb.strstore(tmpFile);
 }
 
 
