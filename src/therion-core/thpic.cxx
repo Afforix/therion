@@ -186,7 +186,7 @@ void thpic::rgba_save(const char * ext, int colors)
   Magick::Image image(this->width, this->height, "RGBA", Magick::CharPixel, this->rgba.data());
   image.defineValue("PNG", "exclude-chunks", "date,time");
   image.depth(8);
-  image.density(300);
+  image.density("300");
   if (colors > 1 && !thcfg.reproducible_output) {
     image.quantizeColors(colors);
     image.quantizeDither(true);
