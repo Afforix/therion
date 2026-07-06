@@ -27,9 +27,7 @@
  */
 
 #include "thpic.h"
-#include "thbuffer.h"
 #include "thdatabase.h"
-#include "thinit.h"
 #include "thtmpdir.h"
 #include "thexception.h"
 #include "thconfig.h"
@@ -93,53 +91,6 @@ void thpic::init(const char * pfname, const char * incfnm)
     thwarning(fmt::format("unable to read \"{}\"", this->fname))
     this->height = -1;
     this->width = -1;
-  }
-
-}
-
-
-const char * thpic::convert(const char * type, const char * ext, const std::string& options)
-{
-  if (!this->exists())
-    return NULL;
-
-  thbuffer ccom;
-  int retcode;
-  bool isspc;
-  const char * tmpf;
-  const auto tmpfn = fmt::format("pic{:04d}.{}", thpic_convert_number++, ext);
-  isspc = (strcspn(thini.get_path_convert()," \t") < strlen(thini.get_path_convert()));
-  ccom = "";
-  if (isspc) ccom += "\"";
-  ccom += thini.get_path_convert();
-  if (isspc) ccom += "\"";
-  ccom += " ";
-  ccom += options.c_str();
-  ccom += " ";
-
-  isspc = (strcspn(this->fname," \t") < strlen(this->fname));
-  if (isspc) ccom += "\"";
-  ccom += this->fname;
-  if (isspc) ccom += "\"";
-  ccom += " ";
-
-  tmpf = thtmp.get_file_name(tmpfn.c_str());
-  isspc = (strcspn(tmpf," \t") < strlen(tmpf));
-  if (isspc) ccom += "\"";
-  ccom += type;
-  ccom += ":";
-  ccom += tmpf;
-  if (isspc) ccom += "\"";
-
-  retcode = system(ccom.c_str());
-  if (retcode == EXIT_SUCCESS) {
-    ccom = thtmp.get_file_name(tmpfn.c_str());
-    size_t x, l;
-    l = strlen(ccom.c_str());
-    for (x = 0; x < l; x++) if (ccom.c_str()[x] == '\\') ccom.data()[x] = '/';
-    return (thdb.strstore(ccom.c_str()));
-  } else {
-    return NULL;
   }
 
 }

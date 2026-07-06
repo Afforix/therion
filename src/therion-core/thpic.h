@@ -49,8 +49,6 @@ struct thpic {
 
   void init(const char * fname, const char * incfnm);
 
-  const char * convert(const char * type, const char * ext, const std::string& options);
-
   void rgba_load();
 
   void rgba_free();
