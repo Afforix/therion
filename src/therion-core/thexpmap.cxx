@@ -865,7 +865,7 @@ void thexpmap::export_th2(class thdb2dprj * prj)
           skpic = skit->morph(sf);
           if (skpic != NULL) {
             double nx, ny, ns;
-            const char * srcgif;
+            std::string srcgif;
             nx = sf * (skpic->x - prj->shift_x) - shx; 
             ny = sf * (skpic->y - prj->shift_y + skpic->scale * double(skpic->height)) - shy;
             ns = skpic->scale * sf;
@@ -885,12 +885,12 @@ void thexpmap::export_th2(class thdb2dprj * prj)
             thtext_inline = true;
 
             if (fabs(ns - 1.0) < 1e-8) {
-              srcgif = skpic->convert("GIF", "gif", "");            
+              srcgif = convert_to_gif(*skpic);
             } else {
-              srcgif = skpic->convert("GIF", "gif", fmt::format("-resize {}", long(ns * double(skpic->width) + 0.5)));
+              srcgif = convert_to_gif(*skpic, static_cast<long>(ns * double(skpic->width) + 0.5));
             }
             
-            if (srcgif != NULL) {              
+            if (!srcgif.empty()) {              
               // Let's copy results and log-file to working directory
 #ifdef THDEBUG
               thprint("copying results\n");
