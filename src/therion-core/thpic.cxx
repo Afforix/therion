@@ -174,7 +174,7 @@ void thpic::rgba_init(long w, long h)
   std::fill(this->rgba.begin(), this->rgba.end(), 0);
 }
 
-void thpic::rgba_save(const char * ext, int colors)
+void thpic::rgba_save(const int colors)
 {
   if (this->rgba.empty()) {
     this->width = -1;
@@ -191,7 +191,7 @@ void thpic::rgba_save(const char * ext, int colors)
     image.quantizeColors(colors);
     image.quantizeDither(true);
   }
-  const auto fileName = fmt::format("pic{:04d}.{}", thpic_convert_number++, ext);
+  const auto fileName = fmt::format("pic{:04d}.png", thpic_convert_number++);
   const auto tmpFile = thtmp.get_file_name(fileName.c_str());
   image.write(tmpFile);
   this->texfname = thdb.strstore(fileName.c_str());

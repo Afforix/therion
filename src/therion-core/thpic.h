@@ -57,7 +57,7 @@ struct thpic {
 
   void rgba_init(long width, long height);
 
-  void rgba_save(const char * ext, int colors = -1);
+  void rgba_save(int colors = -1);
 
   char * rgba_get_pixel(long x, long y);
 
