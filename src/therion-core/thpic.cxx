@@ -194,7 +194,7 @@ void thpic::rgba_save(const char * ext, int colors)
   const auto fileName = fmt::format("pic{:04d}.{}", thpic_convert_number++, ext);
   const auto tmpFile = thtmp.get_file_name(fileName.c_str());
   image.write(tmpFile);
-  this->texfname = thdb.strstore(tmpFile);
+  this->texfname = thdb.strstore(fileName.c_str());
 }
 
 
