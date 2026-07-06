@@ -104,17 +104,6 @@ class thinit {
   const char * get_path_cavern();
 
   /**
-   * Return ImageMagick convert executable path.
-   */
-   
-  const char * get_path_convert();
-
-  /**
-   * Return ImageMagick identify executable path.
-   */
-  const char * get_path_identify();
-
-  /**
    * Return metapost options.
    */
 

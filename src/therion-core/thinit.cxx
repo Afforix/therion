@@ -722,23 +722,6 @@ const char * thinit::get_path_cavern()
   return this->path_cavern.c_str();
 }
 
-
-const char * thinit::get_path_convert()
-{
-  return this->path_convert.c_str();
-}
-
-
-const char * thinit::get_path_identify()
-{
-  return this->path_identify.c_str();
-}
-
-//const char * thinit::get_path_3dtopos()
-//{
-//  return this->path_3dtopos.c_str();
-//}
-
 const char * thinit::get_path_mpost()
 {
   return this->path_mpost.c_str();
