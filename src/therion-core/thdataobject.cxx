@@ -39,6 +39,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 thdataobject::thdataobject()
 {
   this->db = NULL;
@@ -422,7 +424,7 @@ void thdataobject::read_cs(const char * src_x, const char * src_y, double & dst_
 	  double tx(0.0), ty(0.0), tz(0.0);
 	  if ((this->cs != TTCS_LOCAL) && thcs_get_data(this->cs)->dms) {
 	    thparse_double_dms(sv, tx, src_x);
-	    tx /= 180.0 / THPI;
+	    tx /= 180.0 / std::numbers::pi;
 	  } else {
 	    thparse_double(sv, tx, src_x);
 	  }
@@ -431,7 +433,7 @@ void thdataobject::read_cs(const char * src_x, const char * src_y, double & dst_
 
 	  if ((this->cs != TTCS_LOCAL) && thcs_get_data(this->cs)->dms) {
 	    thparse_double_dms(sv, ty, src_y);
-	    ty /= 180.0 / THPI;
+	    ty /= 180.0 / std::numbers::pi;
 	  } else {
 	    thparse_double(sv, ty, src_y);
 	  }
@@ -446,10 +448,10 @@ void thdataobject::read_cs(const char * src_x, const char * src_y, double & dst_
 	  }
 
 	  if ((this->cs != TTCS_LOCAL) && thcs_get_data(this->cs)->dms) {
-	    if ((tx < - THPI) || (tx > THPI))
+	    if ((tx < - std::numbers::pi) || (tx > std::numbers::pi))
 	      throw thexception(fmt::format("longitude out of range -- {}", thcs_get_data(this->cs)->swap ? src_y : src_x));
 
-	    if ((ty < (- THPI / 2)) || (ty > (THPI / 2)))
+	    if ((ty < (- std::numbers::pi / 2)) || (ty > (std::numbers::pi / 2)))
 	      throw thexception(fmt::format("latitude out of range -- {}", thcs_get_data(this->cs)->swap ? src_x : src_y));
 	  }
 

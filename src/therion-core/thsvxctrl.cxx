@@ -47,6 +47,7 @@
 #include <math.h>
 #include <string>
 #include <fstream>
+#include <numbers>
 
 thsvxctrl::thsvxctrl()
 {
@@ -215,8 +216,8 @@ void thsvxctrl::write_survey_leg(thdataleg * legp)
         }
         break;
       case TT_DATATYPE_CARTESIAN:
-        double cosdecl = cos(legp_declin/180*THPI), 
-          sindecl = sin(legp_declin/180*THPI);
+        double cosdecl = cos(legp_declin/180*std::numbers::pi), 
+          sindecl = sin(legp_declin/180*std::numbers::pi);
         legp_dx = (cosdecl * legp->dx) + (sindecl * legp->dy);
         legp_dy = (cosdecl * legp->dy) - (sindecl * legp->dx);
         break;

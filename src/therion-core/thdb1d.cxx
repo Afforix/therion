@@ -57,6 +57,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 //#define THUSESVX
 //#define THDEBUG
 
@@ -288,9 +290,9 @@ void thdb1d::scan_data()
                   //lei->bearing += lei->backbearing;
                   //lei->bearing = lei->bearing / 2.0;
 									double sumx, sumy;
-									sumx = cos((90.0 - lei->bearing)/180.0*THPI) + cos((90.0 - lei->backbearing)/180.0*THPI);
-									sumy = sin((90.0 - lei->bearing)/180.0*THPI) + sin((90.0 - lei->backbearing)/180.0*THPI);
-									lei->bearing = 90.0 - (atan2(sumy, sumx) / THPI * 180.0);
+									sumx = cos((90.0 - lei->bearing)/180.0*std::numbers::pi) + cos((90.0 - lei->backbearing)/180.0*std::numbers::pi);
+									sumy = sin((90.0 - lei->bearing)/180.0*std::numbers::pi) + sin((90.0 - lei->backbearing)/180.0*std::numbers::pi);
+									lei->bearing = 90.0 - (atan2(sumy, sumx) / std::numbers::pi * 180.0);
                   if (lei->bearing < 0.0)
                     lei->bearing += 360.0;
                 }
@@ -364,10 +366,10 @@ void thdb1d::scan_data()
                                 
                 if (!lei->direction)
                   lei->total_gradient *= -1.0;
-                lei->total_dz = lei->total_length * cos(lei->total_gradient/180*THPI);
-                lei->total_dx = lei->total_dz * sin(lei->total_bearing/180*THPI);
-                lei->total_dy = lei->total_dz * cos(lei->total_bearing/180*THPI);
-                lei->total_dz = lei->total_length * sin(lei->total_gradient/180*THPI);
+                lei->total_dz = lei->total_length * cos(lei->total_gradient/180*std::numbers::pi);
+                lei->total_dx = lei->total_dz * sin(lei->total_bearing/180*std::numbers::pi);
+                lei->total_dy = lei->total_dz * cos(lei->total_bearing/180*std::numbers::pi);
+                lei->total_dz = lei->total_length * sin(lei->total_gradient/180*std::numbers::pi);
                 lei->plumbed = (thisinf(lei->gradient) != 0);
                 if (lei->infer_plumbs && (!lei->plumbed)) {
                   lei->plumbed = (lei->gradient == -90.0) || (lei->gradient == 90.0);
@@ -382,13 +384,13 @@ void thdb1d::scan_data()
                   if (lei->total_bearing >= 360.0)
                     lei->total_bearing -= 360.0;
                 }               
-                lei->total_gradient = asin(lei->depthchange / lei->length) / THPI * 180.0;
+                lei->total_gradient = asin(lei->depthchange / lei->length) / std::numbers::pi * 180.0;
                 if (!lei->direction)
                   lei->total_gradient *= -1.0;
-                lei->total_dz = lei->total_length * cos(lei->total_gradient/180*THPI);
-                lei->total_dx = lei->total_dz * sin(lei->total_bearing/180*THPI);
-                lei->total_dy = lei->total_dz * cos(lei->total_bearing/180*THPI);
-                lei->total_dz = lei->total_length * sin(lei->total_gradient/180*THPI);
+                lei->total_dz = lei->total_length * cos(lei->total_gradient/180*std::numbers::pi);
+                lei->total_dx = lei->total_dz * sin(lei->total_bearing/180*std::numbers::pi);
+                lei->total_dy = lei->total_dz * cos(lei->total_bearing/180*std::numbers::pi);
+                lei->total_dz = lei->total_length * sin(lei->total_gradient/180*std::numbers::pi);
                 if (lei->infer_plumbs && (!lei->plumbed)) {
                   lei->plumbed = (lei->depthchange == lei->length) && (lei->depthchange != 0.0);
                 }
@@ -402,13 +404,13 @@ void thdb1d::scan_data()
                   if (lei->total_bearing >= 360.0)
                     lei->total_bearing -= 360.0;
                 }               
-                lei->total_gradient = atan2(lei->depthchange, lei->length) / THPI * 180.0;
+                lei->total_gradient = atan2(lei->depthchange, lei->length) / std::numbers::pi * 180.0;
                 if (!lei->direction)
                   lei->total_gradient *= -1.0;
-                lei->total_dz = lei->total_length * cos(lei->total_gradient/180*THPI);
-                lei->total_dx = lei->total_dz * sin(lei->total_bearing/180*THPI);
-                lei->total_dy = lei->total_dz * cos(lei->total_bearing/180*THPI);
-                lei->total_dz = lei->total_length * sin(lei->total_gradient/180*THPI);
+                lei->total_dz = lei->total_length * cos(lei->total_gradient/180*std::numbers::pi);
+                lei->total_dx = lei->total_dz * sin(lei->total_bearing/180*std::numbers::pi);
+                lei->total_dy = lei->total_dz * cos(lei->total_bearing/180*std::numbers::pi);
+                lei->total_dz = lei->total_length * sin(lei->total_gradient/180*std::numbers::pi);
                 if (lei->infer_plumbs && (!lei->plumbed)) {
                   lei->plumbed = (lei->length == 0.0) && (lei->depthchange != 0.0);
                 }
@@ -419,7 +421,7 @@ void thdb1d::scan_data()
                 lei->total_dy = (lei->direction ? 1.0 : -1.0) * lei->dy;
                 lei->total_dz = (lei->direction ? 1.0 : -1.0) * lei->dz;
                 lei->total_length = thdxyz2length(lei->total_dx,lei->total_dy,lei->total_dz);
-                lei->total_bearing = thdxyz2bearing(lei->total_dx,lei->total_dy,lei->total_dz);
+                lei->total_bearing = thdxyz2bearing(lei->total_dx,lei->total_dy);
                 lei->total_gradient = thdxyz2clino(lei->total_dx,lei->total_dy,lei->total_dz);
                 if (lei->infer_plumbs && (!lei->plumbed)) {
                   lei->plumbed = (lei->dx == 0.0) && (lei->dy == 0.0) && (lei->dz != 0.0);
@@ -460,8 +462,8 @@ void thdb1d::scan_data()
                 lei->total_bearing -= 360.0;
               if (lei->total_bearing < 0.0)
                 lei->total_bearing += 360.0;
-              cosdecl = cos(declin/180*THPI);
-              sindecl = sin(declin/180*THPI);
+              cosdecl = cos(declin/180*std::numbers::pi);
+              sindecl = sin(declin/180*std::numbers::pi);
               tmpx = lei->total_dx;
               tmpy = lei->total_dy;
               lei->total_dx = (cosdecl * tmpx) + (sindecl * tmpy);
@@ -2408,10 +2410,10 @@ void thdb1d::close_loops()
       cleg->leg->total_dz = tos->z - froms->z;
       // najprv horizontalnu dlzku
       cleg->leg->total_length = std::hypot(cleg->leg->total_dx, cleg->leg->total_dy);
-      cleg->leg->total_bearing = atan2(cleg->leg->total_dx, cleg->leg->total_dy) / THPI * 180.0;
+      cleg->leg->total_bearing = atan2(cleg->leg->total_dx, cleg->leg->total_dy) / std::numbers::pi * 180.0;
       if (cleg->leg->total_bearing < 0.0)
         cleg->leg->total_bearing += 360.0;
-      cleg->leg->total_gradient = atan2(cleg->leg->total_dz, cleg->leg->total_length) / THPI * 180.0;
+      cleg->leg->total_gradient = atan2(cleg->leg->total_dz, cleg->leg->total_length) / std::numbers::pi * 180.0;
       // potom celkovu dlzku
       cleg->leg->total_length = std::hypot(cleg->leg->total_length, cleg->leg->total_dz);
       continue;
@@ -2798,17 +2800,17 @@ thdb3ddata * thdb1d::get_3d() {
       }
       
       // spocitame si X a Y section vectors
-      secXx = cos((*tlegs)->leg->total_bearing / 180.0 * THPI);
-      secXy = -sin((*tlegs)->leg->total_bearing / 180.0 * THPI);
+      secXx = cos((*tlegs)->leg->total_bearing / 180.0 * std::numbers::pi);
+      secXy = -sin((*tlegs)->leg->total_bearing / 180.0 * std::numbers::pi);
       secXz = 0;
       if (fabs((*tlegs)->leg->total_gradient) < (*tlegs)->leg->vtresh) {
         secYx = 0.0;
         secYy = 0.0;
         secYz = 1.0;
       } else {
-        secYx = -sin((*tlegs)->leg->total_gradient / 180.0 * THPI) * sin((*tlegs)->leg->total_bearing / 180.0 * THPI);
-        secYy = -sin((*tlegs)->leg->total_gradient / 180.0 * THPI) * cos((*tlegs)->leg->total_bearing / 180.0 * THPI);
-        secYz = cos((*tlegs)->leg->total_gradient / 180.0 * THPI);
+        secYx = -sin((*tlegs)->leg->total_gradient / 180.0 * std::numbers::pi) * sin((*tlegs)->leg->total_bearing / 180.0 * std::numbers::pi);
+        secYy = -sin((*tlegs)->leg->total_gradient / 180.0 * std::numbers::pi) * cos((*tlegs)->leg->total_bearing / 180.0 * std::numbers::pi);
+        secYz = cos((*tlegs)->leg->total_gradient / 180.0 * std::numbers::pi);
       }
       
       secfc = this->d3_walls.insert_face(THDB3DFC_TRIANGLE_STRIP);

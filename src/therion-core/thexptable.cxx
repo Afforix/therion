@@ -43,6 +43,7 @@
 #include "thparse.h"
 #include "therion.h"
 #include <filesystem>
+#include <numbers>
 
 #include <fmt/format.h>
 
@@ -448,8 +449,8 @@ void thexptable::add_coordinates(double x, double y, double z, const char * xlab
       thcs2cs(thcfg.outcs, this->cs,
         x, y, z, tx, ty, tz);
       if (thcs_get_data(this->cs)->dms) {
-        tx = tx / THPI * 180.0;
-        ty = ty / THPI * 180.0;
+        tx = tx / std::numbers::pi * 180.0;
+        ty = ty / std::numbers::pi * 180.0;
       }
     }
   }

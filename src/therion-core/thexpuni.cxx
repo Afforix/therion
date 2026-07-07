@@ -51,6 +51,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 static const char * DXFpre = 
 "  0\nSECTION\n  2\nHEADER\n  9\n$ACADVER\n  1\nAC1014\n  9\n$ACADMAINTVER\n"
 " 70\n     0\n  9\n$DWGCODEPAGE\n  3\nANSI_1252\n  9\n$INSBASE\n"
@@ -492,7 +494,7 @@ void thexpmap::export_kml(class thdb2dxm * maps, class thdb2dprj * prj)
         fprintf(out, "<Placemark>\n");
         fprintf(out, "<styleUrl>#ThEntranceIcon</styleUrl>");
         fprintf(out, "<name><![CDATA[%s]]></name>\n", ths2txt(station->comment, layout->lang).c_str());
-        fprintf(out, "<Point> <coordinates>%.14f,%.14f,%.14f</coordinates> </Point>\n", x / THPI * 180.0, y / THPI * 180.0, z);
+        fprintf(out, "<Point> <coordinates>%.14f,%.14f,%.14f</coordinates> </Point>\n", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, z);
         fprintf(out, "</Placemark>\n");
       }
     }
@@ -557,13 +559,13 @@ void thexpmap::export_kml(class thdb2dxm * maps, class thdb2dprj * prj)
                 for(ip = it->m_point_list.begin(); ip != it->m_point_list.end(); ip++) {
                   thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                     ip->m_x, ip->m_y, scrap->z, x, y, z);
-                  fprintf(out, "\t%.14f,%.14f,%.14f ", x / THPI * 180.0, y / THPI * 180.0, 0.0);
+                  fprintf(out, "\t%.14f,%.14f,%.14f ", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, 0.0);
                 }
                 if (it->m_point_list.size() > 0) {
                 	ip = it->m_point_list.begin();
                     thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                       ip->m_x, ip->m_y, scrap->z, x, y, z);
-                    fprintf(out, "\t%.14f,%.14f,%.14f ", x / THPI * 180.0, y / THPI * 180.0, 0.0);
+                    fprintf(out, "\t%.14f,%.14f,%.14f ", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, 0.0);
                 }
                 fprintf(out,"</coordinates>\n</LinearRing>\n");
 
@@ -656,19 +658,19 @@ void thexpmap::export_bbox(class thdb2dxm * maps, class thdb2dprj * prj)
 	    
               thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                 scrap->lxmin + prj->rshift_x, scrap->lymin + prj->rshift_y, scrap->z + prj->rshift_z, cx, cy, cz);
-              lim.Add(cx / THPI * 180.0, cy / THPI * 180.0, cz);
+              lim.Add(cx / std::numbers::pi * 180.0, cy / std::numbers::pi * 180.0, cz);
 
               thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                 scrap->lxmin + prj->rshift_x, scrap->lymax + prj->rshift_y, scrap->z + prj->rshift_z, cx, cy, cz);
-              lim.Add(cx / THPI * 180.0, cy / THPI * 180.0, cz);
+              lim.Add(cx / std::numbers::pi * 180.0, cy / std::numbers::pi * 180.0, cz);
 
               thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                 scrap->lxmax + prj->rshift_x, scrap->lymin + prj->rshift_y, scrap->z + prj->rshift_z, cx, cy, cz);
-              lim.Add(cx / THPI * 180.0, cy / THPI * 180.0, cz);
+              lim.Add(cx / std::numbers::pi * 180.0, cy / std::numbers::pi * 180.0, cz);
 
               thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                 scrap->lxmax + prj->rshift_x, scrap->lymax + prj->rshift_y, scrap->z + prj->rshift_z, cx, cy, cz);
-              lim.Add(cx / THPI * 180.0, cy / THPI * 180.0, cz);
+              lim.Add(cx / std::numbers::pi * 180.0, cy / std::numbers::pi * 180.0, cz);
 	      
 	      has_scrap = true;
 	      

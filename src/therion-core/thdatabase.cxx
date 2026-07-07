@@ -56,6 +56,7 @@
 
 #include <fmt/ostream.h>
 
+#include <numbers>
 
 const char * thlibrarydata_init_text =
 R"(/**
@@ -856,10 +857,10 @@ void thdatabase::preprocess() {
 
   // CS conversions
   if (thcfg.ibbx_def) {
-	  thcs_cfg.bbox.push_back(thcfg.ibbx[0] / THPI * 180.0);
-	  thcs_cfg.bbox.push_back(thcfg.ibbx[2] / THPI * 180.0);
-	  thcs_cfg.bbox.push_back(thcfg.ibbx[1] / THPI * 180.0);
-	  thcs_cfg.bbox.push_back(thcfg.ibbx[3] / THPI * 180.0);
+	  thcs_cfg.bbox.push_back(thcfg.ibbx[0] / std::numbers::pi * 180.0);
+	  thcs_cfg.bbox.push_back(thcfg.ibbx[2] / std::numbers::pi * 180.0);
+	  thcs_cfg.bbox.push_back(thcfg.ibbx[1] / std::numbers::pi * 180.0);
+	  thcs_cfg.bbox.push_back(thcfg.ibbx[3] / std::numbers::pi * 180.0);
 
     // PROJ9.2 has some issues with a degenerated bbox
     if (thcs_cfg.bbox[0] == thcs_cfg.bbox[2]) thcs_cfg.bbox[2] += 1e-8;
