@@ -31,6 +31,7 @@
 
 #include <cmath>
 #include <cfloat>
+#include <numbers>
 
 
 // nan handling
@@ -98,10 +99,9 @@ bool thdefinitely_less_than(double a, double b, double epsilon);
 // infnan.h
 #endif
 
-#define THPI 3.1415926535898
 #define thnanpow2(cislo) ((thisnan(cislo) ? 0.0 : cislo) * (thisnan(cislo) ? 0.0 : cislo))
 #define thdxyz2length(dx,dy,dz) (sqrt(thnanpow2(dx) + thnanpow2(dy) + thnanpow2(dz)))
-#define thdxyz2b(dx,dy,dz) (270 - (atan2(dy,dx) / THPI * 180.0 + 180))
+#define thdxyz2b(dx,dy,dz) (270 - (atan2(dy,dx) / std::numbers::pi * 180.0 + 180))
 #define thdxyz2bearing(dx,dy,dz) (thdxyz2b(dx,dy,dz) < 0.0 ? thdxyz2b(dx,dy,dz) + 360.0 : thdxyz2b(dx,dy,dz))
-#define thdxyz2clino(dx,dy,dz) (atan2(dz,sqrt(thnanpow2(dx) + thnanpow2(dy))) / THPI * 180.0)
+#define thdxyz2clino(dx,dy,dz) (atan2(dz,sqrt(thnanpow2(dx) + thnanpow2(dy))) / std::numbers::pi * 180.0)
 

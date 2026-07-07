@@ -967,7 +967,7 @@ thvec2 thlinzoomtrans::forward(thvec2 src) {
       dlt = this->m_line_to.eval(src);
       if (dlf < 0.0) {
         vec = src - this->m_from;
-        vo = atan2(sin((vec.orientation() - this->m_orient_from) / 180.0 * THPI), cos((vec.orientation() - this->m_orient_from) / 180.0 * THPI)) / THPI;
+        vo = atan2(sin((vec.orientation() - this->m_orient_from) / 180.0 * std::numbers::pi), cos((vec.orientation() - this->m_orient_from) / 180.0 * std::numbers::pi)) / std::numbers::pi;
         if (vo < 0.0) {
         	if (vo > -.5)
         		vo = 0.0;
@@ -978,7 +978,7 @@ thvec2 thlinzoomtrans::forward(thvec2 src) {
         return this->m_from + vec;
       } else if (dlt < 0.0) {
         vec = src - this->m_to;
-        vo = atan2(sin((this->m_orient_to - vec.orientation() - 180.0) / 180.0 * THPI), cos((this->m_orient_to - vec.orientation() - 180.0) / 180.0 * THPI)) / THPI;
+        vo = atan2(sin((this->m_orient_to - vec.orientation() - 180.0) / 180.0 * std::numbers::pi), cos((this->m_orient_to - vec.orientation() - 180.0) / 180.0 * std::numbers::pi)) / std::numbers::pi;
         if (vo < 0.0) {
         	if (vo > -.5)
         		vo = 0.0;
