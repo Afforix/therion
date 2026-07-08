@@ -53,7 +53,8 @@
 #include "therion.h"
 #include "thlog.h"
 #include "thparse.h"
-#include "QuickHull.hpp"
+
+import QuickHull;
 
 //#define THUSESVX
 //#define THDEBUG

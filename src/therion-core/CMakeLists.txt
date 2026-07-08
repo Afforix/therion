@@ -17,6 +17,7 @@ add_library(therion-core STATIC
 
 target_include_directories(therion-core PUBLIC ${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(therion-core SYSTEM PUBLIC ${CMAKE_SOURCE_DIR}/extern/stl_reader)
+set_target_properties(therion-core PROPERTIES CXX_SCAN_FOR_MODULES ON)
 target_link_libraries(therion-core PUBLIC
     therion-chencdata
     therion-lang
