@@ -4,7 +4,7 @@ module;
 
 export module QuickHull;
 
-export
+export namespace quickhull
 {
     using ::quickhull::QuickHull;
     using ::quickhull::Vector3;
