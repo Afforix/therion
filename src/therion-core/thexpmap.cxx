@@ -74,6 +74,8 @@
 
 #include <Magick++/Image.h>
 
+#include <fmt/format.h>
+
 namespace fs = std::filesystem;
 
 static std::string convert_to_gif(const thpic& pic, const long resize = 0)
@@ -429,7 +431,7 @@ void thexpmap::export_xvi(class thdb2dprj * prj)
   pltf = fopen(fnm,"wb");
      
   if (pltf == NULL) {
-    thwarning(fmt::format("can't open {} for output",fnm))
+    thwarning(fmt::format("can't open {} for output",fnm));
     return;
   }
   this->register_output(fnm);
@@ -800,7 +802,7 @@ void thexpmap::export_th2(class thdb2dprj * prj)
   FILE * pltf;
   pltf = fopen(fnm,"wb");
   if (pltf == NULL) {
-    thwarning(fmt::format("can't open {} for output",fnm))
+    thwarning(fmt::format("can't open {} for output",fnm));
     return;
   }
   this->register_output(fnm);
@@ -1217,7 +1219,7 @@ void thexpmap::export_pdf(thdb2dxm * maps, thdb2dprj * prj) {
 
   if (maps == NULL) {
     thwarning(fmt::format("{} [{}] -- no selected projection data -- {}",
-      this->src.name, this->src.line, this->projstr))
+      this->src.name, this->src.line, this->projstr));
     return;
   }
 
@@ -2155,7 +2157,7 @@ if (ENC_NEW.NFSS==0) {
             fprintf(plf,"\",\n");      
       
       thbuffer texb;
-      texb.guarantee(128);
+      texb.resize(128);
       thdecode(& texb,TT_ISO8859_2,(strlen(cmap->map->title) > 0 ? cmap->map->title : cmap->map->name));      
       thdecode_tex(& encb, texb.c_str());
       fprintf(plf,"\t\tN => '%s',\n",encb.c_str());
@@ -3092,7 +3094,7 @@ thexpmap_xmps thexpmap::export_mp(thexpmapmpxs * out, class thscrap * scrap,
                 lp->point->export_mp(out);
                 fprintf(out->file,",");
                 lp->export_nextcp_mp(out);
-                thdb.buff_enc.guarantee(4096);
+                thdb.buff_enc.resize(4096);
                 //sprintf(thdb.buff_enc.data(),"%.0f",lp->rsize - out->layout->goz);
                 fprintf(out->file,",btex \\thwallaltitude %s etex);\n",utf2tex(out->layout->units.format_length(lp->rsize - out->layout->goz)).c_str());
 //                fprintf(out->file,",\"%.0f\");\n",lp->rsize);
@@ -3234,7 +3236,7 @@ void thexpmap::export_pdf_set_colors(class thdb2dxm * maps, class thdb2dprj * /*
   // urobi altitude legendu
   long xalt;
   thbuffer tmpb;
-  tmpb.guarantee(2048);
+  tmpb.resize(2048);
   if (addleg && (maxz > minz) && (this->layout->color_crit == TT_LAYOUT_CCRIT_ALTITUDE)) {
     for (xalt = 5; xalt >= 0; xalt--) {
       curz = double(xalt) / 5.0 * (maxz - minz) + minz;
@@ -3353,7 +3355,7 @@ void thexpmap::export_uni(class thdb2dxm * maps, class thdb2dprj * /*prj*/) // T
 
   if (maps == NULL) {
     thwarning(fmt::format("{} [{}] -- no selected projection data -- {}",
-      this->src.name, this->src.line, this->projstr))
+      this->src.name, this->src.line, this->projstr));
     return;
   }
 
@@ -3363,7 +3365,7 @@ void thexpmap::export_uni(class thdb2dxm * maps, class thdb2dprj * /*prj*/) // T
   img_output_version = 4;
   pimg = img_open_write(fnm, "cave", 1);
   if (pimg == NULL) {
-    thwarning(fmt::format("can't open {} for output",fnm))
+    thwarning(fmt::format("can't open {} for output",fnm));
     return;
   }
   this->register_output(fnm);

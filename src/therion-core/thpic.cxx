@@ -35,6 +35,8 @@
 
 #include <Magick++/Image.h>
 
+#include <fmt/format.h>
+
 #include <filesystem>
 #include <algorithm>
 
@@ -88,7 +90,7 @@ void thpic::init(const char * pfname, const char * incfnm)
   }
   else
   {
-    thwarning(fmt::format("unable to read \"{}\"", this->fname))
+    thwarning(fmt::format("unable to read \"{}\"", this->fname));
     this->height = -1;
     this->width = -1;
   }

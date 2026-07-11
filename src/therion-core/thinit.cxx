@@ -41,6 +41,9 @@
 #include "thparse.h"
 #include "thchencdata.h"
 #include "icase.h"
+
+#include <fmt/format.h>
+
 #include <filesystem>
 
 #ifdef THWIN32
@@ -307,7 +310,7 @@ void thinit::load()
 
 #ifdef THWIN32
   // set cavern path according to Windows registers
-  this->path_cavern.guarantee(1024);
+  this->path_cavern.resize(1024);
   thmbuffer mbf;
   thbuffer bf;
   DWORD type(0), length = 1024;

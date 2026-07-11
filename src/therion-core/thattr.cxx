@@ -31,6 +31,9 @@
 #include "therion.h"
 #include "thchenc.h"
 #include "thparse.h"
+
+#include <fmt/format.h>
+
 #include <cctype>
 #include <cmath>
 #include <cstring>
@@ -417,7 +420,7 @@ void thattr::export_dbf(const char * fname, int encoding)
     }
     cf->m_xdbf_field = DBFAddField(h, cf->m_xdbf_name.c_str(), ftype, cf->m_xdbf_width, cf->m_xdbf_decimals); 
     if (cf->m_xdbf_field == -1) {
-      thwarning(fmt::format("error writing to {}", fname))
+      thwarning(fmt::format("error writing to {}", fname));
       goto EXPORT_DBF_EXIT;
     }
   }
@@ -724,7 +727,7 @@ void thattr::export_html(const char * fname, const char * title, int /*encoding*
   const char * value;
   bool header_value;
   thbuffer valb;
-  valb.guarantee(128);
+  valb.resize(128);
   std::string value_plus;
   for(oi = this->m_obj_list.begin(); oi != this->m_obj_list.end(); ++oi) {
     fprintf(f,"<tr id=\"%s\">", oi->m_tree_node_id);
