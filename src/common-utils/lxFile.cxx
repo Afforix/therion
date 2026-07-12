@@ -13,12 +13,12 @@
 #include "lxMath.h"
 #include "img.h"
 
+#include <fmt/format.h>
+
 namespace fs = std::filesystem;
 
 double lxFilePrepDbl(double val) {
-  char tb[32];
-  snprintf(tb, 31, "%.12e", val);
-  return atof(tb);
+  return std::stod(fmt::format("{:.12e}", val));
 }
 
 
