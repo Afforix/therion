@@ -56,6 +56,7 @@
 
 #include <fmt/ostream.h>
 
+#include <numbers>
 
 const char * thlibrarydata_init_text =
 R"(/**

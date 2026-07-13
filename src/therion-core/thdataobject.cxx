@@ -39,6 +39,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 thdataobject::thdataobject()
 {
   this->db = NULL;
