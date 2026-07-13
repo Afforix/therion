@@ -29,6 +29,7 @@
  */
 #include <assert.h>
 #include <math.h>
+#include <numbers>
 
 #include "thinfnan.h"
 #include "thwarppme.h"

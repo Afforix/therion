@@ -47,6 +47,7 @@
 #include <math.h>
 #include <string>
 #include <fstream>
+#include <numbers>
 
 thsvxctrl::thsvxctrl()
 {

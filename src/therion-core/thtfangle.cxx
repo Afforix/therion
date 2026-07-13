@@ -34,6 +34,7 @@
 #include <fmt/format.h>
 
 #include <math.h>
+#include <numbers>
 
 thtfangle::thtfangle() : thtf(TT_TFU_DEG) {}
 

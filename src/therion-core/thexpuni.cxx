@@ -48,6 +48,7 @@
 #include "thlang.h"
 #include "thparse.h"
 #include "therion.h"
+#include <numbers>
 
 #include <fmt/format.h>
 

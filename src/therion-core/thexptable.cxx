@@ -43,6 +43,7 @@
 #include "thparse.h"
 #include "therion.h"
 #include <filesystem>
+#include <numbers>
 
 #include <fmt/format.h>
 
