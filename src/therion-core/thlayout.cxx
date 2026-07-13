@@ -48,6 +48,7 @@
 #include <filesystem>
 #include <algorithm>
 #include <cassert>
+#include <numbers>
 
 namespace fs = std::filesystem;
 
@@ -2291,8 +2292,8 @@ void thlayout::export_mptex_font_size(FILE * o, th2ddataobject * obj, bool print
     			font_size = optical_zoom * obj->scale_numeric / 0.707 * this->font_setup[1];
                 else if (obj->scale_numeric >= 2.0)
     			font_size = optical_zoom * obj->scale_numeric / 2.0 * this->font_setup[4];
-                else if (obj->scale_numeric >= 1.414)
-    			font_size = optical_zoom * obj->scale_numeric / 1.414 * this->font_setup[3];
+                else if (obj->scale_numeric >= std::numbers::sqrt2)
+    			font_size = optical_zoom * obj->scale_numeric / std::numbers::sqrt2 * this->font_setup[3];
                 else
     			font_size = optical_zoom * obj->scale_numeric * this->font_setup[2];
     		fprintf(o,"\\size[%.1f]\\basefontsize=%.0f\\relax ", font_size, font_size);

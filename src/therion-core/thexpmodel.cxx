@@ -2007,7 +2007,7 @@ void thexpmodel::export_kml_file(class thdatabase * dbp)
         fprintf(out, "<Placemark>\n");
         fprintf(out, "<styleUrl>#ThEntranceIcon</styleUrl>");
         fprintf(out, "<name><![CDATA[%s]]></name>\n", ths2txt(station->get_label(), layout->lang).c_str());
-        fprintf(out, "<Point> <coordinates>%.14f,%.14f,%.14f</coordinates> </Point>\n", x / THPI * 180.0, y / THPI * 180.0, z);
+        fprintf(out, "<Point> <coordinates>%.14f,%.14f,%.14f</coordinates> </Point>\n", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, z);
         fprintf(out, "</Placemark>\n");
       }
     }
@@ -2037,14 +2037,14 @@ void thexpmodel::export_kml_file(class thdatabase * dbp)
           thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
             dbp->db1d.station_vec[cur_st].x, dbp->db1d.station_vec[cur_st].y, dbp->db1d.station_vec[cur_st].z,
             x, y, z);
-          fprintf(out, "\t%.14f,%.14f,%.14f ", x / THPI * 180.0, y / THPI * 180.0, z);
+          fprintf(out, "\t%.14f,%.14f,%.14f ", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, z);
           numst = 1;
         }
         last_st = dbp->db1d.station_vec[((*tlegs)->reverse ? (*tlegs)->leg->from.id : (*tlegs)->leg->to.id) - 1].uid - 1;
         thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
           dbp->db1d.station_vec[last_st].x, dbp->db1d.station_vec[last_st].y, dbp->db1d.station_vec[last_st].z,
           x, y, z);
-        fprintf(out, "\t%.14f,%.14f,%.14f ", x / THPI * 180.0, y / THPI * 180.0, z);
+        fprintf(out, "\t%.14f,%.14f,%.14f ", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, z);
         numst++;
       }
     }
@@ -2119,7 +2119,7 @@ void thexpmodel::export_kml_survey_file(FILE * out, thsurvey * surv)
               thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
                 db->db1d.station_vec[cur_st].x, db->db1d.station_vec[cur_st].y, db->db1d.station_vec[cur_st].z,
                 x, y, z);
-              fprintf(out, "\t%.14f,%.14f,%.14f ", x / THPI * 180.0, y / THPI * 180.0, z);
+              fprintf(out, "\t%.14f,%.14f,%.14f ", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, z);
               numst = 1;
             }
             if (numst == 0)
@@ -2128,7 +2128,7 @@ void thexpmodel::export_kml_survey_file(FILE * out, thsurvey * surv)
             thcs2cs(thcfg.outcs, TTCS_LONG_LAT,
               db->db1d.station_vec[last_st].x, db->db1d.station_vec[last_st].y, db->db1d.station_vec[last_st].z,
               x, y, z);
-            fprintf(out, "\t%.14f,%.14f,%.14f ", x / THPI * 180.0, y / THPI * 180.0, z);
+            fprintf(out, "\t%.14f,%.14f,%.14f ", x / std::numbers::pi * 180.0, y / std::numbers::pi * 180.0, z);
             numst++;
           }
         }  // for legs

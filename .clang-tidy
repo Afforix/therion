@@ -1,6 +1,7 @@
 ---
 Checks: '-*,
         modernize-use-override,
+        modernize-use-std-numbers,
         clang-analyzer-cplusplus*,
         clang-analyzer-unix*,
           -clang-analyzer-unix.Stream,

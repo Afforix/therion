@@ -449,8 +449,8 @@ void thexpmap::export_xvi(class thdb2dprj * prj)
         alpha = 0.0;
       else
         alpha = prj->pp1;
-      xx = sf * cos(alpha / 180.0 * THPI);  xy = 0.0;
-      yx = sf * -sin(alpha / 180.0 * THPI);  yy = 0.0;
+      xx = sf * cos(alpha / 180.0 * std::numbers::pi);  xy = 0.0;
+      yx = sf * -sin(alpha / 180.0 * std::numbers::pi);  yy = 0.0;
       zx = 0.0; zy = sf;
       gxo = sf * this->layout->gox * xx + this->layout->goy * yx;
       gyo = sf * this->layout->goz;
@@ -1307,8 +1307,8 @@ void thexpmap::export_pdf(thdb2dxm * maps, thdb2dprj * prj) {
         origin_shx = (prj->shift_x - this->layout->ox) * out.ms;
         origin_shy = (prj->shift_y - this->layout->oy) * out.ms;
         rrot = this->layout->rotate - meridian_conv + rotate_plus;
-        srot = sin(rrot / 180.0 * THPI);
-        crot = cos(rrot / 180.0 * THPI);
+        srot = sin(rrot / 180.0 * std::numbers::pi);
+        crot = cos(rrot / 180.0 * std::numbers::pi);
         new_shx = origin_shx * crot + origin_shy * srot;
         new_shy = origin_shy * crot - origin_shx * srot;
         origin_shx = new_shx;
@@ -1575,8 +1575,8 @@ if (ENC_NEW.NFSS==0) {
                       break;
                     default:
                       out.rr = out.layout->rotate - meridian_conv + rotate_plus;
-                      out.sr = sin(out.rr / 180.0 * THPI);
-                      out.cr = cos(out.rr / 180.0 * THPI);
+                      out.sr = sin(out.rr / 180.0 * std::numbers::pi);
+                      out.cr = cos(out.rr / 180.0 * std::numbers::pi);
                       break;
                   }
                   shx = out.mx * out.ms;
@@ -1600,8 +1600,8 @@ if (ENC_NEW.NFSS==0) {
                     break;
                   default:
                     rrot = this->layout->rotate - meridian_conv + rotate_plus;
-                    srot = sin(rrot / 180.0 * THPI);
-                    crot = cos(rrot / 180.0 * THPI);
+                    srot = sin(rrot / 180.0 * std::numbers::pi);
+                    crot = cos(rrot / 180.0 * std::numbers::pi);
                     new_shx = shx * crot + shy * srot;
                     new_shy = shy * crot - shx * srot;
                     shx = new_shx;
@@ -1917,8 +1917,8 @@ if (ENC_NEW.NFSS==0) {
       break;
     default:
       rrot = this->layout->rotate - meridian_conv + rotate_plus;
-      srot = sin(rrot / 180.0 * THPI);
-      crot = cos(rrot / 180.0 * THPI);
+      srot = sin(rrot / 180.0 * std::numbers::pi);
+      crot = cos(rrot / 180.0 * std::numbers::pi);
   }
 
   thdb_object_list_type::iterator obi;

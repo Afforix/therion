@@ -77,7 +77,7 @@ void thtfangle::parse_units(char * ustr)
 double thtfangle::transform(double value) {
   switch (this->units) {
 	 case TT_TFU_PERC:
-	 	return (atan(thtf::transform(value) / 100.0) / THPI * 180.0); 
+	 	return (atan(thtf::transform(value) / 100.0) / std::numbers::pi * 180.0); 
 	  break;
 	default:
 	  return thtf::transform(value);

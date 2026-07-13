@@ -148,7 +148,7 @@ therion::warp::point_pair::order_lines( inserter * warper, double x_u, warp_proj
     therion::warp::line * l1 = mLines[0];
     thvec2 v1 = ( this == l1->m_p1 ) ? l1->vz : l1->vz * (-1);
     for ( size_t i=1; i<sz-1; ++i) {
-      double theta_min = 2*THPI;
+      double theta_min = 2*std::numbers::pi;
       size_t jmin = i;
       for (size_t j=i; j<sz; ++j) {
         therion::warp::line * l2 = mLines[j];
@@ -156,7 +156,7 @@ therion::warp::point_pair::order_lines( inserter * warper, double x_u, warp_proj
         double ct = v1 * v2;
         double st = v1 ^ v2;
         double theta = atan2( st, ct );
-        if ( theta < 0 ) theta += 2*THPI;
+        if ( theta < 0 ) theta += 2*std::numbers::pi;
         if ( theta < theta_min ) { jmin = j; theta_min = theta; }
       }
       l1 = mLines[jmin];

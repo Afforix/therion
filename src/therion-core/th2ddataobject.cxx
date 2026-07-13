@@ -33,6 +33,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 th2ddataobject::th2ddataobject()
 {
   this->pscrapoptr = NULL;
@@ -234,7 +236,7 @@ void th2dparse_scale(const char * spec, int & type, double & value)
         value = 1.0;
         break;
       case TT_2DOBJ_SCALE_L:
-        value = 1.414;
+        value = std::numbers::sqrt2;
         break;
       case TT_2DOBJ_SCALE_XL:
         value = 2.0;

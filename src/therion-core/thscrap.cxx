@@ -1152,9 +1152,9 @@ void thscrap::process_3d() {
       if ((pp->type == TT_POINT_TYPE_PASSAGE_HEIGHT) &&
           ((pp->tags & TT_POINT_TAG_HEIGHT_U) != 0) &&
           (!thisnan(pp->xsize))) {
-        cdown = pp->xsize / 1.618;
-        if (cdown > 1.618)
-          cdown = 1.618;
+        cdown = pp->xsize / std::numbers::phi;
+        if (cdown > std::numbers::phi)
+          cdown = std::numbers::phi;
         cup = pp->xsize - cdown;
         is.insert_dim(pp->point->xt, pp->point->yt, cup, cdown);
       } else if ((pp->type == TT_POINT_TYPE_DIMENSIONS) &&
@@ -1241,7 +1241,7 @@ void thscrap::process_3d() {
       } else {
         normx = 1.0;
         normy = 1.0;
-        norml = sqrt(2.0);
+        norml = std::numbers::sqrt2;
       }
       if (!started && (prevolineln != NULL)) {
         cfx = cfc->insert_vertex(prevolineln->vx3dup);

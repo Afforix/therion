@@ -859,7 +859,7 @@ void lxGLCanvas::OnMouseMove(wxMouseEvent& event)
     case LXGLCML_ROTATE:
     case LXGLCML_ZOOM2ROTATE:
       if ((this->m_sMoveLock == LXGLCML_ZOOM) || (this->m_sMoveLock == LXGLCML_ZOOM2ROTATE))
-        f = pow(1.4142135623730950488016887242097, double(this->my - event.GetY()) / 20.0);
+        f = pow(std::numbers::sqrt2, double(this->my - event.GetY()) / 20.0);
       else
         f = 1.0;
       if ((!this->m_sCameraLockRotation) && ((this->m_sMoveLock == LXGLCML_ROTATE) || (this->m_sMoveLock == LXGLCML_ZOOM2ROTATE))) {

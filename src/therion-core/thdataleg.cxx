@@ -208,7 +208,7 @@ void thdataleg::calc_total_stds()
   h = std::hypot(this->total_dx, this->total_dy);
 
   if (this->topofil) {
-    dL = 1.41421356237 * dl;
+    dL = std::numbers::sqrt2 * dl;
   }
 
 #define pow2(x) ((x) * (x))
