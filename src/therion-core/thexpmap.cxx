@@ -71,6 +71,7 @@
 #include "thparse.h"
 #include "img.h"
 #include <filesystem>
+#include <numbers>
 
 #include <fmt/format.h>
 

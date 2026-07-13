@@ -51,6 +51,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 thexpmodel::thexpmodel() {
   this->format = TT_EXPMODEL_FMT_UNKNOWN;
   this->items = TT_EXPMODEL_ITEM_ALL;
