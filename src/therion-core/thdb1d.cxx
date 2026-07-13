@@ -57,6 +57,8 @@
 
 #include <fmt/format.h>
 
+#include <numbers>
+
 //#define THUSESVX
 //#define THDEBUG
 
