@@ -44,7 +44,6 @@
 
 #include <cmath>
 #include <cstring>
-#include <numbers>
 
 struct pt2d {
   double x, y;
@@ -1268,8 +1267,8 @@ void thscrapis::outline_scan(class thscraplo * outln) {
     olineln = oline;
     while (olineln != NULL) {
       this->bp_interpolate(olineln->x, olineln->y, olineln->z, dum, dum, dum);
-      olineln->zu = olineln->z + std::numbers::phi * std::numbers::phi;
-      olineln->zd = olineln->z - std::numbers::phi;
+      olineln->zu = olineln->z + 1.618 * 1.618;
+      olineln->zd = olineln->z - 1.618;
       olineln = olineln->next;
     }
     oline = oline->next_segment;
@@ -1393,9 +1392,9 @@ void thscrapis::insert_bp_direction(double x, double y, double z, double tx, dou
   it->second.suml += std::hypot(dl,dz);
   it->second.sumsl += 1.0;
   if (dl < THSCRAPISRES) {
-    if ((dz > std::numbers::phi) && (dz > it->second.up))
+    if ((dz > 1.618) && (dz > it->second.up))
       it->second.up = dz;
-    if ((dz < -std::numbers::phi) && (dz < -(it->second.down)))
+    if ((dz < -1.618) && (dz < -(it->second.down)))
       it->second.down = -dz;
     return;
   }
@@ -1403,7 +1402,7 @@ void thscrapis::insert_bp_direction(double x, double y, double z, double tx, dou
     tmpup = (slp->arrow->is_reversed ? slp->arrow->leg->leg->to_up : slp->arrow->leg->leg->from_up);
     tmpdown = (slp->arrow->is_reversed ? slp->arrow->leg->leg->to_down : slp->arrow->leg->leg->from_down);
     if (fabs(slp->arrow->leg->leg->total_gradient) >= slp->arrow->leg->leg->vtresh) {
-      d = cos(slp->arrow->leg->leg->total_gradient / 180.0 * std::numbers::pi);     
+      d = cos(slp->arrow->leg->leg->total_gradient / 180.0 * THPI);     
     } else {
       d = 1.0;
     }
@@ -1446,22 +1445,22 @@ void thscrapis::end_bp_direction()
       cbp->suml /= cbp->sumsl;
       cbp->suml *= 0.618;
       if ((cbp->up < 0.0) && (cbp->down < 0.0)) {
-        cbp->down = cbp->suml / std::numbers::phi;
+        cbp->down = cbp->suml / 1.618;
         if (cbp->down > 0.618)
           cbp->down = 0.618;
         cbp->up = cbp->suml - cbp->down;
-        if (cbp->up > std::numbers::phi)
-          cbp->up = std::numbers::phi;
+        if (cbp->up > 1.618)
+          cbp->up = 1.618;
       } else if (cbp->up < 0.0) {
-        cbp->up = std::numbers::phi;
+        cbp->up = 1.618;
       } else if (cbp->down < 0.0) {
-        cbp->down = std::numbers::phi;
+        cbp->down = 1.618;
       }
     } 
     if (cbp->up < 0.0) {
       cbp->up *= -1.0;
-      if (cbp->up > std::numbers::phi)
-        cbp->up = std::numbers::phi;
+      if (cbp->up > 1.618)
+        cbp->up = 1.618;
     }
     if (cbp->down < 0.0) {
       cbp->down *= -1.0;
