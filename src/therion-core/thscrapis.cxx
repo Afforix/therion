@@ -44,7 +44,8 @@
 
 #include <cmath>
 #include <cstring>
-#include <numbers>
+
+static constexpr double THPI = 3.1415926535898;
 
 struct pt2d {
   double x, y;
@@ -499,7 +500,7 @@ void int3di::insert_slp(thscraplp *slp) {
           if (fabs(slp->arrow->leg->leg->total_gradient) > slp->arrow->leg->leg->vtresh) {
             coef = fabs(slp->arrow->leg->leg->total_gradient);
             if (coef > 60) coef = 60;
-            coef = 1 / cos(coef / 180.0 * std::numbers::pi);
+            coef = 1 / cos(coef / 180.0 * THPI);
           }
           f.m_upf = coef * udlr1[0];
           f.m_dnf = coef * udlr1[1];
@@ -517,7 +518,7 @@ void int3di::insert_slp(thscraplp *slp) {
           if (coef > 90.0) coef = 90 - (coef - 90);
           coef = 90 - coef;
           if (coef > 60) coef = 60;
-          coef = 1 / cos(coef / 180.0 * std::numbers::pi);
+          coef = 1 / cos(coef / 180.0 * THPI);
         case TT_2DPROJ_EXTEND:
           for(i = 2; i < 4; i++) {
             f.m_dim = f.m_dim && ((!thisnan(udlr1[i])) && (!thisnan(udlr2[i])));
@@ -704,7 +705,7 @@ void thscrapis::int3d() {
       rdir = lxVec(1.0, 0.0, 0.0);
       break;
     case TT_2DPROJ_ELEV:
-      ddir = lxVec(-sin(this->m_scrap->proj->pp1 / 180.0 * std::numbers::pi), -cos(this->m_scrap->proj->pp1 / 180.0 * std::numbers::pi), 0.0);
+      ddir = lxVec(-sin(this->m_scrap->proj->pp1 / 180.0 * THPI), -cos(this->m_scrap->proj->pp1 / 180.0 * THPI), 0.0);
       udir = lxVec(0.0, 0.0, 1.0);
       rdir = lxVec(-ddir.y, ddir.x, 0.0);
       break;
@@ -1403,7 +1404,7 @@ void thscrapis::insert_bp_direction(double x, double y, double z, double tx, dou
     tmpup = (slp->arrow->is_reversed ? slp->arrow->leg->leg->to_up : slp->arrow->leg->leg->from_up);
     tmpdown = (slp->arrow->is_reversed ? slp->arrow->leg->leg->to_down : slp->arrow->leg->leg->from_down);
     if (fabs(slp->arrow->leg->leg->total_gradient) >= slp->arrow->leg->leg->vtresh) {
-      d = cos(slp->arrow->leg->leg->total_gradient / 180.0 * std::numbers::pi);     
+      d = cos(slp->arrow->leg->leg->total_gradient / 180.0 * THPI);     
     } else {
       d = 1.0;
     }
