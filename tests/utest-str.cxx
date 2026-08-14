@@ -5,6 +5,8 @@
 #include <catch2/catch.hpp>
 #endif
 #include "icase.h"
+#include "thchenc.h"
+#include "thchencdata.h"
 #include "thparse.h"
 #include "thcsdata.h"
 #include "thsvg.h"
@@ -103,4 +105,16 @@ TEST_CASE("thdecode_sql")
     CHECK(thdecode_sql("SELECT Lorem FROM Ipsum;") == "'SELECT Lorem FROM Ipsum;'");
     CHECK(thdecode_sql("Let's test quotes.") == "'Let''s test quotes.'");
     CHECK(thdecode_sql("'''''") == "''''''''''''");
+}
+
+TEST_CASE("thdecode")
+{
+    CHECK(thdecode(TT_UTF_8, "äbc") == "\xC3\xA4" "bc");
+    CHECK(thdecode(TT_ISO8859_1, "äbc") == "\xE4" "bc");
+}
+
+TEST_CASE("thencode")
+{
+    CHECK(thencode("äbc", TT_UTF_8) == "\xC3\xA4" "bc");
+    CHECK(thencode("\xE4" "bc", TT_ISO8859_1) == "\xC3\xA4" "bc");
 }

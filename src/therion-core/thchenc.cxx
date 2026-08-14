@@ -36,26 +36,24 @@
 
 void thencode(std::string * dest, const char * src, int srcenc)
 {
+  *dest = thencode(src, srcenc);
+}
+
+std::string thencode(const char * src, int srcenc)
+{
   // check if source is not UTF-8
   if (srcenc == TT_UTF_8) {
-    thdecode(dest,TT_ASCII,src);
-    dest->assign(src);
-    return;
+    return src;
   }
   
-  size_t srcln = strlen(src), srcx = 0;
-  unsigned char * srcp, * dstp;
-  // check buffer size
-  dest->resize(srcln + srcln + srcln + srcln + srcln + srcln);
-  dstp = (unsigned char *) dest->c_str();
-  srcp = (unsigned char *) src;
+  std::string dest;
+  dest.reserve(strlen(src) * 2);
   
-  while (srcx < srcln) {
+  for (auto srcp = reinterpret_cast<const unsigned char *>(src); *srcp; ++srcp) {
   
     // check if encoding isn't needed
     if (*srcp < thchenc_facc) {
-      *dstp = *srcp;
-      dstp++;
+      dest.push_back(*srcp);
     }
     // we have to encode
     else {
@@ -64,57 +62,48 @@ void thencode(std::string * dest, const char * src, int srcenc)
 
       // two byte UTF-8 character
       if (dch < 0X800) {
-        *dstp = 192 + (dch / 64);
-        dstp++;
-        *dstp = 128 + (dch % 64);
-        dstp++;
+        dest.push_back(192 + (dch / 64));
+        dest.push_back(128 + (dch % 64));
       }
 
       // three byte UTF-8 character
       else if (dch < 0X10000) {
-        *dstp = 224 + (dch / 4096);
-        dstp++;
-        *dstp = 128 + ((dch % 4096) / 64);
-        dstp++;
-        *dstp = 128 + (dch % 64);
-        dstp++;
+        dest.push_back(224 + (dch / 4096));
+        dest.push_back(128 + ((dch % 4096) / 64));
+        dest.push_back(128 + (dch % 64));
       } 
       
       // longer chars not supported
       else
         therror("unicode character over 0xFFFF not supported");
     }
-    
-    srcx++;
-    srcp++;
   }
   
-  // end destination string with 0
-  *dstp = 0;
-  
+  return dest;
 }
 
  
 void thdecode(std::string * dest, int destenc, const char * src)
 {
+  *dest = thdecode(destenc, src);
+}
+
+std::string thdecode(int destenc, const char * src)
+{
   // chack if source is not UTF-8
   if (destenc == TT_UTF_8) {
-    dest->assign(src);
-    return;
+    return src;
   }
   
-  size_t srcln = strlen(src), srcx = 0;
-  unsigned char * srcp, * dstp;
-  dest->resize(srcln);  // check buffer size
-  dstp = (unsigned char*) dest->c_str();
-  srcp = (unsigned char*) src;
+  std::string dest;
+  dest.reserve(strlen(src));
   char32_t sch = 0;    
   
-  while (srcx < srcln) {
+  for (auto srcp = reinterpret_cast<const unsigned char *>(src); *srcp; ++srcp) {
   
     // check if decoding isn't needed
     if (*srcp < thchenc_facc)
-      *dstp = *srcp;
+      dest.push_back(*srcp);
     // we have to decode
     else {
       // one byte character
@@ -124,8 +113,7 @@ void thdecode(std::string * dest, int destenc, const char * src)
       else if ((*srcp / 32) == 6) {
         sch = 64 * (*srcp % 32);
         srcp++;
-        srcx++;
-        if ((srcx >= srcln) || (*srcp < 128))
+        if (*srcp < 128)
           therror(fmt::format("invalid UTF-8 string -- \"{}\"",src));
         sch += *srcp % 64;
       }
@@ -133,13 +121,11 @@ void thdecode(std::string * dest, int destenc, const char * src)
       else if ((*srcp / 16) == 14) {
         sch = 4096 * (*srcp % 16);
         srcp++;
-        srcx++;
-        if ((srcx >= srcln) || (*srcp < 128))
+        if (*srcp < 128)
           therror(fmt::format("invalid UTF-8 string -- \"{}\"",src));
         sch += 64 * (*srcp % 64);
         srcp++;
-        srcx++;
-        if ((srcx >= srcln) || (*srcp < 128))
+        if (*srcp < 128)
           therror(fmt::format("invalid UTF-8 string -- \"{}\"",src));
         sch += *srcp % 64;
       } 
@@ -150,7 +136,7 @@ void thdecode(std::string * dest, int destenc, const char * src)
         
       // now we have whchar_t value of UTF-8 character in sch
       if (sch < thchenc_fucc)
-        *dstp = (char) sch;
+        dest.push_back(sch);
       else {
       
         // let's binsearch it's position in the table
@@ -169,20 +155,14 @@ void thdecode(std::string * dest, int destenc, const char * src)
         }
 
         if (ix == -1)
-          *dstp = thdecode_undef;
+          dest.push_back(thdecode_undef);
         else
-          *dstp = thdecode_tbl[ix][destenc];
+          dest.push_back(thdecode_tbl[ix][destenc]);
       }  
     }  // end of decoding
-    
-    srcx++;
-    srcp++;
-    dstp++;
   }
 
-  // end destination string with 0
-  *dstp = 0;
-  
+  return dest;
 }
 
 

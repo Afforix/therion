@@ -1,5 +1,5 @@
 /**
- * @file thinput.h
+ * @file thchenc.h
  * Therion character encoding module.
  */
   
@@ -35,22 +35,26 @@
 /**
  * Encode given string into UTF-8 internal encoding.
  *
- *  @param dest Destination buffer.
+ *  @return UTF-8 string.
  *  @param src Source string.
  *  @param srcenc Source encoding.
  */
+std::string thencode(const char * src, int srcenc);
  
+// TODO [[deprecated("Use thencode(const char * src, int srcenc) instead")]]
 void thencode(std::string * dest, const char * src, int srcenc);
 
 
 /**
  * Decode give string from internal UTF-8 encoding to some external.
  *
- *  @param dest Destination buffer.
+ *  @return Decoded string.
  *  @param destenc Destination encoding.
  *  @param src Source string.
  */
+std::string thdecode(int destenc, const char * src);
  
+// TODO [[deprecated("Use thdecode(int destenc, const char * src) instead")]]
 void thdecode(std::string * dest, int destenc, const char * src);
 
 
