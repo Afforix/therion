@@ -32,6 +32,7 @@
 #include "thexception.h"
 #include "thparse.h"
 
+#include <cassert>
 #include <fmt/format.h>
 
 void thencode(std::string * dest, const char * src, int srcenc)
@@ -41,6 +42,8 @@ void thencode(std::string * dest, const char * src, int srcenc)
 
 std::string thencode(const char * src, int srcenc)
 {
+  assert(src != nullptr);
+
   // check if source is not UTF-8
   if (srcenc == TT_UTF_8) {
     return src;
@@ -90,6 +93,8 @@ void thdecode(std::string * dest, int destenc, const char * src)
 
 std::string thdecode(int destenc, const char * src)
 {
+  assert(src != nullptr);
+
   // chack if source is not UTF-8
   if (destenc == TT_UTF_8) {
     return src;
