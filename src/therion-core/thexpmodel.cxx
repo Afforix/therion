@@ -121,12 +121,6 @@ void thexpmodel::parse_options(int & argx, int nargs, char ** args)
   }
 }
 
-void thexpmodel::dump_header(FILE * xf)
-{
-  thexport::dump_header(xf);
-  //fprintf(xf,"export\tmodel");
-}
-
 bool thexpmodel::is_leg_exported(thdb1dl * l)
 {
   if (!l->survey->is_selected()) return false;

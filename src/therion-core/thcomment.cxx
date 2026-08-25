@@ -71,12 +71,6 @@ const char * thcomment::get_cmd_name()
 }
 
 
-thcmd_option_desc thcomment::get_cmd_option_desc(const char * opts)
-{
-  return thdataobject::get_cmd_option_desc(opts);
-}
-
-
 void thcomment::set(thcmd_option_desc cod, char ** args, int argenc, unsigned long indataline)
 {
   switch (cod.id) {
@@ -88,12 +82,6 @@ void thcomment::set(thcmd_option_desc cod, char ** args, int argenc, unsigned lo
     default:
       thdataobject::set(cod, args, argenc, indataline);      
   }
-}
-
-
-void thcomment::self_print_properties(FILE * outf)
-{
-  thdataobject::self_print_properties(outf);
 }
 
 

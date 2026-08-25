@@ -92,17 +92,6 @@ const char * thgrade::get_cmd_name()
 }
 
 
-thcmd_option_desc thgrade::get_cmd_option_desc(const char * opts)
-{
-  // no options allowed
-  //  int id = thmatch_token(opts, thtt_grade_opt);
-  //  if (id == TT_GRADE_UNKNOWN)
-  return thdataobject::get_cmd_option_desc(opts);
-  //  else
-  //    return thcmd_option_desc(id);
-}
-
-
 void thgrade::set(thcmd_option_desc cod, char ** args, int argenc, unsigned long indataline)
 {
   switch (cod.id) {

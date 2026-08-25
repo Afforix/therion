@@ -126,11 +126,6 @@ void thexptable::parse_options(int & argx, int nargs, char ** args)
   }
 }
 
-void thexptable::dump_header(FILE * xf)
-{
-  thexport::dump_header(xf);
-}
-
 
 void thexptable::dump_body(FILE * xf)
 {

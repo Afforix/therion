@@ -78,12 +78,6 @@ void thexpdb::parse_options(int & argx, int nargs, char ** args)
   }
 }
 
-void thexpdb::dump_header(FILE * xf)
-{
-  thexport::dump_header(xf);
-  //fprintf(xf,"export\tmodel");
-}
-
 
 void thexpdb::dump_body(FILE * xf)
 {

@@ -183,13 +183,6 @@ class tharea : public th2ddataobject {
 
 
   /**
-   * Return option description.
-   */
-
-  thcmd_option_desc get_cmd_option_desc(const char * opts) override;
-
-
-  /**
    * Set command option.
    *
    * @param cod Command option description.

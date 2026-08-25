@@ -111,13 +111,6 @@ class thexpdb : public thexport {
 
 
   /**
-   * Dump object into file.
-   */
-   
-  void dump_header(FILE * xf) override;
-  
-
-  /**
    * Make export.
    */
    

@@ -86,16 +86,6 @@ const char * tharea::get_cmd_name()
 }
 
 
-thcmd_option_desc tharea::get_cmd_option_desc(const char * opts)
-{
-//  int id = thmatch_token(opts, thtt_area_opt);
-//  if (id == TT_AREA_UNKNOWN)
-    return th2ddataobject::get_cmd_option_desc(opts);
-//  else
-//    return thcmd_option_desc(id);
-}
-
-
 void tharea::set(thcmd_option_desc cod, char ** args, int argenc, unsigned long indataline)
 {
   char * type, * subtype;

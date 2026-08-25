@@ -117,13 +117,6 @@ class thcomment : public thdataobject {
   
   
   /**
-   * Return option description.
-   */
-   
-  thcmd_option_desc get_cmd_option_desc(const char * opts) override;
-  
-  
-  /**
    * Set command option.
    *
    * @param cod Command option description.
@@ -132,13 +125,6 @@ class thcomment : public thdataobject {
    */
    
   void set(thcmd_option_desc cod, char ** args, int argenc, unsigned long indataline) override;
-
-
-  /**
-   * Print object properties.
-   */
-   
-  void self_print_properties(FILE * outf) override; 
   
 
   /**
