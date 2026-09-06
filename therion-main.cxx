@@ -39,6 +39,8 @@
 #include "thdatabase.h"
 #include "thlog.h"
 
+#include <Magick++/Functions.h>
+
 #include <fmt/format.h>
 
 #include <fstream>
@@ -80,6 +82,9 @@ int main(int argc, char * argv[]) {
 
     // set some system parameters
     thexecute_cmd = argv[0];
+
+    // initialize ImageMagick library
+    Magick::InitializeMagick(*argv);
   
     // process command line
     thcmdln.process(argc, argv);
