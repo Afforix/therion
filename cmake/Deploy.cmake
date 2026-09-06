@@ -12,6 +12,13 @@ set(ImageMagick_CODERS
     "${ImageMagick_CODERS_PREFIX}/png.dll"
     "${ImageMagick_CODERS_PREFIX}/webp.dll"
 )
+set(ImageMagick_DESCRIPTORS
+    "${ImageMagick_CODERS_PREFIX}/gif.la"
+    "${ImageMagick_CODERS_PREFIX}/jpeg.la"
+    "${ImageMagick_CODERS_PREFIX}/jxl.la"
+    "${ImageMagick_CODERS_PREFIX}/png.la"
+    "${ImageMagick_CODERS_PREFIX}/webp.la"
+)
 
 # silence warnings about normalizing paths
 cmake_policy(SET CMP0207 NEW)
@@ -27,7 +34,7 @@ file(GET_RUNTIME_DEPENDENCIES
 
 file(MAKE_DIRECTORY ${DLLS_DIR})
 
-foreach(DLL ${DLLS} ${ImageMagick_CODERS})
-    message("Copying dependency: ${DLL}")
-    file(COPY ${DLL} DESTINATION ${DLLS_DIR})
+foreach(DEP ${DLLS} ${ImageMagick_CODERS} ${ImageMagick_DESCRIPTORS})
+    message("Copying dependency: ${DEP}")
+    file(COPY ${DEP} DESTINATION ${DLLS_DIR})
 endforeach()
