@@ -85,7 +85,7 @@ int main(int argc, char * argv[]) {
     thexecute_cmd = argv[0];
 
     // initialize ImageMagick library
-    putenv(fmt::format("MAGICK_CODER_MODULE_PATH={}", std::filesystem::path(argv[0]).parent_path()).c_str());
+    putenv(fmt::format("MAGICK_CODER_MODULE_PATH={}", std::filesystem::path(argv[0]).parent_path().string()).c_str());
     Magick::InitializeMagick(*argv);
   
     // process command line
