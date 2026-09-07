@@ -86,7 +86,12 @@ int main(int argc, char * argv[]) {
 
     // initialize ImageMagick library
 #ifdef THWIN32
-    putenv(fmt::format("MAGICK_CODER_MODULE_PATH={}", std::filesystem::path(argv[0]).parent_path().string()).c_str());
+    // detect deployed ImageMagick DLLs
+    if (const auto exe_dir = std::filesystem::path(argv[0]).parent_path();
+        std::filesystem::exists(exe_dir / "jpeg.dll") && std::filesystem::exists(exe_dir / "jpeg.la"))
+    {
+      putenv(fmt::format("MAGICK_CODER_MODULE_PATH={}", exe_dir.string()).c_str());
+    }
 #endif
     Magick::InitializeMagick(*argv);
   
