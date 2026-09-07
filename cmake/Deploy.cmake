@@ -7,6 +7,7 @@ string(REGEX MATCH "^[^-]+" ImageMagick_VERSION "${ImageMagick_VERSION}")
 set(ImageMagick_CODERS_PREFIX "$ENV{MSYSTEM_PREFIX}/lib/ImageMagick-${ImageMagick_VERSION}/modules-Q16HDRI/coders")
 set(ImageMagick_CODERS
     "${ImageMagick_CODERS_PREFIX}/gif.dll"
+    "${ImageMagick_CODERS_PREFIX}/heic.dll"
     "${ImageMagick_CODERS_PREFIX}/jpeg.dll"
     "${ImageMagick_CODERS_PREFIX}/jxl.dll"
     "${ImageMagick_CODERS_PREFIX}/png.dll"
@@ -14,6 +15,7 @@ set(ImageMagick_CODERS
 )
 set(ImageMagick_DESCRIPTORS
     "${ImageMagick_CODERS_PREFIX}/gif.la"
+    "${ImageMagick_CODERS_PREFIX}/heic.la"
     "${ImageMagick_CODERS_PREFIX}/jpeg.la"
     "${ImageMagick_CODERS_PREFIX}/jxl.la"
     "${ImageMagick_CODERS_PREFIX}/png.la"
