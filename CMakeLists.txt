@@ -144,12 +144,13 @@ if (BUILD_LOCH)
 endif()
 
 # deployment of DLL dependencies on Windows
-if (BUILD_THERION AND BUILD_LOCH AND WIN32)
+if (BUILD_THERION AND BUILD_LOCH AND MSYS)
     set(DLLS_DIR ${CMAKE_BINARY_DIR}/dependencies)
     add_custom_target(deploy 
         ${CMAKE_COMMAND} -D THERION=$<TARGET_FILE:therion>
                          -D LOCH=$<TARGET_FILE:loch>
                          -D DLLS_DIR=${DLLS_DIR}
+                         -D ImageMagick_VERSION=${ImageMagick_VERSION_STRING}
                          -P cmake/Deploy.cmake
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
     set_target_properties(deploy PROPERTIES ADDITIONAL_CLEAN_FILES ${DLLS_DIR})

@@ -39,6 +39,7 @@ jobs:
             mingw-w64-${{ matrix.config.arch }}-fmt
             mingw-w64-${{ matrix.config.arch }}-catch
             mingw-w64-${{ matrix.config.arch }}-imagemagick
+            mingw-w64-${{ matrix.config.arch }}-libjxl
             mingw-w64-${{ matrix.config.arch }}-nlohmann-json
       - name: prevent git EOL conversion
         run: git config --global core.autocrlf input
