@@ -111,6 +111,13 @@ TEST_CASE("thencode")
     CHECK(thencode("\xE4" "bc", TT_ISO8859_1) == "\xC3\xA4" "bc");
 }
 
+TEST_CASE("thdecode_tex")
+{
+    CHECK(thdecode_tex("") == "");
+    CHECK(thdecode_tex("plain text") == "plain text");
+    CHECK(thdecode_tex(R"(%_&$#@~`^*\{}|")") == R"(\%\_\&\$\#\@\~\`\^\*\\\{\}\|\")");
+}
+
 TEST_CASE("thdecode_sql")
 {
     CHECK(thdecode_sql("") == "NULL");
