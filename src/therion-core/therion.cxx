@@ -38,6 +38,8 @@
 
 #include <fmt/format.h>
 
+#include <print>
+
 int therion_exit_state = 2;
 
 bool thverbose_mode = true;
@@ -76,7 +78,7 @@ static void thprint_impl(const bool verbose, FILE* f, std::string_view msg)
 {
   thlog(msg);
   if (verbose) {
-    fmt::print(f, "{}", msg);
+    std::print(f, "{}", msg);
   }
 }
 

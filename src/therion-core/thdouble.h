@@ -1,5 +1,7 @@
 #pragma once
 
+#include <format>
+#include <string>
 #include <fmt/format.h>
 
 /**
@@ -51,5 +53,31 @@ struct fmt::formatter<thdouble>: formatter<std::string> {
         // Remove const for compatibility with fmtlib < 9.0.0
         return const_cast<formatter<thdouble> *>(this)
             ->formatter<std::string>::format(num, ctx);
+    }
+};
+
+/**
+ * @brief Standard library formatter for thdouble.
+ * Will print floating point numbers in fixed format and without trailing zeros.
+ */
+template <>
+struct std::formatter<thdouble, char>: std::formatter<std::string, char> {
+    template <typename FormatContext>
+    auto format(const thdouble& p, FormatContext& ctx) const {
+        // fixed formatting with given precision and two passes for stable rounding
+        auto num = std::format("{:.{}f}", std::stod(std::format("{:.{}f}", p.value, p.precision + 1)), p.precision);
+        // remove redundant zeros
+        const auto dot = num.find('.');
+        auto result_len = num.length();
+        if (dot != std::string::npos)
+        {
+            const auto last_not_zero = num.find_last_not_of('0');
+            if (last_not_zero != std::string::npos && last_not_zero >= dot)
+            {
+                result_len = last_not_zero + (last_not_zero != dot);
+            }
+        }
+        num.resize(result_len);
+        return std::formatter<std::string, char>::format(num, ctx);
     }
 };

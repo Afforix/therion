@@ -33,6 +33,8 @@
 
 #include <string.h>
 
+#include <print>
+
 const char * logfilemode = "w";
 
 thlogfile::thlogfile()
@@ -89,7 +91,7 @@ void thlogfile::print(std::string_view msg)
     if (!this->is_open)
       this->open_file();
     if (this->is_open) {
-      fmt::print(this->fileh, "{}", msg);
+      std::print(this->fileh, "{}", msg);
       if (std::fflush(this->fileh) != 0)
         this->log_error();
     }

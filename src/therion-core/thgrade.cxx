@@ -203,22 +203,22 @@ void thgrade::start_insert()
 }
 
 void thgrade::self_print_library(std::ostream& out) {
-  fmt::print(out, "\toname = \"{}\";\n", this->get_name());
-  fmt::print(out, "\tpgrade->set(thcmd_option_desc(TT_DATAOBJECT_NAME,1),buffer_to_ptr(oname),0,0);\n");
+  std::print(out, "\toname = \"{}\";\n", this->get_name());
+  std::print(out, "\tpgrade->set(thcmd_option_desc(TT_DATAOBJECT_NAME,1),buffer_to_ptr(oname),0,0);\n");
   thdecode_c(&(this->db->buff_enc), this->get_title());
-  fmt::print(out, "\toname = \"{}\";\n", this->db->buff_enc.c_str());
-  fmt::print(out, "\tpgrade->set(thcmd_option_desc(TT_DATAOBJECT_TITLE,1),buffer_to_ptr(oname),TT_UTF_8,0);\n");
-  fmt::print(out, "\tpgrade->dls_length = {};\n", thprintinfnan(this->dls_length));
-  fmt::print(out, "\tpgrade->dls_bearing = {};\n", thprintinfnan(this->dls_bearing));
-  fmt::print(out, "\tpgrade->dls_gradient = {};\n", thprintinfnan(this->dls_gradient));
-  fmt::print(out, "\tpgrade->dls_counter = {};\n", thprintinfnan(this->dls_counter));
-  fmt::print(out, "\tpgrade->dls_depth = {};\n", thprintinfnan(this->dls_depth));
-  fmt::print(out, "\tpgrade->dls_dx = {};\n", thprintinfnan(this->dls_dx));
-  fmt::print(out, "\tpgrade->dls_dy = {};\n", thprintinfnan(this->dls_dy));
-  fmt::print(out, "\tpgrade->dls_dz = {};\n", thprintinfnan(this->dls_dz));
-  fmt::print(out, "\tpgrade->dls_x = {};\n", thprintinfnan(this->dls_x));
-  fmt::print(out, "\tpgrade->dls_y = {};\n", thprintinfnan(this->dls_y));
-  fmt::print(out, "\tpgrade->dls_z = {};\n", thprintinfnan(this->dls_z));
+  std::print(out, "\toname = \"{}\";\n", this->db->buff_enc.c_str());
+  std::print(out, "\tpgrade->set(thcmd_option_desc(TT_DATAOBJECT_TITLE,1),buffer_to_ptr(oname),TT_UTF_8,0);\n");
+  std::print(out, "\tpgrade->dls_length = {};\n", thprintinfnan(this->dls_length));
+  std::print(out, "\tpgrade->dls_bearing = {};\n", thprintinfnan(this->dls_bearing));
+  std::print(out, "\tpgrade->dls_gradient = {};\n", thprintinfnan(this->dls_gradient));
+  std::print(out, "\tpgrade->dls_counter = {};\n", thprintinfnan(this->dls_counter));
+  std::print(out, "\tpgrade->dls_depth = {};\n", thprintinfnan(this->dls_depth));
+  std::print(out, "\tpgrade->dls_dx = {};\n", thprintinfnan(this->dls_dx));
+  std::print(out, "\tpgrade->dls_dy = {};\n", thprintinfnan(this->dls_dy));
+  std::print(out, "\tpgrade->dls_dz = {};\n", thprintinfnan(this->dls_dz));
+  std::print(out, "\tpgrade->dls_x = {};\n", thprintinfnan(this->dls_x));
+  std::print(out, "\tpgrade->dls_y = {};\n", thprintinfnan(this->dls_y));
+  std::print(out, "\tpgrade->dls_z = {};\n", thprintinfnan(this->dls_z));
 }
 
 thdata thgrade::data;

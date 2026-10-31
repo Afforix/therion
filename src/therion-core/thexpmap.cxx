@@ -76,6 +76,8 @@
 
 #include <fmt/format.h>
 
+#include <print>
+
 namespace fs = std::filesystem;
 
 static std::string convert_to_gif(const thpic& pic, const long resize = 0)
@@ -3136,7 +3138,7 @@ thexpmap_xmps thexpmap::export_mp(thexpmapmpxs * out, class thscrap * scrap,
   if (out->layout->is_debug_stationnames() && (!dbg_stnms.empty())) {
     thexpmap_export_mp_bgif;
     for (const auto& str : dbg_stnms)
-      fmt::print(out->file, "{}\n", str);
+      std::print(out->file, "{}\n", str);
   }
   
   // nakoniec scrap name, ak mame zapnuty dany debug mod

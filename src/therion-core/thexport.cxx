@@ -215,7 +215,7 @@ bool thexport::check_crc() {
 
 		if (thcfg.crc_generate) {
 			std::ofstream crcof(fmt::format("{}.crc", file.fnm));
-      fmt::print(crcof, "{:08x}\n", actual_crc);
+      std::print(crcof, "{:08x}\n", actual_crc);
 			file.res = "OK";
       continue;
     }
