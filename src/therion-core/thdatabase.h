@@ -142,8 +142,6 @@ typedef std::set < thsurveyname > thdb_dictionary_type;  ///< Database dictionar
 typedef std::set < threvision > thdb_revision_set_type;  ///< Object revision set type.
 typedef std::map < thobjectid, class thdataobject * > thdb_object_map_type;  ///< Object map
 typedef std::map < thsurveyname, class thsurvey * > thdb_survey_map_type;   ///< Survey map  
-typedef std::map < thsurveyname, class thdataobject * > thdb_grade_map_type;   ///< Grade map  
-typedef thdb_grade_map_type thdb_layout_map_type;   ///< Layout map  
 typedef std::list < std::unique_ptr<thdataobject> > thdb_object_list_type;   ///< Object list
 
   
@@ -189,9 +187,9 @@ class thdatabase {
   thobjectsrc csrc;  ///< Current source position.
   thdb_object_map_type object_map;  ///< Object search hash
   thdb_survey_map_type survey_map;   ///< Survey search hash
-  thdb_grade_map_type grade_map;   ///< Grade search hash
-  thdb_layout_map_type layout_map;   ///< Layout search hash
-  thdb_layout_map_type lookup_map;   ///< Lookup search hash
+  std::map<std::string, class thgrade*> grade_map;   ///< Grade search hash
+  std::map<std::string, class thlayout*> layout_map;   ///< Layout search hash
+  std::map<std::string, class thlookup*> lookup_map;   ///< Lookup search hash
   thdb_object_list_type object_list;   ///< Object list
   
   
